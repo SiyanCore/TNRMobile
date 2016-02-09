@@ -5,7 +5,7 @@ package com.siyanmo.tnrmobile.DomainObjects;
  */
 public class Item {
     private String ItemCode ;
-    private Float SqFt ;
+    private Float StockInHandUnits ;
     private Float SellingPrice ;
     private String ItemNameShown ;
 
@@ -13,8 +13,8 @@ public class Item {
         return ItemCode;
     }
 
-    public Float getSqFt() {
-        return SqFt;
+    public Float getStockInHandUnits() {
+        return StockInHandUnits;
     }
 
     public Float getSellingPrice() {
@@ -23,5 +23,21 @@ public class Item {
 
     public String getItemNameShown() {
         return ItemNameShown;
+    }
+
+    public void setItemCode(String itemCode) {
+        ItemCode = itemCode;
+    }
+
+    public void setStockInHandUnits(Float sqFt) {
+        StockInHandUnits = sqFt;
+    }
+
+    public void setSellingPrice(Float sellingPrice) {
+        SellingPrice = sellingPrice;
+    }
+
+    public void setItemNameShown(String itemNameShown) {
+        ItemNameShown = itemNameShown;
     }
 }
