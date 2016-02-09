@@ -5,19 +5,19 @@ package com.siyanmo.tnrmobile.DomainObjects;
  */
 public class Item {
     private String ItemCode ;
-    private float SqFt ;
-    private float SellingPrice ;
+    private Float SqFt ;
+    private Float SellingPrice ;
     private String ItemNameShown ;
 
     public String getItemCode() {
         return ItemCode;
     }
 
-    public float getSqFt() {
+    public Float getSqFt() {
         return SqFt;
     }
 
-    public float getSellingPrice() {
+    public Float getSellingPrice() {
         return SellingPrice;
     }
 
