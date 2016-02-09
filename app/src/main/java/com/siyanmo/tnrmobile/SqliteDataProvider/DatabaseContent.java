@@ -31,5 +31,6 @@ public final class DatabaseContent {
         public static final String OrderId="OrderId";
         public static final String ItemCode = "ItemCode";
         public static final String Quantity="SoldQuantityinUnits";
+        public static final String Value="Value";
     }
 }

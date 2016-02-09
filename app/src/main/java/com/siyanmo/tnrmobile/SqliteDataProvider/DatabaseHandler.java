@@ -2,14 +2,19 @@ package com.siyanmo.tnrmobile.SqliteDataProvider;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.siyanmo.tnrmobile.DomainObjects.Customer;
 import com.siyanmo.tnrmobile.DomainObjects.Item;
+import com.siyanmo.tnrmobile.DomainObjects.SalesOrderDetail;
+import com.siyanmo.tnrmobile.DomainObjects.SalesOrderHeader;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Hiran on 2/3/2016.
@@ -42,7 +47,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                                                                                     "("+SalesOrderDetail.ID+" INTEGER PRIMARY KEY AUTOINCREMENT,"
                                                                                     +SalesOrderDetail.OrderId+" TEXT NOT NULL,"
                                                                                     +SalesOrderDetail.ItemCode+" TEXT NOT NULL,"
-                                                                                    +SalesOrderDetail.Quantity+" REAL NOT NULL"+")";
+                                                                                    +SalesOrderDetail.Quantity+" REAL NOT NULL,"
+                                                                                    +SalesOrderDetail.Value+" REAL NOT NULL"+")";
 
     public DatabaseHandler(Context context) {
         super(context, DataBaseName, null, 1);
@@ -78,7 +84,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
     }
 
-    public boolean InsertItem(Item ItemObject){
+    public long InsertItem(Item ItemObject){
         try {
             SQLiteDatabase db=this.getWritableDatabase();
             ContentValues contentValues=new ContentValues();
@@ -87,39 +93,113 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             contentValues.put(Item.Price, ItemObject.getSellingPrice());
             contentValues.put(Item.Stock, ItemObject.getStockInHandUnits());
             long result = db.insert(DbContent.Item,null,contentValues);
-            if (result==-1){
-                return false;
-            }
-            else {
-                return  true;
-            }
+            return result;
         } catch (IndexOutOfBoundsException e) {
             System.err.println("IndexOutOfBoundsException: " + e.getMessage());
         } catch (SQLException e) {
             System.err.println("Caught IOException: " + e.getMessage());
         }
-        return false;
+        return -1;
     }
 
-    public boolean InsertCustomer(Customer CustomerObject){
+    public long InsertCustomer(Customer CustomerObject){
         try {
             SQLiteDatabase db=this.getWritableDatabase();
             ContentValues contentValues=new ContentValues();
             contentValues.put(Customer.Code,CustomerObject.getCustomerCode());
             contentValues.put(Customer.Name,CustomerObject.getCustomerName());
             long result = db.insert(DbContent.Customer,null,contentValues);
-            if (result==-1){
-                return false;
-            }
-            else {
-                return  true;
-            }
+            return result;
         } catch (IndexOutOfBoundsException e) {
             System.err.println("IndexOutOfBoundsException: " + e.getMessage());
         } catch (SQLException e) {
             System.err.println("Caught IOException: " + e.getMessage());
         }
-        return false;
+        return -1;
     }
 
+    public long InsertSalesOrderHeader(SalesOrderHeader SalesOrderHeaderObject){
+        try {
+            long currentTimeMillis= System.currentTimeMillis();
+            SQLiteDatabase db=this.getWritableDatabase();
+            ContentValues contentValues=new ContentValues();
+            contentValues.put(SalesOrderHeader.Date,currentTimeMillis);
+            contentValues.put(SalesOrderHeader.CustomerCode,SalesOrderHeaderObject.getCustomerCode());
+            contentValues.put(SalesOrderHeader.Amount,SalesOrderHeaderObject.getOrderAmount());
+            contentValues.put(SalesOrderHeader.Remark,SalesOrderHeaderObject.getRemark());
+            long result = db.insert(DbContent.SalesOrderHeader,null,contentValues);
+            return result;
+
+        } catch (IndexOutOfBoundsException e) {
+            System.err.println("IndexOutOfBoundsException: " + e.getMessage());
+        } catch (SQLException e) {
+            System.err.println("Caught IOException: " + e.getMessage());
+        }
+        return -1;
+    }
+
+    public long InsertSalesOrderDetail(SalesOrderDetail SalesOrderDetailObject){
+        try {
+            SQLiteDatabase db=this.getWritableDatabase();
+            ContentValues contentValues=new ContentValues();
+            contentValues.put(SalesOrderDetail.ItemCode,SalesOrderDetailObject.getItemCode());
+            contentValues.put(SalesOrderDetail.OrderId,SalesOrderDetailObject.getOrderId());
+            contentValues.put(SalesOrderDetail.Quantity,SalesOrderDetailObject.getSoldQuantityinUnits());
+            contentValues.put(SalesOrderDetail.Value,SalesOrderDetailObject.getValue());
+            long result = db.insert(DbContent.SalesOrderDetail,null,contentValues);
+            return result;
+
+        } catch (IndexOutOfBoundsException e) {
+            System.err.println("IndexOutOfBoundsException: " + e.getMessage());
+        } catch (SQLException e) {
+            System.err.println("Caught IOException: " + e.getMessage());
+        }
+        return -1;
+    }
+
+    public List<Item> GetAllItems(){
+        List<Item> itemList=new ArrayList<Item>();
+        try {
+            SQLiteDatabase db=this.getWritableDatabase();
+            Cursor cursor = db.rawQuery("select * from " + DbContent.Item, null);
+            if (cursor.getCount()>0){
+                while (cursor.moveToNext()){
+                    Item item=new Item();
+                    item.setItemCode(cursor.getString(cursor.getColumnIndex(Item.Code)));
+                    item.setItemNameShown(cursor.getString(cursor.getColumnIndex(Item.Name)));
+                    item.setSellingPrice(cursor.getFloat(cursor.getColumnIndex(Item.Price)));
+                    item.setStockInHandUnits(cursor.getFloat(cursor.getColumnIndex(Item.Stock)));
+                    itemList.add(item);
+                }
+            }
+            return itemList;
+        } catch (IndexOutOfBoundsException e) {
+            System.err.println("IndexOutOfBoundsException: " + e.getMessage());
+        } catch (SQLException e) {
+            System.err.println("Caught IOException: " + e.getMessage());
+        }
+        return itemList;
+    }
+
+    public List<Customer> GetAllCustomer(){
+        List<Customer> customerList=new ArrayList<Customer>();
+        try {
+            SQLiteDatabase db=this.getWritableDatabase();
+            Cursor cursor = db.rawQuery("select * from "+DbContent.Customer,null);
+            if (cursor.getCount()>0){
+                while (cursor.moveToNext()){
+                    Customer customer=new Customer();
+                    customer.setCustomerCode(cursor.getString(cursor.getColumnIndex(Customer.Code)));
+                    customer.setCustomerName(cursor.getString(cursor.getColumnIndex(Customer.Name)));
+                    customerList.add(customer);
+                }
+            }
+            return customerList;
+        } catch (IndexOutOfBoundsException e) {
+            System.err.println("IndexOutOfBoundsException: " + e.getMessage());
+        } catch (SQLException e) {
+            System.err.println("Caught IOException: " + e.getMessage());
+        }
+        return customerList;
+    }
 }
