@@ -6,6 +6,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.siyanmo.tnrmobile.DomainObjects.Customer;
 import com.siyanmo.tnrmobile.DomainObjects.Item;
 
 import java.io.IOException;
@@ -80,11 +81,32 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         try {
             SQLiteDatabase db=this.getWritableDatabase();
             ContentValues contentValues=new ContentValues();
-            contentValues.put(Item.Code,ItemObject.getItemCode());
-            contentValues.put(Item.Name,ItemObject.getItemNameShown());
-            contentValues.put(Item.Price,ItemObject.getSellingPrice());
-            contentValues.put(Item.Stock,ItemObject.getStockInHandUnits());
+            contentValues.put(Item.Code, ItemObject.getItemCode());
+            contentValues.put(Item.Name, ItemObject.getItemNameShown());
+            contentValues.put(Item.Price, ItemObject.getSellingPrice());
+            contentValues.put(Item.Stock, ItemObject.getStockInHandUnits());
             long result = db.insert(DbContent.Item,null,contentValues);
+            if (result==-1){
+                return false;
+            }
+            else {
+                return  true;
+            }
+        } catch (IndexOutOfBoundsException e) {
+            System.err.println("IndexOutOfBoundsException: " + e.getMessage());
+        } catch (SQLException e) {
+            System.err.println("Caught IOException: " + e.getMessage());
+        }
+        return false;
+    }
+
+    public boolean InsertCustomer(Customer CustomerObject){
+        try {
+            SQLiteDatabase db=this.getWritableDatabase();
+            ContentValues contentValues=new ContentValues();
+            contentValues.put(Customer.Code,CustomerObject.getCustomerCode());
+            contentValues.put(Customer.Name,CustomerObject.getCustomerName());
+            long result = db.insert(DbContent.Customer,null,contentValues);
             if (result==-1){
                 return false;
             }
