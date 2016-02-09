@@ -6,8 +6,8 @@ package com.siyanmo.tnrmobile.SqliteDataProvider;
 public final class DatabaseContent {
     public static final String Item="MST_Item";
     public static final String Customer="MST_Customer";
-    public static final String InvoiceHeader="TRN_InvoiceHeader";
-    public static final String InvoiceDetail="TRN_InvoiceDetail";
+    public static final String SalesOrderHeader="TRN_SalesOrderHeader";
+    public static final String SalesOrderDetail="TRN_SalesOrderDetail";
     public final class Item {
         public static final String Code = "ItemCode";
         public static final String Name = "ItemNameShown";
@@ -18,15 +18,16 @@ public final class DatabaseContent {
         public static final String Code="CustomerCode";
         public static final String Name="CustomerName";
     }
-    public final class InvoiceHeader {
-        public static final String INVNo="INVNo";
-        public static final String Date="InvoiceDate";
-        public static final String Amount="InvoiceAmount";
-        public static final String Stock="StockInHandUnits";
+    public final class SalesOrderHeader {
+        public static final String OrderId="OrderId";
+        public static final String Date="OrderDate";
+        public static final String Amount="OrderAmount";
+        public static final String Remark="Remark";
+
     }
-    public final class InvoiceDetail {
+    public final class SalesOrderDetail {
         public static final String ID="ID";
-        public static final String INVNo="INVNo";
+        public static final String OrderId="OrderId";
         public static final String ItemCode = "ItemCode";
         public static final String Quantity="SoldQuantityinUnits";
     }
