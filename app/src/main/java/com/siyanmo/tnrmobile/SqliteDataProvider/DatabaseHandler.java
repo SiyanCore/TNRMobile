@@ -34,6 +34,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String CREATE_TABLE_InvoiceHeader="CREATE TABLE "+ DbContent.SalesOrderHeader +
                                                                                     "("+SalesOrderHeader.OrderId+" INTEGER PRIMARY KEY AUTOINCREMENT,"
                                                                                     +SalesOrderHeader.Date+" INTEGER NOT NULL,"
+                                                                                    +SalesOrderHeader.CustomerCode+" TEXT NOT NULL,"
                                                                                     +SalesOrderHeader.Amount+" REAL NOT NULL,"
                                                                                     +SalesOrderHeader.Remark+" TEXT"+")";
 

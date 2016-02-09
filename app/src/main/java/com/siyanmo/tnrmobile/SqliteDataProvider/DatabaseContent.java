@@ -21,6 +21,7 @@ public final class DatabaseContent {
     public final class SalesOrderHeader {
         public static final String OrderId="OrderId";
         public static final String Date="OrderDate";
+        public static final String CustomerCode="CustomerCode";
         public static final String Amount="OrderAmount";
         public static final String Remark="Remark";
 
