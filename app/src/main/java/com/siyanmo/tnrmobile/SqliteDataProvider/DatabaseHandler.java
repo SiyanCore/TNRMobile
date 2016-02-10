@@ -84,9 +84,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
     }
 
-    public long InsertItem(Item ItemObject){
+    public long InsertItem(Item ItemObject,SQLiteDatabase db){
         try {
-            SQLiteDatabase db=this.getWritableDatabase();
             ContentValues contentValues=new ContentValues();
             contentValues.put(Item.Code, ItemObject.getItemCode());
             contentValues.put(Item.Name, ItemObject.getItemNameShown());
@@ -98,13 +97,30 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             System.err.println("IndexOutOfBoundsException: " + e.getMessage());
         } catch (SQLException e) {
             System.err.println("Caught IOException: " + e.getMessage());
+            throw e;
         }
         return -1;
     }
 
-    public long InsertCustomer(Customer CustomerObject){
+    public boolean InsertItemList(List<Item> ItemList) {
+        SQLiteDatabase db=this.getWritableDatabase();
+        boolean result=false;
         try {
-            SQLiteDatabase db=this.getWritableDatabase();
+            db.beginTransaction();
+            for (Item ItemObject:ItemList) {
+                InsertItem(ItemObject,db);
+            }
+            db.setTransactionSuccessful();
+            result= true;
+        } catch(SQLException e) {
+
+        } finally {
+            db.endTransaction();
+            return result;
+        }
+    }
+    public long InsertCustomer(Customer CustomerObject,SQLiteDatabase db){
+        try {
             ContentValues contentValues=new ContentValues();
             contentValues.put(Customer.Code,CustomerObject.getCustomerCode());
             contentValues.put(Customer.Name,CustomerObject.getCustomerName());
