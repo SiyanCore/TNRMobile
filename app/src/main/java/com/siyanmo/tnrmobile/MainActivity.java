@@ -15,12 +15,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.siyanmo.tnrmobile.WebAPI.ItemAPI;
-
+import com.siyanmo.tnrmobile.SqliteDataProvider.DatabaseHandler;
 import org.json.JSONArray;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
+    DatabaseHandler dbHandler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,11 +46,12 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        dbHandler=new DatabaseHandler(this);
     }
 
     @Override
     public void onBackPressed() {
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -79,6 +80,7 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.action_settings) {
             return true;
         }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -87,18 +89,18 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        JSONArray itemlist = Comman.getItemList();
-        if (id == R.id.nav_camara) {
+
+        if (id == R.id.nav_new_order) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.nav_orders) {
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_item_details) {
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_customers) {
 
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.nav_sync) {
 
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_log_out) {
 
         }
 
