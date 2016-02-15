@@ -121,6 +121,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             return result;
         }
     }
+
     public long InsertCustomer(Customer CustomerObject,SQLiteDatabase db){
         try {
             ContentValues contentValues=new ContentValues();
@@ -135,6 +136,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
         return -1;
     }
+
     public boolean InsertCustomerList(List<Customer> CustomerList) {
         SQLiteDatabase db=this.getWritableDatabase();
         boolean result=false;
