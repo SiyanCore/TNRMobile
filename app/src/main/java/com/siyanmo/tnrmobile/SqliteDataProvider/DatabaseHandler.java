@@ -107,6 +107,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         boolean result=false;
         try {
             db.beginTransaction();
+            db.execSQL("DROP TABLE " + DbContent.Item);
+            onCreate(db);
             for (Item ItemObject:ItemList) {
                 InsertItem(ItemObject,db);
             }
@@ -122,8 +124,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public long InsertCustomer(Customer CustomerObject,SQLiteDatabase db){
         try {
             ContentValues contentValues=new ContentValues();
-            contentValues.put(Customer.Code,CustomerObject.getCustomerCode());
-            contentValues.put(Customer.Name,CustomerObject.getCustomerName());
+            contentValues.put(Customer.Code, CustomerObject.getCustomerCode());
+            contentValues.put(Customer.Name, CustomerObject.getCustomerName());
             long result = db.insert(DbContent.Customer,null,contentValues);
             return result;
         } catch (IndexOutOfBoundsException e) {
@@ -132,6 +134,25 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             System.err.println("Caught IOException: " + e.getMessage());
         }
         return -1;
+    }
+    public boolean InsertCustomerList(List<Customer> CustomerList) {
+        SQLiteDatabase db=this.getWritableDatabase();
+        boolean result=false;
+        try {
+            db.beginTransaction();
+            db.execSQL("DROP TABLE " + DbContent.Customer);
+            onCreate(db);
+            for (Customer CustomerObject:CustomerList) {
+                InsertCustomer(CustomerObject,db);
+            }
+            db.setTransactionSuccessful();
+            result= true;
+        } catch(SQLException e) {
+
+        } finally {
+            db.endTransaction();
+            return result;
+        }
     }
 
     public long InsertSalesOrderHeader(SalesOrderHeader SalesOrderHeaderObject){
