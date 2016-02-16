@@ -1,5 +1,3 @@
-// create by LKMAL
-
 package com.siyanmo.tnrmobile;
 
 import android.content.Context;
@@ -14,11 +12,14 @@ import android.widget.EditText;
 import android.widget.Toast;
 import android.app.AlertDialog;
 
+import com.siyanmo.tnrmobile.DomainObjects.User;
+import com.siyanmo.tnrmobile.WebAPI.logIn;
 
 public class Login extends AppCompatActivity {
     private static EditText UserName;
     private static EditText PassWord;
     private static Button btnSgn;
+    private logIn login;
 
     // flag for Internet connection status
     Boolean isInternetPresent = false;
@@ -32,16 +33,13 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.siyan_main_login);
 
 
-        // find View-elements
-        btnSgn = (Button) findViewById(R.id.sign);
-        login();
+    // find View-elements
+    btnSgn = (Button) findViewById(R.id.sign);
+    login();
+        login = new logIn(this);
 
-        // creating connection detector class instance
         cd = new ConnectionDetector(getApplicationContext());
     }
-
-
-
 
     public void login() {
         UserName = (EditText)findViewById(R.id.Uname);
@@ -77,16 +75,12 @@ public class Login extends AppCompatActivity {
                             //connection is true
                             if (isInternetPresent) {
 
-                                if (UserName.getText().toString().equals(name) && PassWord.getText().toString().equals(password)) {
-                                    //Online Connection
-                                    Toast.makeText(Login.this, "Well Come " + name, Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent("com.siyanmo.tnrmobile.MainActivity");
-                                    startActivity(intent);
-                                    Log.d("Network Available ", "Flag No 1");
-                                } else {
-                                    Toast.makeText(Login.this, "No internet Connection", Toast.LENGTH_LONG).show();
-                                }
-                                //----------------------------------------------------------------------------------------------------
+                                User user = new User();
+                                user.setLoginName(UserName.getText().toString());
+                                user.setPassword(PassWord.getText().toString());
+                                login.GetLog(user);
+                                Toast.makeText(Login.this, "Please wait", Toast.LENGTH_LONG).show();
+
                             }
 
                             //connection is false
