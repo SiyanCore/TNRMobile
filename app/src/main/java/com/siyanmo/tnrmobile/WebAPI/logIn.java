@@ -2,6 +2,7 @@ package com.siyanmo.tnrmobile.WebAPI;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -17,6 +18,7 @@ import com.siyanmo.tnrmobile.Comman;
 import com.siyanmo.tnrmobile.CommanMethode;
 import com.siyanmo.tnrmobile.DomainObjects.SalesExecutive;
 import com.siyanmo.tnrmobile.DomainObjects.User;
+import com.siyanmo.tnrmobile.Login;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,8 +33,10 @@ import java.util.concurrent.TimeoutException;
  */
 public class logIn {
     AppCompatActivity activity;
+    ItemAPI itemAPI;
     public logIn(AppCompatActivity sactivity){
         activity =sactivity;
+        itemAPI = new ItemAPI(sactivity);
     }
 
     public JsonObjectRequest LoginRequest (User user){
@@ -43,6 +47,7 @@ public class logIn {
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,URL,userJ ,new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject jsonObject) {
+                    itemAPI.GetItem();
                     String ff = jsonObject.toString();
                     Gson gson = new Gson();
                     SalesExecutive salesExecutive = gson.fromJson(ff, SalesExecutive.class);
@@ -74,6 +79,7 @@ public class logIn {
            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,URL,userJ ,new Response.Listener<JSONObject>() {
               @Override
                public void onResponse(JSONObject jsonObject) {
+                  itemAPI.GetItem();
                    String ff = jsonObject.toString();
                   Gson gson = new Gson();
                   SalesExecutive salesExecutive = gson.fromJson(ff, SalesExecutive.class);
@@ -86,6 +92,7 @@ public class logIn {
                @Override
                public void onErrorResponse(VolleyError volleyError) {
                    VolleyError ee = volleyError;
+                   Toast.makeText(activity, "Log In Error", Toast.LENGTH_LONG).show();
                }
            });
             queue.add(jsonObjectRequest);

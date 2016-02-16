@@ -10,9 +10,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.siyanmo.tnrmobile.Comman;
 import com.siyanmo.tnrmobile.DomainObjects.Item;
 import com.siyanmo.tnrmobile.R;
+import com.siyanmo.tnrmobile.SqliteDataProvider.DatabaseHandler;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpStatus;
@@ -38,8 +41,12 @@ import java.util.List;
 public class ItemAPI
 {
     AppCompatActivity activity ;
+    DatabaseHandler databaseHandler;
+    CustomerApi customerApi;
     public ItemAPI(AppCompatActivity sactivity){
         activity = sactivity;
+        customerApi = new CustomerApi(sactivity);
+        databaseHandler = new DatabaseHandler(sactivity);
     }
 
     public void GetItem (){
@@ -53,8 +60,10 @@ public class ItemAPI
             JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(URL,new Response.Listener<JSONArray>() {
                 @Override
                 public void onResponse(JSONArray jsonArray) {
-                    ItemList[0] = jsonArray;
+                    customerApi.GetCustomerBySalesExecutive(Comman.getSalesExecutive().getSalesExecutiveCode());
                     Comman.setItemList(jsonArray);
+                    ArrayList<Item> itemArray = new Gson().fromJson(jsonArray.toString(), new TypeToken<List<Item>>(){}.getType());
+                    databaseHandler.InsertItemList(itemArray);
                     //disply.setText("ok = "+jsonArray.toString());
                 }
             }, new Response.ErrorListener() {
