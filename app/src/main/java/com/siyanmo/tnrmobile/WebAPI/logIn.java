@@ -2,6 +2,7 @@ package com.siyanmo.tnrmobile.WebAPI;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -17,6 +18,7 @@ import com.siyanmo.tnrmobile.Comman;
 import com.siyanmo.tnrmobile.CommanMethode;
 import com.siyanmo.tnrmobile.DomainObjects.SalesExecutive;
 import com.siyanmo.tnrmobile.DomainObjects.User;
+import com.siyanmo.tnrmobile.Login;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -90,6 +92,7 @@ public class logIn {
                @Override
                public void onErrorResponse(VolleyError volleyError) {
                    VolleyError ee = volleyError;
+                   Toast.makeText(activity, "Log In Error", Toast.LENGTH_LONG).show();
                }
            });
             queue.add(jsonObjectRequest);

@@ -42,8 +42,10 @@ public class ItemAPI
 {
     AppCompatActivity activity ;
     DatabaseHandler databaseHandler;
+    CustomerApi customerApi;
     public ItemAPI(AppCompatActivity sactivity){
         activity = sactivity;
+        customerApi = new CustomerApi(sactivity);
         databaseHandler = new DatabaseHandler(sactivity);
     }
 
@@ -58,6 +60,7 @@ public class ItemAPI
             JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(URL,new Response.Listener<JSONArray>() {
                 @Override
                 public void onResponse(JSONArray jsonArray) {
+                    customerApi.GetCustomerBySalesExecutive(Comman.getSalesExecutive().getSalesExecutiveCode());
                     Comman.setItemList(jsonArray);
                     ArrayList<Item> itemArray = new Gson().fromJson(jsonArray.toString(), new TypeToken<List<Item>>(){}.getType());
                     databaseHandler.InsertItemList(itemArray);
