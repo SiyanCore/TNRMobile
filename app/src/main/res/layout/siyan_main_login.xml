@@ -34,10 +34,12 @@
 
         <ProgressBar
             style="?android:attr/progressBarStyleSmall"
-            android:layout_width="125dp"
-            android:layout_height="match_parent"
-            android:id="@+id/progressBar"
-            android:layout_gravity="center_horizontal|bottom" />
+            android:layout_width="132dp"
+            android:layout_height="207dp"
+            android:id="@+id/loginprogressBar"
+            android:layout_gravity="center_horizontal|bottom"
+            android:indeterminate="false" />
+
     </FrameLayout>
 
     <FrameLayout
@@ -67,16 +69,19 @@
             android:layout_gravity="left|center_vertical"
             android:textColor="#ffffff" />
 
-        <Button
+        <EditText
             android:layout_width="match_parent"
             android:layout_height="32dp"
-            android:text="@string/sign"
-            android:id="@+id/sign"
-            android:background="#0b6882"
-            android:textColor="#fefefe"
-            android:layout_weight="0.18"
-            android:layout_gravity="center_horizontal|bottom"
-            />
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:id="@+id/Uname"
+            android:layout_gravity="right|top"
+            android:textSize="@dimen/abc_action_bar_content_inset_material"
+            android:background="#fefcfc"
+            android:layout_weight="0.10"
+            android:layout_marginTop="@dimen/abc_dropdownitem_icon_width" />
+
+
 
         <EditText
             android:layout_width="match_parent"
@@ -89,18 +94,18 @@
             android:background="#ffffff"
             android:layout_weight="0.06"
             android:layout_marginTop="@dimen/abc_dropdownitem_icon_width" />
-
-        <EditText
+        <Button
             android:layout_width="match_parent"
             android:layout_height="32dp"
-            android:inputType="textPersonName"
-            android:ems="10"
-            android:id="@+id/Uname"
-            android:layout_gravity="right|top"
-            android:textSize="@dimen/abc_action_bar_content_inset_material"
-            android:background="#fefcfc"
-            android:layout_weight="0.10"
-            android:layout_marginTop="@dimen/abc_dropdownitem_icon_width" />
+            android:text="@string/sign"
+            android:id="@+id/sign"
+            android:background="#0b6882"
+            android:textColor="#fefefe"
+            android:layout_weight="0.18"
+            android:layout_gravity="center_horizontal|bottom"
+            />
+
+
 
 
     </FrameLayout>
