@@ -6,17 +6,18 @@ import java.util.Date;
  * Created by Hiran on 2/9/2016.
  */
 public class SalesOrderHeader {
-    private String OrderId;
+    private Integer OrderId;
     private Date OrderDate;
     private String CustomerCode;
     private Float OrderAmount;
     private String Remark;
+    private Integer SalesmanCode;
 
-    public String getOrderId() {
+    public Integer getOrderId() {
         return OrderId;
     }
 
-    public void setOrderId(String orderId) {
+    public void setOrderId(Integer orderId) {
         OrderId = orderId;
     }
 
@@ -52,4 +53,7 @@ public class SalesOrderHeader {
         Remark = remark;
     }
 
+    public Integer getSalesmanCode() {return SalesmanCode;}
+
+    public void setSalesmanCode(Integer salesmanCode) {SalesmanCode = salesmanCode;}
 }

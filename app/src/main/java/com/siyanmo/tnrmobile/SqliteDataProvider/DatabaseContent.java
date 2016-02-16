@@ -24,10 +24,11 @@ public final class DatabaseContent {
         public static final String CustomerCode="CustomerCode";
         public static final String Amount="OrderAmount";
         public static final String Remark="Remark";
+        public static final String SalesmanCode="SalesExecutiveCode";
 
     }
     public final class SalesOrderDetail {
-        public static final String ID="ID";
+        public static final String ID="Id";
         public static final String OrderId="OrderId";
         public static final String ItemCode = "ItemCode";
         public static final String Quantity="SoldQuantityinUnits";

@@ -41,6 +41,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                                                                                     +SalesOrderHeader.Date+" INTEGER NOT NULL,"
                                                                                     +SalesOrderHeader.CustomerCode+" TEXT NOT NULL,"
                                                                                     +SalesOrderHeader.Amount+" REAL NOT NULL,"
+                                                                                    +SalesOrderHeader.SalesmanCode+" INTEGER NOT NULL,"
                                                                                     +SalesOrderHeader.Remark+" TEXT"+")";
 
     private static final String CREATE_TABLE_InvoiceDetail="CREATE TABLE "+ DbContent.SalesOrderDetail +
@@ -166,6 +167,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             contentValues.put(SalesOrderHeader.CustomerCode,SalesOrderHeaderObject.getCustomerCode());
             contentValues.put(SalesOrderHeader.Amount,SalesOrderHeaderObject.getOrderAmount());
             contentValues.put(SalesOrderHeader.Remark,SalesOrderHeaderObject.getRemark());
+            contentValues.put(SalesOrderHeader.SalesmanCode,SalesOrderHeaderObject.getSalesmanCode());
             long result = db.insert(DbContent.SalesOrderHeader,null,contentValues);
             return result;
 
