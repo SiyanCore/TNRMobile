@@ -12,7 +12,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/abc_action_bar_content_inset_material">
 
-    <ImageView
+        <ImageView
         android:layout_width="138dp"
         android:layout_height="138dp"
         android:layout_marginTop="@dimen/nav_header_vertical_spacing"
@@ -31,6 +31,13 @@
             android:textSize="@dimen/abc_action_bar_default_height_material"
             android:layout_gravity="center_horizontal|bottom"
             android:textColor="#fdfbfb" />
+
+        <ProgressBar
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="125dp"
+            android:layout_height="match_parent"
+            android:id="@+id/progressBar"
+            android:layout_gravity="center_horizontal|bottom" />
     </FrameLayout>
 
     <FrameLayout
@@ -94,7 +101,11 @@
             android:background="#fefcfc"
             android:layout_weight="0.10"
             android:layout_marginTop="@dimen/abc_dropdownitem_icon_width" />
+
+
     </FrameLayout>
+
+
 
 
 </LinearLayout>
