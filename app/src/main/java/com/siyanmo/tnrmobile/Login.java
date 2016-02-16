@@ -42,8 +42,6 @@ public class Login extends AppCompatActivity {
     // Connection detector class
     ConnectionDetector cd;
 
-    CommanMethode cm;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,13 +54,13 @@ public class Login extends AppCompatActivity {
         login = new logIn(this);
         itemAPI = new ItemAPI(this);
         requesstqueue = Volley.newRequestQueue(this);
-
+        cd = new ConnectionDetector(getApplicationContext());
 
         //hide progress bar
         findViewById(R.id.loginprogressBar).setVisibility(View.GONE);
 
         //Get Local save User Name and Password
-        SharedPreferences  sharedPreferences = getSharedPreferences("TNRMobile_Login_User_Information", Context.MODE_PRIVATE);
+        SharedPreferences  sharedPreferences=getSharedPreferences("TNRMobile_Login_User_Information", Context.MODE_PRIVATE);
         lname = sharedPreferences.getString("Uname", Default);
         lpassword=sharedPreferences.getString("Password",Default);
 
@@ -129,11 +127,11 @@ public class Login extends AppCompatActivity {
 
 
 
-                                //SharedPreferences  sharedPreferences=getSharedPreferences("TNRMobile_Login_User_Information", Context.MODE_PRIVATE);
-                                //SharedPreferences.Editor editor=sharedPreferences.edit();
-                               // editor.putString("Uname",UserName.getText().toString());
-                               // editor.putString("Password",PassWord.getText().toString());
-                                //editor.commit();
+                                SharedPreferences  sharedPreferences=getSharedPreferences("TNRMobile_Login_User_Information", Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editor=sharedPreferences.edit();
+                                editor.putString("Uname",UserName.getText().toString());
+                                editor.putString("Password",PassWord.getText().toString());
+                                editor.commit();
 
                                 findViewById(R.id.loginprogressBar).setVisibility(View.VISIBLE);
 
@@ -193,9 +191,6 @@ public class Login extends AppCompatActivity {
         // Showing Alert Message
         alertDialog.show();
     }
-
-
-
 }
 
 
