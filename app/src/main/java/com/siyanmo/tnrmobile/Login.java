@@ -1,14 +1,19 @@
+// create by LKMAL
+
 package com.siyanmo.tnrmobile;
 
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.AvoidXfermode;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 import android.app.AlertDialog;
 
@@ -24,6 +29,9 @@ public class Login extends AppCompatActivity {
     private static EditText UserName;
     private static EditText PassWord;
     private static Button btnSgn;
+    public static final String Default ="";
+    String lname ="";
+    String lpassword="";
     private logIn login;
     private ItemAPI itemAPI;
     private RequestQueue requesstqueue;
@@ -33,6 +41,8 @@ public class Login extends AppCompatActivity {
 
     // Connection detector class
     ConnectionDetector cd;
+
+    CommanMethode cm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +56,21 @@ public class Login extends AppCompatActivity {
         login = new logIn(this);
         itemAPI = new ItemAPI(this);
         requesstqueue = Volley.newRequestQueue(this);
-        cd = new ConnectionDetector(getApplicationContext());
+
+
+        //hide progress bar
+        findViewById(R.id.loginprogressBar).setVisibility(View.GONE);
+
+        //Get Local save User Name and Password
+        SharedPreferences  sharedPreferences = getSharedPreferences("TNRMobile_Login_User_Information", Context.MODE_PRIVATE);
+        lname = sharedPreferences.getString("Uname", Default);
+        lpassword=sharedPreferences.getString("Password",Default);
+
+        UserName.setText(lname);
     }
+
+
+
 
     public void login() {
         UserName = (EditText)findViewById(R.id.Uname);
@@ -65,10 +88,19 @@ public class Login extends AppCompatActivity {
                         String name = "admin";
                         String password = "123";
 
+
+
                         //Add Your Local Login Authority
-                        String lname = "ladmin";
-                        String lpassword = "l123";
+                        //String lname = "ladmin";
+                        //String lpassword = "l123";
                         //---------------------------------------------
+
+
+
+                        //get Local User name and password
+                       // UserName.setText(lname);
+
+
 
 // TextBox Validation and Login
                         if (UserName.getText().toString().equals("") && PassWord.getText().toString().equals("")) {
@@ -82,6 +114,8 @@ public class Login extends AppCompatActivity {
                             //Check connectivity
                             //connection is true
                             if (isInternetPresent) {
+                            //if (5==1) {
+
 
                                 User user = new User();
                                 user.setLoginName(UserName.getText().toString());
@@ -93,6 +127,16 @@ public class Login extends AppCompatActivity {
 //                                requesstqueue.add(itemRequest);
                                 Toast.makeText(Login.this, "Please wait", Toast.LENGTH_LONG).show();
 
+
+
+                                //SharedPreferences  sharedPreferences=getSharedPreferences("TNRMobile_Login_User_Information", Context.MODE_PRIVATE);
+                                //SharedPreferences.Editor editor=sharedPreferences.edit();
+                               // editor.putString("Uname",UserName.getText().toString());
+                               // editor.putString("Password",PassWord.getText().toString());
+                                //editor.commit();
+
+                                findViewById(R.id.loginprogressBar).setVisibility(View.VISIBLE);
+
                             }
 
                             //connection is false
@@ -103,9 +147,20 @@ public class Login extends AppCompatActivity {
                                     Toast.makeText(Login.this, "Well Come", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent("com.siyanmo.tnrmobile.MainActivity");
                                     startActivity(intent);
-                                } else {
+
+
+
+                                    //save user name and Password
+                                    SharedPreferences  sharedPreferences=getSharedPreferences("TNRMobile_Login_User_Information",Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor editor=sharedPreferences.edit();
+                                    editor.putString("Uname",UserName.getText().toString());
+                                    editor.putString("Password",PassWord.getText().toString());
+                                    editor.commit();
+
+                                } else
+                                {
                                     // Internet connection is not present
-                                    Toast.makeText(Login.this, "Wrong User name or Password", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(Login.this, "No Internet Connection", Toast.LENGTH_LONG).show();
                                 }
 
                             }
@@ -138,6 +193,9 @@ public class Login extends AppCompatActivity {
         // Showing Alert Message
         alertDialog.show();
     }
+
+
+
 }
 
 
