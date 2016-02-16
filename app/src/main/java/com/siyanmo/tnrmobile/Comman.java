@@ -1,5 +1,7 @@
 package com.siyanmo.tnrmobile;
 
+import com.siyanmo.tnrmobile.DomainObjects.SalesExecutive;
+
 import org.json.JSONArray;
 
 /**
@@ -7,6 +9,7 @@ import org.json.JSONArray;
  */
 public final class Comman {
     private static JSONArray ItemList;
+    private static SalesExecutive SalesExecutive;
 
     public static JSONArray getItemList() {
         return ItemList;
@@ -14,5 +17,13 @@ public final class Comman {
 
     public static void setItemList(JSONArray itemList) {
         ItemList = itemList;
+    }
+
+    public static SalesExecutive getSalesExecutive() {
+        return SalesExecutive;
+    }
+
+    public static void setSalesExecutive(SalesExecutive salesExecutive) {
+        SalesExecutive = salesExecutive;
     }
 }

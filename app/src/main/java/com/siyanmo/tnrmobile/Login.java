@@ -12,7 +12,12 @@ import android.widget.EditText;
 import android.widget.Toast;
 import android.app.AlertDialog;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.siyanmo.tnrmobile.DomainObjects.User;
+import com.siyanmo.tnrmobile.WebAPI.ItemAPI;
 import com.siyanmo.tnrmobile.WebAPI.logIn;
 
 public class Login extends AppCompatActivity {
@@ -20,6 +25,8 @@ public class Login extends AppCompatActivity {
     private static EditText PassWord;
     private static Button btnSgn;
     private logIn login;
+    private ItemAPI itemAPI;
+    private RequestQueue requesstqueue;
 
     // flag for Internet connection status
     Boolean isInternetPresent = false;
@@ -37,7 +44,8 @@ public class Login extends AppCompatActivity {
     btnSgn = (Button) findViewById(R.id.sign);
     login();
         login = new logIn(this);
-
+        itemAPI = new ItemAPI(this);
+        requesstqueue = Volley.newRequestQueue(this);
         cd = new ConnectionDetector(getApplicationContext());
     }
 
@@ -79,6 +87,10 @@ public class Login extends AppCompatActivity {
                                 user.setLoginName(UserName.getText().toString());
                                 user.setPassword(PassWord.getText().toString());
                                 login.GetLog(user);
+//                                JsonObjectRequest loginRequest = login.LoginRequest(user);
+//                                JsonArrayRequest itemRequest = itemAPI.GetItemRequest();
+//                                requesstqueue.add(loginRequest);
+//                                requesstqueue.add(itemRequest);
                                 Toast.makeText(Login.this, "Please wait", Toast.LENGTH_LONG).show();
 
                             }

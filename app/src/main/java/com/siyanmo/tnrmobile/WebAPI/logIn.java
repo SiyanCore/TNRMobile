@@ -35,29 +35,32 @@ public class logIn {
         activity =sactivity;
     }
 
-    public synchronized boolean Login (User user){
-        RequestQueue volleyRequestQueue = Volley.newRequestQueue(activity);
-        String SIGNUP_URL ="http://192.168.1.105/TNR/api/SalesExecutive/LogIng";
+    public JsonObjectRequest LoginRequest (User user){
+        String URL ="http://192.168.1.105/TNR/api/SalesExecutive/LogIng";
 
-        String reqBodyString = "{\"LoginName\":\"lovindu\",\"Password\":\"123\"}";
-        JSONObject  reqBody = null;
+        JSONObject userJ = CommanMethode.ObjectToJsonString(user);
         try {
-            reqBody = new JSONObject (reqBodyString);
-        } catch (JSONException e) {
-            e.printStackTrace();
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,URL,userJ ,new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject jsonObject) {
+                    String ff = jsonObject.toString();
+                    Gson gson = new Gson();
+                    SalesExecutive salesExecutive = gson.fromJson(ff, SalesExecutive.class);
+                    Comman.setSalesExecutive(salesExecutive);
+                    Intent intent = new Intent("com.siyanmo.tnrmobile.MainActivity");
+                    activity.startActivity(intent);
+                }
+            }
+                    , new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError volleyError) {
+                    VolleyError ee = volleyError;
+                }
+            });
+            return jsonObjectRequest;
+        }catch(Exception e){
+            return null;
         }
-
-        RequestFuture<JSONObject> future = RequestFuture.newFuture();
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,SIGNUP_URL,reqBody,future, future);
-        volleyRequestQueue.add(jsonObjectRequest);
-
-        try {
-            JSONObject response = future.get();
-        } catch (InterruptedException e) {
-        } catch (ExecutionException e) {
-        }
-
-        return true;
     }
     
     public Boolean GetLog(User user){
@@ -73,7 +76,8 @@ public class logIn {
                public void onResponse(JSONObject jsonObject) {
                    String ff = jsonObject.toString();
                   Gson gson = new Gson();
-                  SalesExecutive obj = gson.fromJson(ff , SalesExecutive.class);
+                  SalesExecutive salesExecutive = gson.fromJson(ff, SalesExecutive.class);
+                  Comman.setSalesExecutive(salesExecutive);
                   Intent intent = new Intent("com.siyanmo.tnrmobile.MainActivity");
                   activity.startActivity(intent);
                }

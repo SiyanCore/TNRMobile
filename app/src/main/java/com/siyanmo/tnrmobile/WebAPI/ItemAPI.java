@@ -70,4 +70,28 @@ public class ItemAPI
         }
     }
 
+    public JsonArrayRequest GetItemRequest (){
+        String URL ="http://192.168.1.105/TNR/api/item/1001";
+
+        final JSONArray[] ItemList = new JSONArray[1];
+
+        try {
+            JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(URL,new Response.Listener<JSONArray>() {
+                @Override
+                public void onResponse(JSONArray jsonArray) {
+                    ItemList[0] = jsonArray;
+                    Comman.setItemList(jsonArray);
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError volleyError) {
+                    Comman.setItemList(new JSONArray());
+                }
+            });
+            return jsonObjectRequest;
+        }catch(Exception e){
+            return null;
+        }
+    }
+
 }
