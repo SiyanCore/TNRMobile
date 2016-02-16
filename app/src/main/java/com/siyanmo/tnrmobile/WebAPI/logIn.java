@@ -31,8 +31,10 @@ import java.util.concurrent.TimeoutException;
  */
 public class logIn {
     AppCompatActivity activity;
+    ItemAPI itemAPI;
     public logIn(AppCompatActivity sactivity){
         activity =sactivity;
+        itemAPI = new ItemAPI(sactivity);
     }
 
     public JsonObjectRequest LoginRequest (User user){
@@ -43,6 +45,7 @@ public class logIn {
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,URL,userJ ,new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject jsonObject) {
+                    itemAPI.GetItem();
                     String ff = jsonObject.toString();
                     Gson gson = new Gson();
                     SalesExecutive salesExecutive = gson.fromJson(ff, SalesExecutive.class);
@@ -74,6 +77,7 @@ public class logIn {
            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,URL,userJ ,new Response.Listener<JSONObject>() {
               @Override
                public void onResponse(JSONObject jsonObject) {
+                  itemAPI.GetItem();
                    String ff = jsonObject.toString();
                   Gson gson = new Gson();
                   SalesExecutive salesExecutive = gson.fromJson(ff, SalesExecutive.class);
