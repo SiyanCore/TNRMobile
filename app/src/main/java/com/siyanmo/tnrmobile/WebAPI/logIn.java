@@ -74,8 +74,8 @@ public class logIn {
         RequestQueue queue = Volley.newRequestQueue(activity);
         String URL ="http://192.168.1.105/TNR/api/SalesExecutive/LogIng";
 
-
-        JSONObject userJ = CommanMethode.ObjectToJsonString(user);
+        User enUser = CommanMethode.EncriptUser(user);
+        JSONObject userJ = CommanMethode.ObjectToJsonString(enUser);
         try {
            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,URL,userJ ,new Response.Listener<JSONObject>() {
               @Override
