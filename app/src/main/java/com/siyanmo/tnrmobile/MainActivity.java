@@ -21,9 +21,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.siyanmo.tnrmobile.DomainObjects.Item;
 import com.siyanmo.tnrmobile.WebAPI.ItemAPI;
 import com.siyanmo.tnrmobile.SqliteDataProvider.DatabaseHandler;
 import org.json.JSONArray;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -47,7 +50,8 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                ShowItem();
+                   Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
@@ -61,18 +65,11 @@ public class MainActivity extends AppCompatActivity
         itemfragment.SetActivity(this);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        dbHandler=new DatabaseHandler(this);
     }
 
     @Override
     public void onBackPressed() {
-//        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-//        if (drawer.isDrawerOpen(GravityCompat.START)) {
-//            drawer.closeDrawer(GravityCompat.START);
-//        } else {
-//            super.onBackPressed();
-//        }
-//        ItemAPI itemc = new ItemAPI(this);
-//        itemc.GetItem();
 
         DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
             @Override
@@ -161,4 +158,21 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+//    public void ShowItem(){
+//        try {
+//            List<Item> itemList = dbHandler.GetAllItems();
+//            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//            builder.setCancelable(true);
+//            builder.setTitle("Item List");
+//            String massage="";
+//            for (Item item:itemList){
+//                massage=massage+item.getItemNameShown()+"\n";
+//            }
+//            builder.setMessage(massage);
+//            builder.show();
+//        }catch(Exception ex){
+//            String err = ex.getMessage();
+//        }
+//    }
 }

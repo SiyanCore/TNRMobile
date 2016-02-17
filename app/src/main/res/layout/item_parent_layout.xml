@@ -11,6 +11,7 @@
         android:text="Hellow World"
         android:textSize="25dp"
         android:gravity="center_vertical"
-        android:layout_marginLeft="10dp"/>
+        android:paddingLeft="35dp"
+        android:background="@color/button_material_light" />
 
 </LinearLayout>

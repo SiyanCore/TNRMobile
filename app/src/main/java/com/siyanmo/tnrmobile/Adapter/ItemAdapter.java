@@ -19,18 +19,18 @@ import java.util.List;
  * Created by Hiran on 2/16/2016.
  */
 public class ItemAdapter extends BaseExpandableListAdapter {
-    private List<String> header_titles;
-    private HashMap<String,List<String>> child_titles;
+    private List<String> header_titles = new ArrayList<>();
+    private HashMap<String,List<String>> child_titles=new HashMap<>();
     private Context context;
     public ItemAdapter(Context cnt, List<Item> itemList){
-        context=cnt;
-        for (Item item : itemList){
-            header_titles.add(item.getItemNameShown());
-            List<String>itemDetails=new ArrayList<String>();
-            itemDetails.add(0,"Price - Rs "+item.getSellingPrice().toString());
-            itemDetails.add(0,"Stock - "+item.getStockInHandUnits());
-            child_titles.put(item.getItemNameShown(),itemDetails);
-        }
+            context=cnt;
+            for (Item item : itemList){
+                header_titles.add(item.getItemNameShown());
+                List<String>itemDetails=new ArrayList<String>();
+                itemDetails.add(0,"Price - Rs "+item.getSellingPrice().toString());
+                itemDetails.add(0,"Stock - "+item.getStockInHandUnits());
+                child_titles.put(item.getItemNameShown(),itemDetails);
+            }
 
     }
     @Override
@@ -71,7 +71,7 @@ public class ItemAdapter extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         String itemName=(String)this.getGroup(groupPosition);
-        if(context==null){
+        if(convertView==null){
             LayoutInflater layoutInflater=(LayoutInflater)this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView=layoutInflater.inflate(R.layout.item_parent_layout,null);
         }
@@ -84,7 +84,7 @@ public class ItemAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         String item=(String)this.getChild(groupPosition, childPosition);
-        if(context==null){
+        if(convertView==null){
             LayoutInflater layoutInflater=(LayoutInflater)this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView=layoutInflater.inflate(R.layout.item_child_layout,null);
         }
@@ -95,6 +95,6 @@ public class ItemAdapter extends BaseExpandableListAdapter {
 
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
-        return false;
+        return true;
     }
 }

@@ -33,12 +33,18 @@ public class ItemsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        dbHandler=new DatabaseHandler(activity);
-        expandableListView= (ExpandableListView)expandableListView.findViewById(R.id.expandableItemListView);
-        itemList=dbHandler.GetAllItems();
-        itemAdapter=new ItemAdapter(activity,itemList);
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_items, container, false);
+    }
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        dbHandler=new DatabaseHandler(activity);
+        expandableListView= (ExpandableListView) view.findViewById(R.id.expandableItemListView);
+        itemList=dbHandler.GetAllItems();
+        itemAdapter=new ItemAdapter(activity,itemList);
+        expandableListView.setAdapter(itemAdapter);
+        expandableListView.setGroupIndicator(null);
     }
     public void SetActivity(AppCompatActivity sactivity){
         activity=sactivity;
