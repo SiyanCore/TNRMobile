@@ -6,111 +6,117 @@
 
 
     <FrameLayout
-        android:layout_width="300dp"
-        android:layout_height="100dp"
-        android:layout_weight="0.34"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/abc_action_bar_content_inset_material">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="0.40">
 
         <ImageView
-        android:layout_width="138dp"
-        android:layout_height="138dp"
+        android:layout_width="203dp"
+        android:layout_height="100dp"
         android:layout_marginTop="@dimen/nav_header_vertical_spacing"
         android:id="@+id/imageView2"
         android:src="@drawable/login"
-        android:layout_gravity="center_horizontal"
+        android:layout_gravity="center_horizontal|bottom"
         android:contentDescription="@string/Login"
         />
-
-        <TextView
-            android:layout_width="173dp"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text=""
-            android:id="@+id/textView2"
-            android:textSize="@dimen/abc_action_bar_default_height_material"
-            android:layout_gravity="center_horizontal|bottom"
-            android:textColor="#fdfbfb" />
-
-        <ProgressBar
-            style="?android:attr/progressBarStyleSmall"
-            android:layout_width="132dp"
-            android:layout_height="207dp"
-            android:id="@+id/loginprogressBar"
-            android:layout_gravity="center_horizontal|bottom"
-            android:indeterminate="false" />
 
     </FrameLayout>
 
     <FrameLayout
-        android:layout_width="300dp"
-        android:layout_height="100dp"
-        android:layout_weight="0.34"
-        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Login"
+            android:id="@+id/textView2"
+            android:textSize="@dimen/abc_action_bar_progress_bar_size"
+            android:textColor="#fdfbfb"
+            android:layout_gravity="top|center" />
+    </FrameLayout>
+
+
+
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="20dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="User Name"
+                android:id="@+id/textView4"
+                android:layout_gravity="top|left|center"
+                android:textColor="#ffffff"/>
+
+            <EditText
+                android:layout_width="300dp"
+                android:layout_height="32dp"
+                android:inputType="textPersonName"
+                android:ems="10"
+                android:id="@+id/Uname"
+                android:layout_gravity="bottom|center"
+                android:textSize="@dimen/abc_action_bar_content_inset_material"
+                android:background="#fefcfc"
+                android:layout_weight="0.10"
+                android:layout_marginTop="@dimen/abc_dropdownitem_icon_width" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+            <EditText
+                android:layout_width="300dp"
+                android:layout_height="32dp"
+                android:inputType="textPassword"
+                android:ems="10"
+                android:id="@+id/Pword"
+                android:layout_gravity="bottom|center"
+                android:textSize="@dimen/abc_action_bar_content_inset_material"
+                android:background="#ffffff"
+                android:layout_weight="0.06"
+                android:layout_marginTop="@dimen/abc_dropdownitem_icon_width" />
+
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="20dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/password"
+                android:id="@+id/textView3"
+                android:layout_gravity="top|left|center"
+                android:textColor="#ffffff" />
+
+        </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_marginTop="@dimen/nav_header_vertical_spacing">
 
 
-        <TextView
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="User Name"
-            android:id="@+id/textView4"
-            android:layout_gravity="left|top"
-            android:textColor="#ffffff"/>
-
-
-        <TextView
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/password"
-            android:id="@+id/textView3"
-            android:layout_gravity="left|center_vertical"
-            android:textColor="#ffffff" />
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="32dp"
-            android:inputType="textPersonName"
-            android:ems="10"
-            android:id="@+id/Uname"
-            android:layout_gravity="right|top"
-            android:textSize="@dimen/abc_action_bar_content_inset_material"
-            android:background="#fefcfc"
-            android:layout_weight="0.10"
-            android:layout_marginTop="@dimen/abc_dropdownitem_icon_width" />
-
-
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="32dp"
-            android:inputType="textPassword"
-            android:ems="10"
-            android:id="@+id/Pword"
-            android:layout_gravity="right|center_vertical"
-            android:textSize="@dimen/abc_action_bar_content_inset_material"
-            android:background="#ffffff"
-            android:layout_weight="0.06"
-            android:layout_marginTop="@dimen/abc_dropdownitem_icon_width" />
-        <Button
-            android:layout_width="match_parent"
+    <Button
+            android:layout_width="300dp"
             android:layout_height="32dp"
             android:text="@string/sign"
             android:id="@+id/sign"
             android:background="#0b6882"
             android:textColor="#fefefe"
             android:layout_weight="0.18"
-            android:layout_gravity="center_horizontal|bottom"
+            android:layout_gravity="bottom|center"
             />
 
 
-
-
     </FrameLayout>
-
-
 
 
 </LinearLayout>
