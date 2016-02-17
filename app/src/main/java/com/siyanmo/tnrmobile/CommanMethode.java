@@ -5,11 +5,13 @@ package com.siyanmo.tnrmobile;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
-
-
+import android.util.Base64;
+import android.view.View;
+import android.widget.EditText;
 import com.google.gson.Gson;
 import com.siyanmo.tnrmobile.DomainObjects.User;
 import com.siyanmo.tnrmobile.WebAPI.CryptoUtil;
+import com.siyanmo.tnrmobile.DomainObjects.User;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -54,6 +56,13 @@ public final class CommanMethode {
         enUser.setLoginName(user.getLoginName());
         return enUser;
     }
+    
+    public static void LogUserDetails(SharedPreferences sharedPreferences, User users) {
+        SharedPreferences.Editor editor=sharedPreferences.edit();
+        editor.putString("Uname",users.getLoginName());
+        editor.putString("Password",users.getPassword());
+        editor.commit();
+    }
     //Lakmal//
     //Save User Name And Password
     //class  SaveUserNamePassword extends AppCompatActivity {
@@ -71,7 +80,8 @@ public final class CommanMethode {
     // }
 
     //  }
-}
+    }
+
 
 
 

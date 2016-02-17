@@ -1,6 +1,8 @@
 package com.siyanmo.tnrmobile.WebAPI;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
@@ -42,7 +44,7 @@ public class logIn {
 
     public JsonObjectRequest LoginRequest (User user){
         String URL ="http://192.168.1.105/TNR/api/SalesExecutive/LogIng";
-
+        final User users = user;
         JSONObject userJ = CommanMethode.ObjectToJsonString(user);
         try {
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,URL,userJ ,new Response.Listener<JSONObject>() {
@@ -53,8 +55,11 @@ public class logIn {
                     Gson gson = new Gson();
                     SalesExecutive salesExecutive = gson.fromJson(ff, SalesExecutive.class);
                     Comman.setSalesExecutive(salesExecutive);
+                    SharedPreferences sharedPreferences=activity.getSharedPreferences("TNRMobile_Login_User_Information", Context.MODE_PRIVATE);
+                    CommanMethode.LogUserDetails(sharedPreferences,users);
                     Intent intent = new Intent("com.siyanmo.tnrmobile.MainActivity");
                     activity.startActivity(intent);
+
                 }
             }
                     , new Response.ErrorListener() {
@@ -87,6 +92,7 @@ public class logIn {
                   Comman.setSalesExecutive(salesExecutive);
                   Intent intent = new Intent("com.siyanmo.tnrmobile.MainActivity");
                   activity.startActivity(intent);
+
                }
            }
               , new Response.ErrorListener() {
@@ -103,4 +109,6 @@ public class logIn {
 
         return true;
     }
+
+
 }
