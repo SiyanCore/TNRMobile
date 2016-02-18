@@ -28,17 +28,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static DatabaseContent.SalesOrderHeader SalesOrderHeader=DbContent.new SalesOrderHeader();
     private static DatabaseContent.SalesOrderDetail SalesOrderDetail=DbContent.new SalesOrderDetail();
     private static final String DataBaseName="TNRMOBILE.db";
-    private static final String CREATE_TABLE_Item="CREATE TABLE "+ DbContent.Item +
+    private static final String CREATE_TABLE_Item="CREATE TABLE IF NOT EXISTS "+ DbContent.Item +
                                                                                     "("+Item.Code+" TEXT PRIMARY KEY NOT NULL,"
                                                                                         +Item.Name+" TEXT NOT NULL,"
                                                                                         +Item.Price+" REAL NOT NULL,"
                                                                                         +Item.Stock+" REAL NOT NULL"+")";
 
-    private static final String CREATE_TABLE_Customer="CREATE TABLE "+ DbContent.Customer +
+    private static final String CREATE_TABLE_Customer="CREATE TABLE IF NOT EXISTS "+ DbContent.Customer +
                                                                                     "("+Customer.Code+" TEXT PRIMARY KEY NOT NULL,"
                                                                                     +Customer.Name+" TEXT NOT NULL"+")";
 
-    private static final String CREATE_TABLE_InvoiceHeader="CREATE TABLE "+ DbContent.SalesOrderHeader +
+    private static final String CREATE_TABLE_InvoiceHeader="CREATE TABLE IF NOT EXISTS "+ DbContent.SalesOrderHeader +
                                                                                     "("+SalesOrderHeader.OrderId+" INTEGER PRIMARY KEY AUTOINCREMENT,"
                                                                                     +SalesOrderHeader.Date+" INTEGER NOT NULL,"
                                                                                     +SalesOrderHeader.CustomerCode+" TEXT NOT NULL,"
@@ -46,7 +46,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                                                                                     +SalesOrderHeader.SalesmanCode+" INTEGER NOT NULL,"
                                                                                     +SalesOrderHeader.Remark+" TEXT"+")";
 
-    private static final String CREATE_TABLE_InvoiceDetail="CREATE TABLE "+ DbContent.SalesOrderDetail +
+    private static final String CREATE_TABLE_InvoiceDetail="CREATE TABLE IF NOT EXISTS "+ DbContent.SalesOrderDetail +
                                                                                     "("+SalesOrderDetail.ID+" INTEGER PRIMARY KEY AUTOINCREMENT,"
                                                                                     +SalesOrderDetail.OrderId+" TEXT NOT NULL,"
                                                                                     +SalesOrderDetail.ItemCode+" TEXT NOT NULL,"
@@ -286,5 +286,29 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             return orderList;
         }
 
+    }
+
+    public boolean RemoveAllOrdersBySalesmanCode(Integer salesmanCode) {
+        SQLiteDatabase db=this.getWritableDatabase();
+        boolean result=false;
+        try {
+            db.beginTransaction();
+            final String orderHeader_QUERY = "SELECT * FROM "+DbContent.SalesOrderHeader+" WHERE "+SalesOrderHeader.SalesmanCode+"=?";
+            Cursor orderHeaderCursor = db.rawQuery(orderHeader_QUERY, new String[]{String.valueOf(salesmanCode)});
+            if (orderHeaderCursor.getCount()>0){
+                Integer orderId=orderHeaderCursor.getInt(orderHeaderCursor.getColumnIndex(SalesOrderHeader.OrderId));
+                while (orderHeaderCursor.moveToNext()){
+                    db.delete(DbContent.SalesOrderDetail, SalesOrderDetail.OrderId + "=?", new String[]{String.valueOf(orderId)});
+                }
+                db.delete(DbContent.SalesOrderHeader, SalesOrderHeader.SalesmanCode + "=?",new String[]{String.valueOf(salesmanCode)});
+            }
+            db.setTransactionSuccessful();
+            result= true;
+        } catch(SQLException e) {
+
+        } finally {
+            db.endTransaction();
+            return result;
+        }
     }
 }
