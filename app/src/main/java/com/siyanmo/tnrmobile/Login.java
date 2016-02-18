@@ -58,10 +58,6 @@ public class Login extends AppCompatActivity {
         requesstqueue = Volley.newRequestQueue(this);
         cd = new ConnectionDetector(getApplicationContext());
 
-
-        //hide progress bar
-        findViewById(R.id.loginprogressBar).setVisibility(View.GONE);
-
         //deflt user save user name and password
         SharedPreferences  sharedPreferences=getSharedPreferences("TNRMobile_Login_User_Information", Context.MODE_PRIVATE);
         lname = sharedPreferences.getString("Uname", Default);
@@ -90,7 +86,6 @@ public class Login extends AppCompatActivity {
                         // get Internet status
                         isInternetPresent = cd.isConnectingToInternet();
 
-
                         // TextBox Validation and Login
                         if (UserName.getText().toString().equals("") && PassWord.getText().toString().equals("")) {
                             Toast.makeText(Login.this, "Please Enter  User Name and Password ", Toast.LENGTH_SHORT).show();
@@ -112,7 +107,6 @@ public class Login extends AppCompatActivity {
 
                                 Toast.makeText(Login.this, "Please wait", Toast.LENGTH_LONG).show();
 
-                                findViewById(R.id.loginprogressBar).setVisibility(View.VISIBLE);
                                 //save user name and Password
                                 //SharedPreferences  sharedPreferences=getSharedPreferences("TNRMobile_Login_User_Information",Context.MODE_PRIVATE);
                                 //SharedPreferences.Editor editor=sharedPreferences.edit();
