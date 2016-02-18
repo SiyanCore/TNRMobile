@@ -201,7 +201,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     public List<Item> GetAllItems(){
-        List<Item> itemList=new ArrayList<Item>();
+        List<Item> itemList=new ArrayList<>();
         try {
             SQLiteDatabase db=this.getWritableDatabase();
             Cursor cursor = db.rawQuery("select * from " + DbContent.Item, null);
@@ -225,7 +225,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     public List<Customer> GetAllCustomer(){
-        List<Customer> customerList=new ArrayList<Customer>();
+        List<Customer> customerList=new ArrayList<>();
         try {
             SQLiteDatabase db=this.getWritableDatabase();
             Cursor cursor = db.rawQuery("select * from "+DbContent.Customer,null);
