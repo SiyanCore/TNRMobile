@@ -8,7 +8,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.siyanmo.tnrmobile.DomainObjects.Customer;
+import com.siyanmo.tnrmobile.DomainObjects.FullOrder;
 import com.siyanmo.tnrmobile.DomainObjects.Item;
+import com.siyanmo.tnrmobile.DomainObjects.OrderItems;
 import com.siyanmo.tnrmobile.DomainObjects.SalesOrderDetail;
 import com.siyanmo.tnrmobile.DomainObjects.SalesOrderHeader;
 
@@ -108,8 +110,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         boolean result=false;
         try {
             db.beginTransaction();
-            db.execSQL("DROP TABLE " + DbContent.Item);
-            onCreate(db);
+            db.execSQL("DROP TABLE IF EXISTS " + DbContent.Item);
+            db.execSQL(CREATE_TABLE_Item);
             for (Item ItemObject:ItemList) {
                 InsertItem(ItemObject,db);
             }
@@ -143,8 +145,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         boolean result=false;
         try {
             db.beginTransaction();
-            db.execSQL("DROP TABLE " + DbContent.Customer);
-            onCreate(db);
+            db.execSQL("DROP TABLE IF EXISTS "+DbContent.Customer);
+            db.execSQL(CREATE_TABLE_Customer);
             for (Customer CustomerObject:CustomerList) {
                 InsertCustomer(CustomerObject,db);
             }
@@ -164,10 +166,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             SQLiteDatabase db=this.getWritableDatabase();
             ContentValues contentValues=new ContentValues();
             contentValues.put(SalesOrderHeader.Date,currentTimeMillis);
-            contentValues.put(SalesOrderHeader.CustomerCode,SalesOrderHeaderObject.getCustomerCode());
-            contentValues.put(SalesOrderHeader.Amount,SalesOrderHeaderObject.getOrderAmount());
-            contentValues.put(SalesOrderHeader.Remark,SalesOrderHeaderObject.getRemark());
-            contentValues.put(SalesOrderHeader.SalesmanCode,SalesOrderHeaderObject.getSalesmanCode());
+            contentValues.put(SalesOrderHeader.CustomerCode, SalesOrderHeaderObject.getCustomerCode());
+            contentValues.put(SalesOrderHeader.Amount, SalesOrderHeaderObject.getOrderAmount());
+            contentValues.put(SalesOrderHeader.Remark, SalesOrderHeaderObject.getRemark());
+            contentValues.put(SalesOrderHeader.SalesmanCode, SalesOrderHeaderObject.getSalesmanCode());
             long result = db.insert(DbContent.SalesOrderHeader,null,contentValues);
             return result;
 
@@ -242,5 +244,47 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             System.err.println("Caught IOException: " + e.getMessage());
         }
         return customerList;
+    }
+
+    public List<FullOrder> GetAllOrdersBySalesmanCode(Integer salesmanCode){
+        List<FullOrder> orderList=new ArrayList<>();
+        SQLiteDatabase db=this.getWritableDatabase();
+        try {
+            db.beginTransaction();
+            final String orderHeader_QUERY = "SELECT * FROM "+DbContent.SalesOrderHeader+" WHERE "+SalesOrderHeader.SalesmanCode+"=?";
+            Cursor orderHeaderCursor = db.rawQuery(orderHeader_QUERY, new String[]{String.valueOf(salesmanCode)});
+            if (orderHeaderCursor.getCount()>0){
+                while (orderHeaderCursor.moveToNext()){
+                    FullOrder fullOrder=new FullOrder();
+                    fullOrder.setCustomerCode(orderHeaderCursor.getString(orderHeaderCursor.getColumnIndex(SalesOrderHeader.CustomerCode)));
+                    fullOrder.setOrderDate(orderHeaderCursor.getString(orderHeaderCursor.getColumnIndex(SalesOrderHeader.Date)));
+                    fullOrder.setRemarks(orderHeaderCursor.getString(orderHeaderCursor.getColumnIndex(SalesOrderHeader.Remark)));
+                    fullOrder.setSalesExecutiveCode(orderHeaderCursor.getInt(orderHeaderCursor.getColumnIndex(SalesOrderHeader.SalesmanCode)));
+
+                    List<OrderItems> orderItemsList=new ArrayList<>();
+                    Integer orderId=orderHeaderCursor.getInt(orderHeaderCursor.getColumnIndex(SalesOrderHeader.OrderId));
+                    final String orderDetail_QUERY = "SELECT * FROM "+DbContent.SalesOrderDetail+" WHERE "+SalesOrderDetail.OrderId+"=?";
+                    Cursor orderDetailCursor = db.rawQuery(orderDetail_QUERY, new String[]{String.valueOf(orderId)});
+                    while (orderDetailCursor.moveToNext()){
+                        OrderItems orderItems=new OrderItems();
+                        orderItems.setItemCode(orderDetailCursor.getString(orderDetailCursor.getColumnIndex(SalesOrderDetail.ItemCode)));
+                        orderItems.setOrderQuntity(orderDetailCursor.getFloat(orderDetailCursor.getColumnIndex(SalesOrderDetail.Quantity)));
+                        orderItemsList.add(orderItems);
+                    }
+                    fullOrder.setItems(orderItemsList);
+
+                    orderList.add(fullOrder);
+                }
+            }
+            db.setTransactionSuccessful();
+        } catch (IndexOutOfBoundsException e) {
+            System.err.println("IndexOutOfBoundsException: " + e.getMessage());
+        } catch (SQLException e) {
+            System.err.println("Caught IOException: " + e.getMessage());
+        } finally {
+            db.endTransaction();
+            return orderList;
+        }
+
     }
 }
