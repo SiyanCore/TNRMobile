@@ -3,11 +3,14 @@ package com.siyanmo.tnrmobile;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
+
 import com.google.gson.Gson;
 import com.siyanmo.tnrmobile.DomainObjects.User;
 import com.siyanmo.tnrmobile.WebAPI.CryptoUtil;
@@ -60,8 +63,24 @@ public final class CommanMethode {
     public static void LogUserDetails(SharedPreferences sharedPreferences, User users) {
         SharedPreferences.Editor editor=sharedPreferences.edit();
         editor.putString("Uname",users.getLoginName());
-        editor.putString("Password",users.getPassword());
+        editor.putString("Password", users.getPassword());
         editor.commit();
+    }
+
+    public static boolean LocalLogin(User users, SharedPreferences  sharedPreferences){
+        try {
+            String lname = sharedPreferences.getString("Uname", "");
+            String lpassword = sharedPreferences.getString("Password", "");
+            if (users.getLoginName().equals(lname) && users.getPassword().equals(lpassword))
+            {
+                return true;
+            } else
+            {
+                return false;
+            }
+        }catch (Exception e){
+            return false;
+        }
     }
     //Lakmal//
     //Save User Name And Password

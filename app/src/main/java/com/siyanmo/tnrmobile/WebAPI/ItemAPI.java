@@ -50,7 +50,7 @@ public class ItemAPI
         databaseHandler = new DatabaseHandler(sactivity);
     }
 
-    public void GetItem (){
+    public void GetItemAndCustomer (){
 
         RequestQueue queue = Volley.newRequestQueue(activity);
         //String URL ="http://192.168.1.105/TNR/api/item/1001";
@@ -62,7 +62,6 @@ public class ItemAPI
                 @Override
                 public void onResponse(JSONArray jsonArray) {
                     customerApi.GetCustomerBySalesExecutive(Comman.getSalesExecutive().getSalesExecutiveCode());
-                    Comman.setItemList(jsonArray);
                     ArrayList<Item> itemArray = new Gson().fromJson(jsonArray.toString(), new TypeToken<List<Item>>(){}.getType());
                     databaseHandler.InsertItemList(itemArray);
                     Toast.makeText(activity, "Item Data UpDated", Toast.LENGTH_LONG).show();
@@ -70,7 +69,6 @@ public class ItemAPI
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError volleyError) {
-                    Comman.setItemList(new JSONArray());
                     Toast.makeText(activity, "Item Data Not UpDated", Toast.LENGTH_LONG).show();
                 }
             });
@@ -79,6 +77,34 @@ public class ItemAPI
             //disply.setText("exseption ="+e.toString());
         }
     }
+
+
+    public void GetItem() {
+        RequestQueue queue = Volley.newRequestQueue(activity);
+        //String URL ="http://192.168.1.105/TNR/api/item/1001";
+        String URL = Comman.SearverUrl+"item/1001";
+        final JSONArray[] ItemList = new JSONArray[1];
+
+        try {
+            JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(URL,new Response.Listener<JSONArray>() {
+                @Override
+                public void onResponse(JSONArray jsonArray) {
+                    ArrayList<Item> itemArray = new Gson().fromJson(jsonArray.toString(), new TypeToken<List<Item>>(){}.getType());
+                    databaseHandler.InsertItemList(itemArray);
+                    Toast.makeText(activity, "Item Data UpDated", Toast.LENGTH_LONG).show();
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError volleyError) {
+                    Toast.makeText(activity, "Item Data Not UpDated", Toast.LENGTH_LONG).show();
+                }
+            });
+            queue.add(jsonObjectRequest);
+        }catch(Exception e){
+            //disply.setText("exseption ="+e.toString());
+        }
+    }
+
 
     public JsonArrayRequest GetItemRequest (){
         String URL ="http://192.168.1.105/TNR/api/item/1001";
@@ -90,12 +116,11 @@ public class ItemAPI
                 @Override
                 public void onResponse(JSONArray jsonArray) {
                     ItemList[0] = jsonArray;
-                    Comman.setItemList(jsonArray);
+
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError volleyError) {
-                    Comman.setItemList(new JSONArray());
                 }
             });
             return jsonObjectRequest;
@@ -103,5 +128,4 @@ public class ItemAPI
             return null;
         }
     }
-
 }

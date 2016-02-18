@@ -126,11 +126,11 @@ public class Login extends AppCompatActivity {
                                     startActivity(intent);
                                     //save user name and Password
 
-                                    SharedPreferences  sharedPreferences=getSharedPreferences("TNRMobile_Login_User_Information",Context.MODE_PRIVATE);
-                                    SharedPreferences.Editor editor=sharedPreferences.edit();
-                                    editor.putString("Uname",UserName.getText().toString());
-                                    editor.putString("Password",(PassWord.getText().toString()));
-                                    editor.commit();
+//                                    SharedPreferences  sharedPreferences=getSharedPreferences("TNRMobile_Login_User_Information",Context.MODE_PRIVATE);
+//                                    SharedPreferences.Editor editor=sharedPreferences.edit();
+//                                    editor.putString("Uname",UserName.getText().toString());
+//                                    editor.putString("Password",(PassWord.getText().toString()));
+//                                    editor.commit();
                                     PassWord.setText("");
 
                                 } else

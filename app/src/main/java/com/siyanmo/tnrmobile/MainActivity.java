@@ -1,14 +1,10 @@
 package com.siyanmo.tnrmobile;
 
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
@@ -20,14 +16,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.EditText;
 
-import com.siyanmo.tnrmobile.DomainObjects.Item;
-import com.siyanmo.tnrmobile.WebAPI.ItemAPI;
+import com.siyanmo.tnrmobile.Events.SyncEvent;
+import com.siyanmo.tnrmobile.Fragment.CustomersFragment;
+import com.siyanmo.tnrmobile.Fragment.ItemsFragment;
+import com.siyanmo.tnrmobile.Fragment.NewOrderFragment;
+import com.siyanmo.tnrmobile.Fragment.OrdersFragment;
 import com.siyanmo.tnrmobile.SqliteDataProvider.DatabaseHandler;
-import org.json.JSONArray;
-
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -148,7 +143,8 @@ public class MainActivity extends AppCompatActivity
             fragmentTransaction.replace(R.id.fragment_container,fragment).commit();
             navId=id;
         } else if (id == R.id.nav_sync) {
-
+            SyncEvent syncEvent = new SyncEvent(this);
+            syncEvent.SYncAll();
         } else if (id == R.id.nav_log_out) {
             DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
                 @Override

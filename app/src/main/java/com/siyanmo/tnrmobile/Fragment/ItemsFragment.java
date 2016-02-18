@@ -1,4 +1,4 @@
-package com.siyanmo.tnrmobile;
+package com.siyanmo.tnrmobile.Fragment;
 
 
 import android.os.Bundle;
@@ -11,6 +11,7 @@ import android.widget.ExpandableListView;
 
 import com.siyanmo.tnrmobile.Adapter.ItemAdapter;
 import com.siyanmo.tnrmobile.DomainObjects.Item;
+import com.siyanmo.tnrmobile.R;
 import com.siyanmo.tnrmobile.SqliteDataProvider.DatabaseHandler;
 
 import java.util.List;

@@ -43,6 +43,10 @@ public class OrderAPI  {
 
     public void PostOrders (List<FullOrder> OrderList){
 
+        if(OrderList.isEmpty()){
+            Toast.makeText(activity, "No New Orders to Sync", Toast.LENGTH_LONG).show();
+            return;
+        }
         RequestQueue queue = Volley.newRequestQueue(activity);
         //String URL ="http://192.168.1.105/TNR/api/InvoiceRequest/PostOrder";
         String URL = Comman.SearverUrl+"InvoiceRequest/PostOrder";
@@ -54,6 +58,7 @@ public class OrderAPI  {
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,URL,ordres,new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject jsonObject) {
+                 JSONObject ff = jsonObject;
 
                 }
             }

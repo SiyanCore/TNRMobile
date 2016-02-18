@@ -6,7 +6,7 @@
     android:paddingRight="16dp"
     android:paddingTop="?attr/actionBarSize"
     android:paddingBottom="16dp"
-    tools:context="com.siyanmo.tnrmobile.ItemsFragment">
+    tools:context="com.siyanmo.tnrmobile.Fragment.ItemsFragment">
 
     <ExpandableListView
         android:layout_width="match_parent"

@@ -46,7 +46,6 @@ public class CustomerApi {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError volleyError) {
-                    Comman.setItemList(new JSONArray());
                     Toast.makeText(activity, "Customer Data Not UpDated", Toast.LENGTH_LONG).show();
                 }
             });

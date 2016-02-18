@@ -51,7 +51,7 @@ public class logIn {
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,URL,userJ ,new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject jsonObject) {
-                    itemAPI.GetItem();
+                    itemAPI.GetItemAndCustomer();
                     String ff = jsonObject.toString();
                     Gson gson = new Gson();
                     SalesExecutive salesExecutive = gson.fromJson(ff, SalesExecutive.class);
@@ -76,6 +76,7 @@ public class logIn {
     }
     
     public Boolean GetLog(User user){
+        final User users = user;
 
         RequestQueue queue = Volley.newRequestQueue(activity);
         //String URL ="http://192.168.1.105/TNR/api/SalesExecutive/LogIng";
@@ -86,11 +87,13 @@ public class logIn {
            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,URL,userJ ,new Response.Listener<JSONObject>() {
               @Override
                public void onResponse(JSONObject jsonObject) {
-                  itemAPI.GetItem();
+                  itemAPI.GetItemAndCustomer();
                    String ff = jsonObject.toString();
                   Gson gson = new Gson();
                   SalesExecutive salesExecutive = gson.fromJson(ff, SalesExecutive.class);
                   Comman.setSalesExecutive(salesExecutive);
+                  SharedPreferences sharedPreferences=activity.getSharedPreferences("TNRMobile_Login_User_Information", Context.MODE_PRIVATE);
+                  CommanMethode.LogUserDetails(sharedPreferences, users);
                   Intent intent = new Intent("com.siyanmo.tnrmobile.MainActivity");
                   activity.startActivity(intent);
 
@@ -103,7 +106,15 @@ public class logIn {
                    if(error.statusCode==404)
                     Toast.makeText(activity, "User Not Found Contact Admin", Toast.LENGTH_LONG).show();
                    else{
-                       Toast.makeText(activity, "Sever Error Data Not Up Dated", Toast.LENGTH_LONG).show();
+                       SharedPreferences  sharedPreferences=activity.getSharedPreferences("TNRMobile_Login_User_Information", Context.MODE_PRIVATE);
+                       if (!CommanMethode.LocalLogin(users, sharedPreferences))
+                           Toast.makeText(activity, "User Not Found Contact Admin", Toast.LENGTH_LONG).show();
+                       else {
+                           Toast.makeText(activity, "Well Come", Toast.LENGTH_SHORT).show();
+                           Toast.makeText(activity, "Sever Error Data Not Up Dated", Toast.LENGTH_LONG).show();
+                           Intent intent = new Intent("com.siyanmo.tnrmobile.MainActivity");
+                           activity.startActivity(intent);
+                       }
                    }
                }
            });
