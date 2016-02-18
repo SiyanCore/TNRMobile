@@ -28,7 +28,7 @@ public class ItemAdapter extends BaseExpandableListAdapter {
                 header_titles.add(item.getItemNameShown());
                 List<String>itemDetails=new ArrayList<String>();
                 itemDetails.add(0,"Price - Rs "+item.getSellingPrice().toString());
-                itemDetails.add(0,"Stock - "+item.getStockInHandUnits());
+                itemDetails.add(1,"Stock - "+item.getStockInHandUnits());
                 child_titles.put(item.getItemNameShown(),itemDetails);
             }
 

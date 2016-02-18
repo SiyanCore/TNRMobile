@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity
     DatabaseHandler dbHandler;
     NavigationView navigationView=null;
     Toolbar toolbar=null;
-    ItemsFragment itemfragment;
+    int navId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,42 +62,41 @@ public class MainActivity extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-        itemfragment=new ItemsFragment();
-        itemfragment.SetActivity(this);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         dbHandler=new DatabaseHandler(this);
+        navId=R.id.nav_new_order;
+        navigationView.getMenu().getItem(0).setChecked(true);
     }
 
     @Override
     public void onBackPressed() {
-//        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-//        if (drawer.isDrawerOpen(GravityCompat.START)) {
-//            drawer.closeDrawer(GravityCompat.START);
-//        } else {
-//            super.onBackPressed();
-//        }
-//        ItemAPI itemc = new ItemAPI(this);
-//        itemc.GetItem();
+        if (navId == R.id.nav_new_order){
+            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
 
-        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                switch (which){
-                    case DialogInterface.BUTTON_POSITIVE:
-                        ActivityCompat.finishAffinity(MainActivity.this);
-                        break;
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    switch (which){
+                        case DialogInterface.BUTTON_POSITIVE:
+                            ActivityCompat.finishAffinity(MainActivity.this);
+                            break;
 
-                    case DialogInterface.BUTTON_NEGATIVE:
-                        //No button clicked
-                        break;
+                        case DialogInterface.BUTTON_NEGATIVE:
+                            //No button clicked
+                            break;
+                    }
                 }
-            }
-        };
+            };
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Exit Now?").setPositiveButton("Yes", dialogClickListener)
-                .setNegativeButton("No", dialogClickListener).show();
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Exit Now?").setPositiveButton("Yes", dialogClickListener)
+                    .setNegativeButton("No", dialogClickListener).show();
+        }
+        else {
+            onNavigationItemSelected(navigationView.getMenu().getItem(0));
+            navigationView.getMenu().getItem(0).setChecked(true);
+        }
+
     }
 
     @Override
@@ -131,17 +130,23 @@ public class MainActivity extends AppCompatActivity
             NewOrderFragment fragment=new NewOrderFragment();
             FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container,fragment).commit();
+            navId=id;
         } else if (id == R.id.nav_orders) {
             OrdersFragment fragment=new OrdersFragment();
             FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container,fragment).commit();
+            navId=id;
         } else if (id == R.id.nav_item_details) {
+            ItemsFragment fragment=new ItemsFragment();
+            fragment.SetActivity(this);
             FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_container,itemfragment).commit();
+            fragmentTransaction.replace(R.id.fragment_container,fragment).commit();
+            navId=id;
         } else if (id == R.id.nav_customers) {
             CustomersFragment fragment=new CustomersFragment();
             FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container,fragment).commit();
+            navId=id;
         } else if (id == R.id.nav_sync) {
 
         } else if (id == R.id.nav_log_out) {
@@ -167,4 +172,5 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 }

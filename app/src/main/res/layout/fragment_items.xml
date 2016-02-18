@@ -8,20 +8,11 @@
     android:paddingBottom="16dp"
     tools:context="com.siyanmo.tnrmobile.ItemsFragment">
 
-
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/scrollView"
-        android:layout_gravity="center">
-
-    </ScrollView>
-
     <ExpandableListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/expandableItemListView"
-        android:layout_gravity="center_horizontal|bottom" />
+        android:layout_gravity="center_horizontal|bottom"
+        style="@style/Base.Widget.AppCompat.ListView.DropDown" />
 
 </FrameLayout>
