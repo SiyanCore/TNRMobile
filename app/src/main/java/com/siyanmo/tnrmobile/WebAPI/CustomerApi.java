@@ -1,6 +1,7 @@
 package com.siyanmo.tnrmobile.WebAPI;
 
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -32,20 +33,21 @@ public class CustomerApi {
     public void GetCustomerBySalesExecutive (int SalesExecutiveCode){
 
         RequestQueue queue = Volley.newRequestQueue(activity);
-        String URL ="http://192.168.1.105/TNR/api/Customer/GetCustomerBySalesExecutive?salesExecutiveCode="+SalesExecutiveCode;
+        //String URL ="http://192.168.1.105/TNR/api/Customer/GetCustomerBySalesExecutive?salesExecutiveCode="+SalesExecutiveCode;
+        String URL = Comman.SearverUrl+"Customer/GetCustomerBySalesExecutive?salesExecutiveCode="+SalesExecutiveCode;
         try {
-            JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(URL,new Response.Listener<JSONArray>() {
+            JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(URL, new Response.Listener<JSONArray>() {
                 @Override
                 public void onResponse(JSONArray jsonArray) {
                     ArrayList<Customer> customerArray = new Gson().fromJson(jsonArray.toString(), new TypeToken<List<Customer>>(){}.getType());
                     databaseHandler.InsertCustomerList(customerArray);
-                    //disply.setText("ok = "+jsonArray.toString());
+                    Toast.makeText(activity, "Customer Data UpDated", Toast.LENGTH_LONG).show();
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError volleyError) {
                     Comman.setItemList(new JSONArray());
-                    // disply.setText("res error = "+volleyError.toString());
+                    Toast.makeText(activity, "Customer Data Not UpDated", Toast.LENGTH_LONG).show();
                 }
             });
             queue.add(jsonObjectRequest);

@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -52,8 +53,8 @@ public class ItemAPI
     public void GetItem (){
 
         RequestQueue queue = Volley.newRequestQueue(activity);
-        String URL ="http://192.168.1.105/TNR/api/item/1001";
-
+        //String URL ="http://192.168.1.105/TNR/api/item/1001";
+        String URL = Comman.SearverUrl+"item/1001";
         final JSONArray[] ItemList = new JSONArray[1];
 
         try {
@@ -64,13 +65,13 @@ public class ItemAPI
                     Comman.setItemList(jsonArray);
                     ArrayList<Item> itemArray = new Gson().fromJson(jsonArray.toString(), new TypeToken<List<Item>>(){}.getType());
                     databaseHandler.InsertItemList(itemArray);
-                    //disply.setText("ok = "+jsonArray.toString());
+                    Toast.makeText(activity, "Item Data UpDated", Toast.LENGTH_LONG).show();
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError volleyError) {
                     Comman.setItemList(new JSONArray());
-                   // disply.setText("res error = "+volleyError.toString());
+                    Toast.makeText(activity, "Item Data Not UpDated", Toast.LENGTH_LONG).show();
                 }
             });
             queue.add(jsonObjectRequest);

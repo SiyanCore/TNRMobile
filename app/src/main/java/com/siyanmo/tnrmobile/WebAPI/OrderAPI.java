@@ -44,7 +44,8 @@ public class OrderAPI  {
     public void PostOrders (List<FullOrder> OrderList){
 
         RequestQueue queue = Volley.newRequestQueue(activity);
-        String URL ="http://192.168.1.105/TNR/api/InvoiceRequest/PostOrder";
+        //String URL ="http://192.168.1.105/TNR/api/InvoiceRequest/PostOrder";
+        String URL = Comman.SearverUrl+"InvoiceRequest/PostOrder";
         OrderWrap orderWrap = new OrderWrap();
         orderWrap.setOrders(OrderList);
         JSONObject ordres = CommanMethode.ObjectToJsonString(orderWrap);

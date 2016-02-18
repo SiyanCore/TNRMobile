@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -56,7 +57,7 @@ public class logIn {
                     SalesExecutive salesExecutive = gson.fromJson(ff, SalesExecutive.class);
                     Comman.setSalesExecutive(salesExecutive);
                     SharedPreferences sharedPreferences=activity.getSharedPreferences("TNRMobile_Login_User_Information", Context.MODE_PRIVATE);
-                    CommanMethode.LogUserDetails(sharedPreferences,users);
+                    CommanMethode.LogUserDetails(sharedPreferences, users);
                     Intent intent = new Intent("com.siyanmo.tnrmobile.MainActivity");
                     activity.startActivity(intent);
 
@@ -77,8 +78,8 @@ public class logIn {
     public Boolean GetLog(User user){
 
         RequestQueue queue = Volley.newRequestQueue(activity);
-        String URL ="http://192.168.1.105/TNR/api/SalesExecutive/LogIng";
-
+        //String URL ="http://192.168.1.105/TNR/api/SalesExecutive/LogIng";
+        String URL = Comman.SearverUrl+"SalesExecutive/LogIng";
         User enUser = CommanMethode.EncriptUser(user);
         JSONObject userJ = CommanMethode.ObjectToJsonString(enUser);
         try {
@@ -98,8 +99,12 @@ public class logIn {
               , new Response.ErrorListener() {
                @Override
                public void onErrorResponse(VolleyError volleyError) {
-                   VolleyError ee = volleyError;
-                   Toast.makeText(activity, "Log In Error", Toast.LENGTH_LONG).show();
+                   NetworkResponse error = volleyError.networkResponse;
+                   if(error.statusCode==404)
+                    Toast.makeText(activity, "User Not Found Contact Admin", Toast.LENGTH_LONG).show();
+                   else{
+                       Toast.makeText(activity, "Sever Error Data Not Up Dated", Toast.LENGTH_LONG).show();
+                   }
                }
            });
             queue.add(jsonObjectRequest);
