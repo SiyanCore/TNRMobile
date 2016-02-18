@@ -298,9 +298,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             if (orderHeaderCursor.getCount()>0){
                 Integer orderId=orderHeaderCursor.getInt(orderHeaderCursor.getColumnIndex(SalesOrderHeader.OrderId));
                 while (orderHeaderCursor.moveToNext()){
-                    db.delete(DbContent.SalesOrderDetail, SalesOrderDetail.OrderId + "=" + orderId, null);
+                    db.delete(DbContent.SalesOrderDetail, SalesOrderDetail.OrderId + "=?", new String[]{String.valueOf(orderId)});
                 }
-                db.delete(DbContent.SalesOrderHeader, SalesOrderHeader.SalesmanCode + "=" + salesmanCode, null);
+                db.delete(DbContent.SalesOrderHeader, SalesOrderHeader.SalesmanCode + "=?",new String[]{String.valueOf(salesmanCode)});
             }
             db.setTransactionSuccessful();
             result= true;
