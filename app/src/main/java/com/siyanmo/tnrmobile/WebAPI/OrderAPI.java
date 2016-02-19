@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -59,13 +60,15 @@ public class OrderAPI  {
                 @Override
                 public void onResponse(JSONObject jsonObject) {
                  JSONObject ff = jsonObject;
+                    DatabaseHandler databaseHandler = new DatabaseHandler(activity);
+                    databaseHandler.RemoveAllOrdersBySalesmanCode(Comman.getSalesExecutive().getSalesExecutiveCode());
 
                 }
             }
                     , new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError volleyError) {
-                    VolleyError ee = volleyError;
+                    NetworkResponse ee = volleyError.networkResponse;
                     Toast.makeText(activity, "Net Work Error", Toast.LENGTH_LONG).show();
                 }
             });

@@ -12,6 +12,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.siyanmo.tnrmobile.DomainObjects.Customer;
+import com.siyanmo.tnrmobile.DomainObjects.Item;
 import com.siyanmo.tnrmobile.DomainObjects.User;
 import com.siyanmo.tnrmobile.WebAPI.CryptoUtil;
 import com.siyanmo.tnrmobile.DomainObjects.User;
@@ -22,6 +24,7 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.spec.KeySpec;
+import java.util.List;
 
 import javax.crypto.spec.DESKeySpec;
 
@@ -81,6 +84,26 @@ public final class CommanMethode {
         }catch (Exception e){
             return false;
         }
+    }
+
+    public static String[] GetItemNameArry (List<Item> itemList){
+        String[] array = new String[itemList.size()];
+        int index = 0;
+        for (Item item : itemList) {
+            array[index] = item.getItemNameShown();
+            index++;
+        }
+        return array;
+    }
+
+    public static String[] GetCustomerNameArry(List<Customer> customerList) {
+        String[] array = new String[customerList.size()];
+        int index = 0;
+        for (Customer cust : customerList) {
+            array[index] = cust.getCustomerName();
+            index++;
+        }
+        return array;
     }
     //Lakmal//
     //Save User Name And Password

@@ -21,6 +21,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.siyanmo.tnrmobile.Events.SyncEvent;
 import com.siyanmo.tnrmobile.Fragment.CustomersFragment;
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity
 
         //set main fragment
         NewOrderFragment fragment=new NewOrderFragment();
+        fragment.SetActivity(this);
         FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container,fragment).commit();
         //-------------------
@@ -130,6 +132,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
         if (id == R.id.nav_new_order) {
             NewOrderFragment fragment=new NewOrderFragment();
+            fragment.SetActivity(this);
             FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container,fragment).commit();
             navId=id;
@@ -150,8 +153,12 @@ public class MainActivity extends AppCompatActivity
             fragmentTransaction.replace(R.id.fragment_container,fragment).commit();
             navId=id;
         } else if (id == R.id.nav_sync) {
-            SyncEvent syncEvent = new SyncEvent(this);
-            syncEvent.SYncAll();
+            ConnectionDetector connectionDetector = new ConnectionDetector(this);
+            if(connectionDetector.isConnectingToInternet()) {
+                SyncEvent syncEvent = new SyncEvent(this);
+                syncEvent.SYncAll();
+            }else
+                Toast.makeText(this, "No Internet Connection", Toast.LENGTH_LONG).show();
         } else if (id == R.id.nav_log_out) {
             DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
                 @Override
