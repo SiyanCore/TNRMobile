@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.siyanmo.tnrmobile"
-        minSdkVersion 8
+        minSdkVersion 11
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
@@ -34,15 +34,15 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:23.1.1'
-    compile 'com.android.support:design:23.1.1'
     compile files('libs/apache-httpcomponents-httpclient.jar')
     compile files('libs/apache-httpcomponents-httpcore.jar')
     compile files('libs/volley.jar')
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'
-    compile 'com.android.support:support-v4:23.1.1'
     compile files('libs/gson-2.2.4.jar')
     compile files('libs/commons-codec-1.10.jar')
     compile files('libs/sun.misc.BASE64Decoder.jar')
+    compile 'com.android.support:appcompat-v7:23.1.1'
+    compile 'com.android.support:design:23.1.1'
+    compile 'com.android.support:support-v4:23.1.1'
 }

@@ -2,14 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group android:checkableBehavior="single">
-        <item android:id="@+id/nav_new_order" android:icon="@drawable/ic_shopping_cart_black_18dp"
+        <item android:id="@+id/nav_new_order" android:icon="@drawable/ic_add_shopping_cart_black_18dp"
             android:title="New Order" />
-        <item android:id="@+id/nav_orders" android:icon="@drawable/ic_view_list_black_18dp"
-            android:title="Orders" />
+        <item android:id="@+id/nav_orders" android:icon="@drawable/ic_shopping_cart_black_18dp"
+            android:title="Unposted Orders" />
         <item android:id="@+id/nav_item_details" android:icon="@drawable/ic_list_black_18dp"
-            android:title="Item Details" />
+            android:title="View Item Details" />
         <item android:id="@+id/nav_customers" android:icon="@drawable/ic_group_black_18dp"
-            android:title="Customers" />
+            android:title="View Customers" />
     </group>
 
     <item android:title="Communicate">

@@ -8,11 +8,19 @@
     android:paddingBottom="16dp"
     tools:context="com.siyanmo.tnrmobile.Fragment.ItemsFragment">
 
+
     <ExpandableListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingTop="@android:dimen/app_icon_size"
         android:id="@+id/expandableItemListView"
         android:layout_gravity="center_horizontal|bottom"
         style="@style/Base.Widget.AppCompat.ListView.DropDown" />
+
+    <SearchView
+        android:id="@+id/expandableItemListsearchView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:queryHint="Search" />
 
 </FrameLayout>

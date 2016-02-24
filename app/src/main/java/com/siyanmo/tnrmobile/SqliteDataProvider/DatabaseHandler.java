@@ -40,7 +40,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     private static final String CREATE_TABLE_InvoiceHeader="CREATE TABLE IF NOT EXISTS "+ DbContent.SalesOrderHeader +
                                                                                     "("+SalesOrderHeader.OrderId+" INTEGER PRIMARY KEY AUTOINCREMENT,"
-                                                                                    +SalesOrderHeader.Date+" INTEGER NOT NULL,"
+                                                                                    +SalesOrderHeader.Date+" DATETIME DEFAULT CURRENT_TIMESTAMP,"
                                                                                     +SalesOrderHeader.CustomerCode+" TEXT NOT NULL,"
                                                                                     +SalesOrderHeader.Amount+" REAL NOT NULL,"
                                                                                     +SalesOrderHeader.SalesmanCode+" INTEGER NOT NULL,"
@@ -162,10 +162,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     public long InsertSalesOrderHeader(SalesOrderHeader SalesOrderHeaderObject){
         try {
-            long currentTimeMillis= System.currentTimeMillis();
             SQLiteDatabase db=this.getWritableDatabase();
             ContentValues contentValues=new ContentValues();
-            contentValues.put(SalesOrderHeader.Date,currentTimeMillis);
             contentValues.put(SalesOrderHeader.CustomerCode, SalesOrderHeaderObject.getCustomerCode());
             contentValues.put(SalesOrderHeader.Amount, SalesOrderHeaderObject.getOrderAmount());
             contentValues.put(SalesOrderHeader.Remark, SalesOrderHeaderObject.getRemark());

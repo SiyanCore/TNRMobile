@@ -1,0 +1,30 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.siyanmo.tnrmobile.Fragment.PopUpItemFragment">
+
+
+    <ListView
+        android:id="@+id/PopUpItemListView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:paddingTop="@android:dimen/app_icon_size"
+        android:paddingBottom="@android:dimen/app_icon_size"></ListView>
+
+
+    <SearchView
+        android:id="@+id/PopUpItemSearchView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"/>
+
+    <Button
+        android:id="@+id/PopUpItemCancellButlon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cancel"
+        android:layout_gravity="bottom" />
+
+</FrameLayout>

@@ -29,6 +29,7 @@ import com.siyanmo.tnrmobile.Fragment.ItemsFragment;
 import com.siyanmo.tnrmobile.Fragment.NewOrderFragment;
 import com.siyanmo.tnrmobile.Fragment.OrdersFragment;
 import com.siyanmo.tnrmobile.DomainObjects.Item;
+import com.siyanmo.tnrmobile.Fragment.PopUpItemFragment;
 import com.siyanmo.tnrmobile.WebAPI.ItemAPI;
 import com.siyanmo.tnrmobile.SqliteDataProvider.DatabaseHandler;
 
@@ -51,13 +52,17 @@ public class MainActivity extends AppCompatActivity
         //-------------------
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        final android.app.FragmentManager fragmentManager=getFragmentManager();
+        final PopUpItemFragment popUpItemFragment=new PopUpItemFragment();
+        popUpItemFragment.SetActivity(this);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                ShowItem();
-                   Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                popUpItemFragment.show(fragmentManager,"Items List");
+//                   Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
             }
         });
 

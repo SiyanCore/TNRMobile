@@ -38,6 +38,7 @@ import java.util.concurrent.TimeoutException;
 public class logIn {
     AppCompatActivity activity;
     ItemAPI itemAPI;
+
     public logIn(AppCompatActivity sactivity){
         activity =sactivity;
         itemAPI = new ItemAPI(sactivity);
@@ -103,8 +104,11 @@ public class logIn {
                @Override
                public void onErrorResponse(VolleyError volleyError) {
                    NetworkResponse error = volleyError.networkResponse;
-                   if(error.statusCode==404)
-                    Toast.makeText(activity, "User Not Found Contact Admin", Toast.LENGTH_LONG).show();
+                   if(error!=null) {
+                       if (error.statusCode == 404) {
+                           Toast.makeText(activity, "User Not Found Contact Admin", Toast.LENGTH_LONG).show();
+                       }
+                   }
                    else{
                        SharedPreferences  sharedPreferences=activity.getSharedPreferences("TNRMobile_Login_User_Information", Context.MODE_PRIVATE);
                        if (!CommanMethode.LocalLogin(users, sharedPreferences))
