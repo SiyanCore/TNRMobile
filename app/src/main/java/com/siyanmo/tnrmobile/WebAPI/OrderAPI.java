@@ -59,7 +59,6 @@ public class OrderAPI  {
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,URL,ordres,new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject jsonObject) {
-                 JSONObject ff = jsonObject;
                     DatabaseHandler databaseHandler = new DatabaseHandler(activity);
                     databaseHandler.RemoveAllOrdersBySalesmanCode(Comman.getSalesExecutive().getSalesExecutiveCode());
 
