@@ -1,7 +1,9 @@
 package com.siyanmo.tnrmobile;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -52,6 +54,8 @@ public class MainActivity extends AppCompatActivity
         //-------------------
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        toolbar.setSubtitle(Comman.getSalesExecutive().getSalesExecutiveName());
+        toolbar.setSubtitleTextColor(Color.rgb(194, 240, 255));
 
         final android.app.FragmentManager fragmentManager=getFragmentManager();
         final PopUpItemFragment popUpItemFragment=new PopUpItemFragment();

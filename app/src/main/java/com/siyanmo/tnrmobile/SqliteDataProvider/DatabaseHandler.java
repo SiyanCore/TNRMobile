@@ -295,8 +295,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             final String orderHeader_QUERY = "SELECT * FROM "+DbContent.SalesOrderHeader+" WHERE "+SalesOrderHeader.SalesmanCode+"=?";
             Cursor orderHeaderCursor = db.rawQuery(orderHeader_QUERY, new String[]{String.valueOf(salesmanCode)});
             if (orderHeaderCursor.getCount()>0){
-                Integer orderId=orderHeaderCursor.getInt(orderHeaderCursor.getColumnIndex(SalesOrderHeader.OrderId));
                 while (orderHeaderCursor.moveToNext()){
+                    Integer orderId=orderHeaderCursor.getInt(orderHeaderCursor.getColumnIndex(SalesOrderHeader.OrderId));
                     db.delete(DbContent.SalesOrderDetail, SalesOrderDetail.OrderId + "=?", new String[]{String.valueOf(orderId)});
                 }
                 db.delete(DbContent.SalesOrderHeader, SalesOrderHeader.SalesmanCode + "=?",new String[]{String.valueOf(salesmanCode)});
@@ -307,9 +307,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         } catch(Exception e) {
 
-        } finally {
-            db.endTransaction();
-            return result;
-        }
+        }finally {
+                db.endTransaction();
+                return result;
+            }
     }
 }
