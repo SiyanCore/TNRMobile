@@ -6,6 +6,7 @@ import java.util.List;
  * Created by Administrator on 2016-02-17.
  */
 public class FullOrder {
+    private int OrderId;
     private  String OrderDate;
     private  int SalesExecutiveCode;
     private String Remarks;
@@ -50,5 +51,13 @@ public class FullOrder {
 
     public void setItems(List<OrderItems> items) {
         Items = items;
+    }
+
+    public int getOrderId() {
+        return OrderId;
+    }
+
+    public void setOrderId(int orderId) {
+        OrderId = orderId;
     }
 }

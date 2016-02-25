@@ -154,6 +154,7 @@ public class MainActivity extends AppCompatActivity
             navId=id;
         } else if (id == R.id.nav_customers) {
             CustomersFragment fragment=new CustomersFragment();
+            fragment.SetActivity(this);
             FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container,fragment).commit();
             navId=id;

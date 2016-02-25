@@ -254,6 +254,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             if (orderHeaderCursor.getCount()>0){
                 while (orderHeaderCursor.moveToNext()){
                     FullOrder fullOrder=new FullOrder();
+                    fullOrder.setOrderId(orderHeaderCursor.getInt(orderHeaderCursor.getColumnIndex(SalesOrderHeader.OrderId)));
                     fullOrder.setCustomerCode(orderHeaderCursor.getString(orderHeaderCursor.getColumnIndex(SalesOrderHeader.CustomerCode)));
                     fullOrder.setOrderDate(orderHeaderCursor.getString(orderHeaderCursor.getColumnIndex(SalesOrderHeader.Date)));
                     fullOrder.setRemarks(orderHeaderCursor.getString(orderHeaderCursor.getColumnIndex(SalesOrderHeader.Remark)));

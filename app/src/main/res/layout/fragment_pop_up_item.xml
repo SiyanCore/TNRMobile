@@ -4,14 +4,19 @@
     android:layout_height="match_parent"
     tools:context="com.siyanmo.tnrmobile.Fragment.PopUpItemFragment">
 
-
-    <ListView
-        android:id="@+id/PopUpItemListView"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_height="match_parent"
         android:paddingTop="@android:dimen/app_icon_size"
-        android:paddingBottom="@android:dimen/app_icon_size"></ListView>
+        android:paddingBottom="@android:dimen/app_icon_size"
+        android:layout_gravity="center">
+        <ListView
+            android:id="@+id/PopUpItemListView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            ></ListView>
+    </LinearLayout>
+
 
 
     <SearchView
