@@ -3,6 +3,8 @@ package com.siyanmo.tnrmobile;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -23,6 +25,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.siyanmo.tnrmobile.Events.SyncEvent;
@@ -40,6 +44,8 @@ public class MainActivity extends AppCompatActivity
     DatabaseHandler dbHandler;
     NavigationView navigationView=null;
     Toolbar toolbar=null;
+    TextView salesmanName;
+    ImageView salesmanImage;
     int navId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +60,17 @@ public class MainActivity extends AppCompatActivity
         //-------------------
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setSubtitle(Comman.getSalesExecutive().getSalesExecutiveName());
-        toolbar.setSubtitleTextColor(Color.rgb(194, 240, 255));
+        salesmanName=(TextView)findViewById(R.id.salesmanName);
+        salesmanName.setText(Comman.getSalesExecutive().getSalesExecutiveName());
+        salesmanImage=(ImageView)findViewById(R.id.salesmanImage);
+        salesmanImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
+
+        byte[] image=Comman.getSalesExecutive().getSalesExecutiveImage();
+        if (image.length>0){
+            Bitmap bitmap= BitmapFactory.decodeByteArray(image,0,image.length);
+            salesmanImage.setImageBitmap(bitmap);
+        }
+
 
         final android.app.FragmentManager fragmentManager=getFragmentManager();
         final PopUpItemFragment popUpItemFragment=new PopUpItemFragment();

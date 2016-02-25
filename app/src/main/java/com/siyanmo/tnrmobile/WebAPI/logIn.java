@@ -23,6 +23,7 @@ import com.siyanmo.tnrmobile.DomainObjects.SalesExecutive;
 import com.siyanmo.tnrmobile.DomainObjects.User;
 import com.siyanmo.tnrmobile.CommanMethode;
 import com.siyanmo.tnrmobile.Login;
+import com.siyanmo.tnrmobile.SqliteDataProvider.DatabaseHandler;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,10 +39,12 @@ import java.util.concurrent.TimeoutException;
 public class logIn {
     AppCompatActivity activity;
     ItemAPI itemAPI;
+    DatabaseHandler dbHandler;
 
     public logIn(AppCompatActivity sactivity){
         activity =sactivity;
         itemAPI = new ItemAPI(sactivity);
+        dbHandler=new DatabaseHandler(activity);
     }
 
     public JsonObjectRequest LoginRequest (User user){
@@ -57,6 +60,7 @@ public class logIn {
                     Gson gson = new Gson();
                     SalesExecutive salesExecutive = gson.fromJson(ff, SalesExecutive.class);
                     Comman.setSalesExecutive(salesExecutive);
+                    dbHandler.InsertSalesmenDetail(salesExecutive);
                     SharedPreferences sharedPreferences=activity.getSharedPreferences("TNRMobile_Login_User_Information", Context.MODE_PRIVATE);
                     CommanMethode.LogUserDetails(sharedPreferences, users);
                     Intent intent = new Intent("com.siyanmo.tnrmobile.MainActivity");
@@ -93,6 +97,7 @@ public class logIn {
                   Gson gson = new Gson();
                   SalesExecutive salesExecutive = gson.fromJson(ff, SalesExecutive.class);
                   Comman.setSalesExecutive(salesExecutive);
+                  dbHandler.InsertSalesmenDetail(salesExecutive);
                   SharedPreferences sharedPreferences=activity.getSharedPreferences("TNRMobile_Login_User_Information", Context.MODE_PRIVATE);
                   CommanMethode.LogUserDetails(sharedPreferences, users);
                   Intent intent = new Intent("com.siyanmo.tnrmobile.MainActivity");
@@ -114,6 +119,7 @@ public class logIn {
                        if (!CommanMethode.LocalLogin(users, sharedPreferences))
                            Toast.makeText(activity, "User Not Found Contact Admin", Toast.LENGTH_LONG).show();
                        else {
+                           Comman.setSalesExecutive(dbHandler.GetSalesmenDetail());
                            Toast.makeText(activity, "Well Come", Toast.LENGTH_SHORT).show();
                            Toast.makeText(activity, "Sever Error Data Not Up Dated", Toast.LENGTH_LONG).show();
                            Intent intent = new Intent("com.siyanmo.tnrmobile.MainActivity");

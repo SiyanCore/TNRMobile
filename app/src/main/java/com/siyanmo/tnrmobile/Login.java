@@ -22,6 +22,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.siyanmo.tnrmobile.DomainObjects.User;
+import com.siyanmo.tnrmobile.SqliteDataProvider.DatabaseHandler;
 import com.siyanmo.tnrmobile.WebAPI.ItemAPI;
 import com.siyanmo.tnrmobile.WebAPI.logIn;
 
@@ -35,6 +36,7 @@ public class Login extends AppCompatActivity {
     private logIn login;
     private ItemAPI itemAPI;
     private RequestQueue requesstqueue;
+    DatabaseHandler dbHandler;
 
     // flag for Internet connection status
     Boolean isInternetPresent = false;
@@ -48,7 +50,7 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.siyan_main_login);
 
-
+        dbHandler=new DatabaseHandler(this);
         // find View-elements
         btnSgn = (Button) findViewById(R.id.sign);
         login();
@@ -121,6 +123,7 @@ public class Login extends AppCompatActivity {
                             {
                                 if (UserName.getText().toString().equals(lname) && PassWord.getText().toString().equals(lpassword))
                                 {
+                                    Comman.setSalesExecutive(dbHandler.GetSalesmenDetail());
                                     Toast.makeText(Login.this, "Well Come", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent("com.siyanmo.tnrmobile.MainActivity");
                                     startActivity(intent);

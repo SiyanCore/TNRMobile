@@ -8,6 +8,8 @@ public final class DatabaseContent {
     public static final String Customer="MST_Customer";
     public static final String SalesOrderHeader="TRN_SalesOrderHeader";
     public static final String SalesOrderDetail="TRN_SalesOrderDetail";
+    public static final String SalesmenDetail="TRN_SalesmenDetail";
+
     public final class Item {
         public static final String Code = "ItemCode";
         public static final String Name = "ItemNameShown";
@@ -33,5 +35,12 @@ public final class DatabaseContent {
         public static final String ItemCode = "ItemCode";
         public static final String Quantity="SoldQuantityinUnits";
         public static final String Value="Value";
+    }
+    public final class SalesmenDetail {
+        public static final String SalesmenCode="SalesExecutiveCode";
+        public static final String SalesmenName="SalesExecutiveName";
+        public static final String SalesmenImage = "SalesExecutiveImage";
+        public static final String LoginId = "LoginId";
+
     }
 }

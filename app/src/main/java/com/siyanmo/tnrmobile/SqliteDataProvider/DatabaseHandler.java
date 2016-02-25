@@ -11,6 +11,7 @@ import com.siyanmo.tnrmobile.DomainObjects.Customer;
 import com.siyanmo.tnrmobile.DomainObjects.FullOrder;
 import com.siyanmo.tnrmobile.DomainObjects.Item;
 import com.siyanmo.tnrmobile.DomainObjects.OrderItems;
+import com.siyanmo.tnrmobile.DomainObjects.SalesExecutive;
 import com.siyanmo.tnrmobile.DomainObjects.SalesOrderDetail;
 import com.siyanmo.tnrmobile.DomainObjects.SalesOrderHeader;
 
@@ -27,6 +28,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static DatabaseContent.Customer Customer=DbContent.new Customer();
     private static DatabaseContent.SalesOrderHeader SalesOrderHeader=DbContent.new SalesOrderHeader();
     private static DatabaseContent.SalesOrderDetail SalesOrderDetail=DbContent.new SalesOrderDetail();
+    private static DatabaseContent.SalesmenDetail SalesmenDetail=DbContent.new SalesmenDetail();
     private static final String DataBaseName="TNRMOBILE.db";
     private static final String CREATE_TABLE_Item="CREATE TABLE IF NOT EXISTS "+ DbContent.Item +
                                                                                     "("+Item.Code+" TEXT PRIMARY KEY NOT NULL,"
@@ -52,6 +54,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                                                                                     +SalesOrderDetail.ItemCode+" TEXT NOT NULL,"
                                                                                     +SalesOrderDetail.Quantity+" REAL NOT NULL,"
                                                                                     +SalesOrderDetail.Value+" REAL NOT NULL"+")";
+    private static final String CREATE_TABLE_SalesmenDetail="CREATE TABLE IF NOT EXISTS "+ DbContent.SalesmenDetail +
+                                                                                    "("+SalesmenDetail.SalesmenCode+" INTEGER PRIMARY KEY,"
+                                                                                    +SalesmenDetail.SalesmenName+" TEXT NOT NULL,"
+                                                                                    +SalesmenDetail.SalesmenImage+" BLOB,"
+                                                                                    +SalesmenDetail.LoginId+" INTEGER NOT NULL"+")";
+
 
     public DatabaseHandler(Context context) {
         super(context, DataBaseName, null, 1);
@@ -64,6 +72,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             db.execSQL(CREATE_TABLE_Customer);
             db.execSQL(CREATE_TABLE_InvoiceHeader);
             db.execSQL(CREATE_TABLE_InvoiceDetail);
+            db.execSQL(CREATE_TABLE_SalesmenDetail);
         } catch (IndexOutOfBoundsException e) {
             System.err.println("IndexOutOfBoundsException: " + e.getMessage());
         } catch (SQLException e) {
@@ -79,6 +88,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             db.execSQL("DROP TABLE IF EXISTS "+DbContent.Customer);
             db.execSQL("DROP TABLE IF EXISTS "+DbContent.SalesOrderHeader);
             db.execSQL("DROP TABLE IF EXISTS "+DbContent.SalesOrderDetail);
+            db.execSQL("DROP TABLE IF EXISTS "+DbContent.SalesmenDetail);
             onCreate(db);
         } catch (IndexOutOfBoundsException e) {
             System.err.println("IndexOutOfBoundsException: " + e.getMessage());
@@ -311,5 +321,44 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 db.endTransaction();
                 return result;
             }
+    }
+
+    public boolean InsertSalesmenDetail(SalesExecutive salesExecutive){
+        try {
+            SQLiteDatabase db=this.getWritableDatabase();
+            db.execSQL("DROP TABLE IF EXISTS "+DbContent.SalesmenDetail);
+            db.execSQL(CREATE_TABLE_SalesmenDetail);
+            ContentValues contentValues=new ContentValues();
+            contentValues.put(SalesmenDetail.SalesmenCode,salesExecutive.getSalesExecutiveCode());
+            contentValues.put(SalesmenDetail.SalesmenName,salesExecutive.getSalesExecutiveName());
+            contentValues.put(SalesmenDetail.SalesmenImage, salesExecutive.getSalesExecutiveImage());
+            contentValues.put(SalesmenDetail.LoginId, salesExecutive.getLoginId());
+            long result = db.insert(DbContent.SalesmenDetail,null,contentValues);
+            if (result<0){
+                return false;
+            }
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+    }
+    public SalesExecutive GetSalesmenDetail(){
+        SalesExecutive salesExecutive=new SalesExecutive();
+        try {
+            SQLiteDatabase db=this.getWritableDatabase();
+            final String salesmenDetail_QUERY = "SELECT * FROM "+DbContent.SalesmenDetail;
+            Cursor salesmenDetailCursor = db.rawQuery(salesmenDetail_QUERY,null);
+            if (salesmenDetailCursor.moveToNext()){
+                    salesExecutive.setSalesExecutiveCode(salesmenDetailCursor.getInt(salesmenDetailCursor.getColumnIndex(SalesmenDetail.SalesmenCode)));
+                    salesExecutive.setSalesExecutiveName(salesmenDetailCursor.getString(salesmenDetailCursor.getColumnIndex(SalesmenDetail.SalesmenName)));
+                    salesExecutive.setSalesExecutiveImage(salesmenDetailCursor.getBlob(salesmenDetailCursor.getColumnIndex(SalesmenDetail.SalesmenImage)));
+                    salesExecutive.setLoginId(salesmenDetailCursor.getInt(salesmenDetailCursor.getColumnIndex(SalesmenDetail.LoginId)));
+            }
+
+        }catch (Exception e){
+
+        }
+
+        return salesExecutive;
     }
 }
