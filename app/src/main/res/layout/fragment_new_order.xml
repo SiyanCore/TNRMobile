@@ -12,8 +12,8 @@
 
     <TableLayout
         android:id="@+id/tabla_cuerpo"
-        android:layout_width="394dp"
-        android:layout_height="173dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="bottom">
 
         <TableRow
@@ -35,7 +35,8 @@
                 android:layout_height="wrap_content"
                 android:padding="5dp"
                 android:text="TextView2"
-                android:textAppearance="?android:attr/textAppearanceMedium"></TextView>
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_column="7"></TextView>
 
             <TextView
                 android:id="@+id/textView3"
@@ -43,14 +44,15 @@
                 android:layout_height="wrap_content"
                 android:padding="5dp"
                 android:text="TextView3"
-                android:textAppearance="?android:attr/textAppearanceMedium"></TextView>
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_column="10"></TextView>
 
         </TableRow>
     </TableLayout>
 
     <AutoCompleteTextView
         android:id="@+id/CusTomerName"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/textCus"
         android:layout_marginTop="20dp"
@@ -59,7 +61,7 @@
 
     <TextView
         android:id="@+id/textCus"
-        android:layout_width="202dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Customer Name :"
         android:textAppearance="?android:attr/textAppearanceMedium"
@@ -67,19 +69,35 @@
 
     <TextView
         android:id="@+id/text1"
-        android:layout_width="112dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="tem Name :"
+        android:layout_marginTop="60dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_gravity="center_horizontal|top" />
+        android:layout_gravity="left|top" />
 
     <AutoCompleteTextView
         android:id="@+id/ItemName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/text1"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="80dp"
         android:ems="8"
-        android:layout_gravity="center_horizontal|top" />
+        android:layout_gravity="left|top" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="date"
+        android:ems="10"
+        android:id="@+id/txtdate"
+        android:layout_gravity="right|top" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtquntity"
+        android:layout_marginTop="80dp"
+        android:layout_gravity="right|top" />
 
 </FrameLayout>

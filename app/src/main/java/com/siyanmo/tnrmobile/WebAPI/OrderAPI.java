@@ -61,7 +61,7 @@ public class OrderAPI  {
                 public void onResponse(JSONObject jsonObject) {
                     DatabaseHandler databaseHandler = new DatabaseHandler(activity);
                     databaseHandler.RemoveAllOrdersBySalesmanCode(Comman.getSalesExecutive().getSalesExecutiveCode());
-
+                    Toast.makeText(activity, "Orders Posted", Toast.LENGTH_LONG).show();
                 }
             }
                     , new Response.ErrorListener() {

@@ -305,6 +305,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             result= true;
         } catch(SQLException e) {
 
+        } catch(Exception e) {
+
         } finally {
             db.endTransaction();
             return result;

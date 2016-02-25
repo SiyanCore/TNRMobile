@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.TextView;
 
 import com.siyanmo.tnrmobile.CommanMethode;
 import com.siyanmo.tnrmobile.DomainObjects.Customer;
@@ -17,6 +18,8 @@ import com.siyanmo.tnrmobile.DomainObjects.Item;
 import com.siyanmo.tnrmobile.R;
 import com.siyanmo.tnrmobile.SqliteDataProvider.DatabaseHandler;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 
@@ -33,6 +36,7 @@ public class NewOrderFragment extends Fragment {
     private ArrayAdapter<String> CusAdapter;
     private AppCompatActivity activity;
     private DatabaseHandler dbHandler;
+    private TextView OrderDate;
     public NewOrderFragment() {
         // Required empty public constructor
     }
@@ -71,7 +75,7 @@ public class NewOrderFragment extends Fragment {
         autoCompleteItem.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
+                    int p = position;
             }
 
             @Override
@@ -79,6 +83,12 @@ public class NewOrderFragment extends Fragment {
 
             }
         });
+
+        OrderDate = (TextView) view.findViewById(R.id.txtdate);
+        Date cal = (Date) Calendar.getInstance().getTime();
+        String dt = cal.toLocaleString();
+        java.text.DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(getContext());
+        OrderDate.setText(dateFormat.format(cal));
         super.onViewCreated(view, savedInstanceState);
     }
 
