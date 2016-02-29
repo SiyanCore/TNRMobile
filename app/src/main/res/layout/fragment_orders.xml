@@ -6,16 +6,17 @@
     android:paddingRight="16dp"
     android:paddingTop="?attr/actionBarSize" tools:context="com.siyanmo.tnrmobile.Fragment.OrdersFragment">
 
-    <ListView
+    <ExpandableListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingTop="@android:dimen/app_icon_size"
-        android:id="@+id/OrderListView"
-        android:layout_gravity="center_horizontal|bottom"/>
+        android:id="@+id/expandableOrderListView"
+        android:layout_gravity="center_horizontal|bottom" />
+
     <SearchView
-        android:id="@+id/OrderSearchView"
+        android:id="@+id/expandableOrderSearchView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="top"/>
+        android:queryHint="Search" />
 
 </FrameLayout>

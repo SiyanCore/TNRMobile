@@ -377,4 +377,27 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
         return CustomerName;
     }
+
+    public boolean DeleteOrderById(String orderId){
+        SQLiteDatabase db=this.getWritableDatabase();
+        boolean result=false;
+        try {
+            db.beginTransaction();
+
+            db.delete(DbContent.SalesOrderDetail, SalesOrderDetail.OrderId + "=?", new String[]{String.valueOf(orderId)});
+
+            db.delete(DbContent.SalesOrderHeader, SalesOrderHeader.OrderId + "=?",new String[]{String.valueOf(orderId)});
+
+            db.setTransactionSuccessful();
+            result= true;
+        } catch(SQLException e) {
+
+        } catch(Exception e) {
+
+        }finally {
+            db.endTransaction();
+            return result;
+        }
+    }
+
 }
