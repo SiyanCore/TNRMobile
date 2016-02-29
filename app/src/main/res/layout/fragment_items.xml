@@ -14,8 +14,7 @@
         android:layout_height="match_parent"
         android:paddingTop="@android:dimen/app_icon_size"
         android:id="@+id/expandableItemListView"
-        android:layout_gravity="center_horizontal|bottom"
-        style="@style/Base.Widget.AppCompat.ListView.DropDown" />
+        android:layout_gravity="center_horizontal|bottom" />
 
     <SearchView
         android:id="@+id/expandableItemListsearchView"

@@ -58,7 +58,10 @@ public class MainActivity extends AppCompatActivity
         byte[] image=Comman.getSalesExecutive().getImage();
         if (image.length>0){
             Bitmap bitmap= BitmapFactory.decodeByteArray(image,0,image.length);
-            salesmanImage.setImageBitmap(bitmap);
+            if(bitmap!=null){
+                salesmanImage.setImageBitmap(bitmap);
+            }
+
         }
 
 
@@ -107,8 +110,9 @@ public class MainActivity extends AppCompatActivity
             };
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("Exit Now?").setPositiveButton("Yes", dialogClickListener)
-                    .setNegativeButton("No", dialogClickListener).show();
+            builder.setMessage("Exit Now ?")
+                    .setNegativeButton("No", dialogClickListener)
+                    .setPositiveButton("Yes", dialogClickListener).show();
         }
         else {
             onNavigationItemSelected(navigationView.getMenu().getItem(0));
@@ -191,8 +195,9 @@ public class MainActivity extends AppCompatActivity
             };
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("Logout Now?").setPositiveButton("Yes", dialogClickListener)
-                    .setNegativeButton("No", dialogClickListener).show();
+            builder.setMessage("Logout Now?")
+                    .setNegativeButton("No", dialogClickListener)
+                    .setPositiveButton("Yes", dialogClickListener).show();
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
