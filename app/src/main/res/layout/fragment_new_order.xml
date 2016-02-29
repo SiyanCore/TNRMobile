@@ -1,27 +1,36 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.siyanmo.tnrmobile.Fragment.NewOrderFragment"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    android:paddingTop="?attr/actionBarSize"
-    android:paddingBottom="16dp">
 
-    <!-- TODO: Update blank fragment layout -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:background="#fdfefe"
+    android:weightSum="1" android:layout_gravity="center_vertical">
 
-    <GridLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-
+    <!-- TODO: Update by lakmal -->
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|top">
 
-        android:useDefaultMargins="true"
-        android:alignmentMode="alignBounds"
-        android:columnOrderPreserved="false"
+        <TextView
+            android:id="@+id/textCus"
+            android:layout_columnSpan="2"
+            android:layout_row="0"
+            android:text="Customer Name :"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_gravity="top"
+            android:layout_column="0"
+            android:layout_width="wrap_content"
+            android:layout_weight=".7"
+            android:layout_height="20dp"/>
 
-        android:columnCount="3"
-        tools:targetApi="ice_cream_sandwich">
+        <EditText
+            android:layout_width="100dp"
+            android:layout_height="55dp"
+            android:inputType="date"
+            android:ems="10"
+            android:id="@+id/txtdate"
+            android:layout_gravity="right|bottom"
+            android:layout_row="1"
+            android:layout_column="2" />
 
         <AutoCompleteTextView
             android:id="@+id/CusTomerName"
@@ -29,23 +38,60 @@
             android:ems="8"
             android:layout_columnSpan="2"
             android:layout_row="1"
-            android:layout_gravity="bottom"
-            android:layout_column="0" />
+            android:layout_gravity="left|bottom"
+            android:layout_column="0"
+            android:layout_width="247dp"
+            android:layout_height="55dp"/>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+
+                   <TextView
+                android:id="@+id/text1"
+                android:layout_columnSpan="2"
+                android:layout_row="3"
+                android:text="Item Name :" android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_gravity="top"
+                android:layout_column="0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        <EditText
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:id="@+id/txtquntity"
+            android:layout_marginTop="0dp"
+            android:layout_gravity="right|bottom"
+            android:layout_row="4"
+            android:layout_column="2" />
 
         <AutoCompleteTextView
-            android:id="@+id/ItemName"
-            android:layout_columnSpan="2"
-            android:layout_row="4"
-            android:layout_below="@+id/text1"
-            android:layout_gravity="bottom"
-            android:ems="8"
-            android:layout_column="0" />
+     android:id="@+id/ItemName"
+     android:layout_columnSpan="2"
+     android:layout_row="4"
+     android:layout_below="@+id/text1"
+     android:layout_gravity="left|top"
+     android:ems="8"
+     android:layout_column="0"
+     android:layout_width="247dp"
+     android:layout_height="55dp"/>
 
-        <TableLayout
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+
+               <TableLayout
             android:id="@+id/tabla_cuerpo"
-            android:layout_width="489dp"
-            android:layout_height="0dp"
-            android:layout_gravity="bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|bottom"
             android:layout_row="5"
             android:layout_columnSpan="3">
 
@@ -78,47 +124,20 @@
                     android:padding="5dp"
                     android:text="TextView3"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:layout_column="10"></TextView>
+                    android:layout_column="10">
+
+                </TextView>
+
+
 
             </TableRow>
-        </TableLayout>
+           </TableLayout>
+    </FrameLayout>
 
-        <TextView
-            android:id="@+id/textCus"
-            android:layout_columnSpan="2"
-            android:layout_row="0"
-            android:text="Customer Name :"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_gravity="top"
-            android:layout_column="0" />
 
-        <TextView
-            android:id="@+id/text1"
-            android:layout_columnSpan="2"
-            android:layout_row="3"
-            android:text="tem Name :"
-            android:layout_marginTop="60dp"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_gravity="top"
-            android:layout_column="0" />
 
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="date"
-            android:ems="10"
-            android:id="@+id/txtdate"
-            android:layout_gravity="right|top"
-            android:layout_row="1"
-            android:layout_column="2" />
 
-        <EditText
-            android:layout_width="154dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/txtquntity"
-            android:layout_marginTop="80dp"
-            android:layout_gravity="right|top"
-            android:layout_row="4"
-            android:layout_column="2" />
-</GridLayout>
-</FrameLayout>
+
+
+</LinearLayout>
+
