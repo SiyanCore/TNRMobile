@@ -4,114 +4,151 @@
     android:layout_height="wrap_content"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
-    android:paddingTop="?attr/actionBarSize" tools:context="com.siyanmo.tnrmobile.Fragment.NewOrdersFragment">
+    android:paddingTop="?attr/actionBarSize" tools:context="com.siyanmo.tnrmobile.Fragment.NewOrdersFragment"
+    android:background="#b6bde3f9">
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="275dp" android:background="#fdfefe"
-    android:weightSum="1" android:layout_gravity="center_vertical">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="275dp" android:background="#fdfefe"
+        android:weightSum="1" android:layout_gravity="center">
 
-    <!-- TODO: Update by lakmal -->
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal|top"
-        android:background="#b6bde3f9">
+        <!-- TODO: Update by lakmal -->
 
-        <EditText
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:inputType="date"
-            android:ems="10"
-            android:id="@+id/txtdate"
-            android:layout_gravity="right|center_vertical"
-            android:layout_row="1"
-            android:layout_column="2"
-            />
 
-        <AutoCompleteTextView
-            android:id="@+id/CusTomerName"
-            android:layout_below="@+id/textCus"
-            android:ems="0"
-            android:layout_columnSpan="2"
-            android:layout_row="1"
-            android:layout_gravity="center"
-            android:layout_column="0"
-            android:layout_width="271dp"
-            android:layout_height="wrap_content"
-            android:layout_weight=".0"
-            android:hint="Type Customer Name "
-            android:background="#fefdfd" />
-
-        <TextView
-            android:id="@+id/textCus"
-            android:layout_columnSpan="2"
-            android:layout_row="0"
-            android:text="Customer Name :"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_gravity="left|center_vertical"
-            android:layout_column="0"
-            android:layout_width="wrap_content"
-            android:layout_weight=".7"
-            android:layout_height="wrap_content"/>
-
-    </FrameLayout>
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:background="#b6bde3f9">
-
-        <AutoCompleteTextView
-     android:id="@+id/ItemName"
-     android:layout_columnSpan="2"
-     android:layout_row="4"
-     android:layout_below="@+id/text1"
-     android:layout_gravity="center"
-     android:ems="0"
-     android:layout_column="0"
-     android:layout_width="271dp"
-     android:layout_height="wrap_content"
-            android:completionHint="f"
-            android:hint="Type Item Code"
-            android:background="#fefdfd" />
-
-        <TextView
-     android:id="@+id/text1"
-     android:layout_columnSpan="2"
-     android:layout_row="3"
-     android:text="Item Code :" android:textAppearance="?android:attr/textAppearanceMedium"
-     android:layout_gravity="left|center_vertical"
-     android:layout_column="0"
-     android:layout_width="wrap_content"
-     android:layout_height="wrap_content"/>
-
-        <EditText
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/txtquntity"
-            android:layout_marginTop="0dp"
-            android:layout_gravity="right|center_vertical"
-            android:layout_row="4"
-            android:layout_column="2" />
-
-    </FrameLayout>
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <Button
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="ADD"
-            android:id="@+id/button"
+            android:layout_gravity="center_horizontal|top"
+            android:background="#b6bde3f9"
+            android:layout_weight="0.16">
+
+            <EditText
+                android:layout_width="119dp"
+                android:layout_height="wrap_content"
+                android:inputType="date"
+                android:ems="10"
+                android:id="@+id/txtdate"
+                android:layout_gravity="left|center_vertical"
+                android:layout_row="1"
+                android:layout_column="2"
+                android:background="#ffffff"
+                android:layout_marginLeft="425dp" />
+
+            <AutoCompleteTextView
+                android:id="@+id/CusTomerName"
+                android:layout_below="@+id/textCus"
+                android:ems="0"
+                android:layout_columnSpan="2"
+                android:layout_row="1"
+                android:layout_gravity="left|center"
+                android:layout_column="0"
+                android:layout_width="245dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".0"
+                android:hint="Type Customer Name "
+                android:background="#fefdfd"
+                android:layout_marginLeft="150dp" />
+
+            <TextView
+                android:id="@+id/textCus"
+                android:layout_columnSpan="2"
+                android:layout_row="0"
+                android:text="Customer Name :"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_gravity="left|center_vertical"
+                android:layout_column="0"
+                android:layout_width="wrap_content"
+                android:layout_weight=".7"
+                android:layout_height="wrap_content"/>
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:background="#44b8f7" />
-    </FrameLayout>
+            android:background="#b6bde3f9"
+            android:layout_weight="0.14">
+
+            <TextView
+         android:id="@+id/text1"
+         android:layout_columnSpan="2"
+         android:layout_row="3"
+         android:text="Item " android:textAppearance="?android:attr/textAppearanceMedium"
+         android:layout_gravity="left|center_vertical"
+         android:layout_column="0"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"/>
+
+            <AutoCompleteTextView
+                android:id="@+id/autoCompleteTextView"
+                android:layout_columnSpan="2"
+                android:layout_row="4"
+                android:layout_below="@+id/text1"
+                android:layout_gravity="left|center"
+                android:ems="0"
+                android:layout_column="0"
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
+                android:completionHint="f"
+                android:background="#fefdfd"
+                android:layout_marginLeft="90dp" />
+
+            <AutoCompleteTextView
+         android:id="@+id/ItemName"
+         android:layout_columnSpan="2"
+         android:layout_row="4"
+         android:layout_below="@+id/text1"
+         android:layout_gravity="left|center_vertical"
+         android:ems="0"
+         android:layout_column="0"
+         android:layout_width="296dp"
+         android:layout_height="wrap_content"
+                android:completionHint="f"
+                android:background="#fefdfd"
+                android:layout_marginLeft="250dp" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#b6bde3f9"
+            android:layout_weight="0.18">
+
+            <Button
+                android:layout_width="347dp"
+                android:layout_height="27dp"
+                android:text="ADD"
+                android:id="@+id/button"
+                android:layout_gravity="left|center_vertical|right"
+                android:background="#44b8f7"
+                android:layout_marginLeft="200dp" />
+
+            <EditText
+                android:layout_width="79dp"
+                android:layout_height="27dp"
+                android:id="@+id/txtquntity"
+                android:layout_marginTop="0dp"
+                android:layout_gravity="left|center"
+                android:layout_row="4"
+                android:layout_column="2"
+                android:background="#ffffff"
+                android:layout_marginLeft="100dp" />
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_columnSpan="2"
+                android:layout_row="3"
+                android:text="Quantity"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_gravity="left|center_vertical"
+                android:layout_column="0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </FrameLayout>
 
 
-</LinearLayout>
+    </LinearLayout>
 
 </FrameLayout>
