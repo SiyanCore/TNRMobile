@@ -23,7 +23,7 @@
             android:layout_weight="0.16">
 
             <EditText
-                android:layout_width="119dp"
+                android:layout_width="146dp"
                 android:layout_height="wrap_content"
                 android:inputType="date"
                 android:ems="10"
@@ -102,7 +102,7 @@
          android:layout_gravity="left|center_vertical"
          android:ems="0"
          android:layout_column="0"
-         android:layout_width="296dp"
+         android:layout_width="323dp"
          android:layout_height="wrap_content"
                 android:completionHint="f"
                 android:background="#fefdfd"
@@ -117,7 +117,7 @@
             android:layout_weight="0.18">
 
             <Button
-                android:layout_width="347dp"
+                android:layout_width="370dp"
                 android:layout_height="27dp"
                 android:text="ADD"
                 android:id="@+id/button"
