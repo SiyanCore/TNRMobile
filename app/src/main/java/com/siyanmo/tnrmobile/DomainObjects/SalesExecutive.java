@@ -7,7 +7,7 @@ public class SalesExecutive {
     private int SalesExecutiveCode;
     private String SalesExecutiveName;
     private int LoginId;
-    private byte[] SalesExecutiveImage=new byte[0];
+    private byte[] Image =new byte[0];
 
     public int getSalesExecutiveCode() {
         return SalesExecutiveCode;
@@ -33,12 +33,12 @@ public class SalesExecutive {
         LoginId = loginId;
     }
 
-    public byte[] getSalesExecutiveImage() {
-        return SalesExecutiveImage;
+    public byte[] getImage() {
+        return Image;
     }
 
-    public void setSalesExecutiveImage(byte[] salesExecutiveImage) {
-        salesExecutiveImage=new byte[salesExecutiveImage.length];
-        SalesExecutiveImage = salesExecutiveImage;
+    public void setImage(byte[] image) {
+        image =new byte[image.length];
+        Image = image;
     }
 }

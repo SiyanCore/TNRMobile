@@ -15,7 +15,6 @@ import com.siyanmo.tnrmobile.DomainObjects.SalesExecutive;
 import com.siyanmo.tnrmobile.DomainObjects.SalesOrderDetail;
 import com.siyanmo.tnrmobile.DomainObjects.SalesOrderHeader;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -331,7 +330,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             ContentValues contentValues=new ContentValues();
             contentValues.put(SalesmenDetail.SalesmenCode,salesExecutive.getSalesExecutiveCode());
             contentValues.put(SalesmenDetail.SalesmenName,salesExecutive.getSalesExecutiveName());
-            contentValues.put(SalesmenDetail.SalesmenImage, salesExecutive.getSalesExecutiveImage());
+            contentValues.put(SalesmenDetail.SalesmenImage, salesExecutive.getImage());
             contentValues.put(SalesmenDetail.LoginId, salesExecutive.getLoginId());
             long result = db.insert(DbContent.SalesmenDetail,null,contentValues);
             if (result<0){
@@ -347,11 +346,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         try {
             SQLiteDatabase db=this.getWritableDatabase();
             final String salesmenDetail_QUERY = "SELECT * FROM "+DbContent.SalesmenDetail;
-            Cursor salesmenDetailCursor = db.rawQuery(salesmenDetail_QUERY,null);
+            Cursor salesmenDetailCursor = db.rawQuery(salesmenDetail_QUERY, null);
             if (salesmenDetailCursor.moveToNext()){
                     salesExecutive.setSalesExecutiveCode(salesmenDetailCursor.getInt(salesmenDetailCursor.getColumnIndex(SalesmenDetail.SalesmenCode)));
                     salesExecutive.setSalesExecutiveName(salesmenDetailCursor.getString(salesmenDetailCursor.getColumnIndex(SalesmenDetail.SalesmenName)));
-                    salesExecutive.setSalesExecutiveImage(salesmenDetailCursor.getBlob(salesmenDetailCursor.getColumnIndex(SalesmenDetail.SalesmenImage)));
+                    salesExecutive.setImage(salesmenDetailCursor.getBlob(salesmenDetailCursor.getColumnIndex(SalesmenDetail.SalesmenImage)));
                     salesExecutive.setLoginId(salesmenDetailCursor.getInt(salesmenDetailCursor.getColumnIndex(SalesmenDetail.LoginId)));
             }
 
@@ -360,5 +359,22 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
 
         return salesExecutive;
+    }
+
+    public String GetCustomerNameByCustomerCode(String customerCode ){
+        String CustomerName="";
+        try {
+            SQLiteDatabase db=this.getWritableDatabase();
+            Cursor cursor = db.rawQuery("SELECT "+Customer.Name+" FROM "+DbContent.Customer+" WHERE "+Customer.Code+"='"+customerCode+"'",null);
+            if (cursor.moveToNext()){
+                CustomerName=cursor.getString(0);
+            }
+            return CustomerName;
+        } catch (IndexOutOfBoundsException e) {
+            System.err.println("IndexOutOfBoundsException: " + e.getMessage());
+        } catch (SQLException e) {
+            System.err.println("Caught IOException: " + e.getMessage());
+        }
+        return CustomerName;
     }
 }

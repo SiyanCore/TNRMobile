@@ -1,18 +1,11 @@
 package com.siyanmo.tnrmobile;
 
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
@@ -24,7 +17,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,9 +26,7 @@ import com.siyanmo.tnrmobile.Fragment.CustomersFragment;
 import com.siyanmo.tnrmobile.Fragment.ItemsFragment;
 import com.siyanmo.tnrmobile.Fragment.NewOrderFragment;
 import com.siyanmo.tnrmobile.Fragment.OrdersFragment;
-import com.siyanmo.tnrmobile.DomainObjects.Item;
 import com.siyanmo.tnrmobile.Fragment.PopUpItemFragment;
-import com.siyanmo.tnrmobile.WebAPI.ItemAPI;
 import com.siyanmo.tnrmobile.SqliteDataProvider.DatabaseHandler;
 
 public class MainActivity extends AppCompatActivity
@@ -65,7 +55,7 @@ public class MainActivity extends AppCompatActivity
         salesmanImage=(ImageView)findViewById(R.id.salesmanImage);
         salesmanImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
-        byte[] image=Comman.getSalesExecutive().getSalesExecutiveImage();
+        byte[] image=Comman.getSalesExecutive().getImage();
         if (image.length>0){
             Bitmap bitmap= BitmapFactory.decodeByteArray(image,0,image.length);
             salesmanImage.setImageBitmap(bitmap);
@@ -162,6 +152,7 @@ public class MainActivity extends AppCompatActivity
             navId=id;
         } else if (id == R.id.nav_orders) {
             OrdersFragment fragment=new OrdersFragment();
+            fragment.SetActivity(this);
             FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container,fragment).commit();
             navId=id;
