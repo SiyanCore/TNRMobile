@@ -1,5 +1,6 @@
 package com.siyanmo.tnrmobile;
 
+import android.app.Fragment;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -92,7 +93,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        if (navId == R.id.nav_new_order){
+       if (navId == R.id.nav_new_order){
             DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
 
                 @Override

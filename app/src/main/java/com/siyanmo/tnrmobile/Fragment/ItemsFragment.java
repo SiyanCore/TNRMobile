@@ -10,6 +10,9 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
@@ -46,6 +49,7 @@ public class ItemsFragment extends Fragment{
         // Inflate the layout for this fragment
         rootView=inflater.inflate(R.layout.fragment_items,null);
         dbHandler=new DatabaseHandler(activity);
+        setHasOptionsMenu(true);
         //SearchManager searchManager=(SearchManager) activity.getSystemService(Context.SEARCH_SERVICE);
         search=(SearchView)rootView.findViewById(R.id.expandableItemListsearchView);
         search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -88,11 +92,26 @@ public class ItemsFragment extends Fragment{
             itemList=dbHandler.GetAllItems();
     }
 
-//    @Override
-//    public void onStop(){
-//        itemAdapter.filterData("");
-//        ExpandAll();
-//    }
+    @Override
+    public void onCreateOptionsMenu(Menu menu,MenuInflater inflater) {
+        // Do something that differs the Activity's menu here
+        menu.findItem(R.id.action_save).setVisible(false);
+        menu.findItem(R.id.action_update).setVisible(false);
+        menu.findItem(R.id.action_delete).setVisible(false);
+        menu.findItem(R.id.action_cancel).setVisible(false);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                // Not implemented here
+                return false;
+            default:
+                break;
+        }
 
+        return false;
+    }
 
 }

@@ -1,16 +1,23 @@
 package com.siyanmo.tnrmobile.Fragment;
 
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.siyanmo.tnrmobile.CommanMethode;
 import com.siyanmo.tnrmobile.DomainObjects.Customer;
@@ -46,7 +53,7 @@ public class NewOrderFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-
+        setHasOptionsMenu(true);
 
         return inflater.inflate(R.layout.fragment_new_order, container, false);
     }
@@ -95,5 +102,64 @@ public class NewOrderFragment extends Fragment {
 
     public void SetActivity(AppCompatActivity sactivity){
         activity=sactivity;
+    }
+
+    private void SaveOrder(){
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case DialogInterface.BUTTON_POSITIVE:
+                        boolean result = true;//call quary to Save
+                        if (result) {
+                            NewOrderFragment fragment=new NewOrderFragment();
+                            fragment.SetActivity(activity);
+                            FragmentTransaction fragmentTransaction=activity.getSupportFragmentManager().beginTransaction();
+                            fragmentTransaction.replace(R.id.fragment_container,fragment).commit();
+                            Toast.makeText(activity, "Save Success", Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(activity, "Save Failed", Toast.LENGTH_LONG).show();
+                        }
+                        break;
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        //No button clicked
+                        break;
+                }
+            }
+        };
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setMessage("Do you want Save this Order?")
+                .setNegativeButton("No", dialogClickListener)
+                .setPositiveButton("Yes", dialogClickListener).show();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu,MenuInflater inflater) {
+
+        menu.findItem(R.id.action_update).setVisible(false);
+        menu.findItem(R.id.action_delete).setVisible(false);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                // Not implemented here
+                return false;
+            case R.id.action_cancel:
+                NewOrderFragment fragment=new NewOrderFragment();
+                fragment.SetActivity(activity);
+                FragmentTransaction fragmentTransaction=activity.getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_container,fragment).commit();
+                return true;
+            case R.id.action_save:
+                SaveOrder();
+                return true;
+            default:
+                break;
+        }
+
+        return false;
     }
 }

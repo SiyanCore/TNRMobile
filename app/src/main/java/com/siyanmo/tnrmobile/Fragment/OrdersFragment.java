@@ -8,6 +8,9 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -51,6 +54,8 @@ public class OrdersFragment extends Fragment {
         // Inflate the layout for this fragment
         rootView=inflater.inflate(R.layout.fragment_orders,null);
         dbHandler=new DatabaseHandler(activity);
+
+        setHasOptionsMenu(true);
         //SearchManager searchManager=(SearchManager) activity.getSystemService(Context.SEARCH_SERVICE);
         search=(SearchView)rootView.findViewById(R.id.expandableOrderSearchView);
         search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -83,20 +88,20 @@ public class OrdersFragment extends Fragment {
                 int itemType = ExpandableListView.getPackedPositionType(id);
 
                 if (itemType == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
-                    String header=(String)expandableListView.getItemAtPosition(position);
-                    Id="";
-                    for (int i=0;header.charAt(i)!='.';i++){
-                        Id+=header.charAt(i);
+                    String header = (String) expandableListView.getItemAtPosition(position);
+                    Id = "";
+                    for (int i = 0; header.charAt(i) != '.'; i++) {
+                        Id += header.charAt(i);
                     }
                     DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             switch (which) {
                                 case DialogInterface.BUTTON_POSITIVE:
-                                    UpdateOrder(Id);
+                                    EditOrder();
                                     break;
                                 case DialogInterface.BUTTON_NEGATIVE:
-                                    DeleteOrder(Id);
+                                    DeleteOrder();
                                     break;
                                 case DialogInterface.BUTTON_NEUTRAL:
 
@@ -106,8 +111,8 @@ public class OrdersFragment extends Fragment {
                     };
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-                    builder.setMessage("Do you want change this Order ?").setPositiveButton("Update", dialogClickListener)
-                            .setNegativeButton("Delete", dialogClickListener).setNeutralButton("Cancel",dialogClickListener).show();
+                    builder.setMessage("Do you want change this Order ?").setPositiveButton("Edit", dialogClickListener)
+                            .setNegativeButton("Delete", dialogClickListener).setNeutralButton("Cancel", dialogClickListener).show();
                 }
 
                 return false;
@@ -140,21 +145,61 @@ public class OrdersFragment extends Fragment {
         }
     }
 
-    private void UpdateOrder(String ID){
+    private void EditOrder(){
         UpdateOrderFragment fragment=new UpdateOrderFragment();
-        //fragment.SetActivity(activity);
+        fragment.SetActivity(activity, Id);
         FragmentTransaction fragmentTransaction=activity.getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container,fragment).commit();
     }
-    private void DeleteOrder(String ID){
-        boolean result=dbHandler.DeleteOrderById(ID);
-        if(result){
-            DisplyList();
-            Toast.makeText(activity, "Delete Success", Toast.LENGTH_LONG).show();
-        }else {
-            Toast.makeText(activity, "Delete Failed"+ID, Toast.LENGTH_LONG).show();
+    private void DeleteOrder(){
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which){
+                    case DialogInterface.BUTTON_POSITIVE:
+                        boolean result=dbHandler.DeleteOrderById(Id);
+                        if(result){
+                            DisplyList();
+                            Toast.makeText(activity, "Delete Success", Toast.LENGTH_LONG).show();
+                        }else {
+                            Toast.makeText(activity, "Delete Failed", Toast.LENGTH_LONG).show();
+                        }
+                        break;
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        //No button clicked
+                        break;
+                }
+            }
+        };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setMessage("Do you want Delete this Order?")
+                .setNegativeButton("No", dialogClickListener)
+                .setPositiveButton("Yes", dialogClickListener).show();
+
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu,MenuInflater inflater) {
+        // Do something that differs the Activity's menu here
+        menu.findItem(R.id.action_save).setVisible(false);
+        menu.findItem(R.id.action_update).setVisible(false);
+        menu.findItem(R.id.action_delete).setVisible(false);
+        menu.findItem(R.id.action_cancel).setVisible(false);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                // Not implemented here
+                return false;
+            default:
+                break;
         }
 
+        return false;
     }
 
 }

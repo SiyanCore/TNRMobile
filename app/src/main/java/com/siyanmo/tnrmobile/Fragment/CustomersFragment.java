@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -44,6 +47,9 @@ public class CustomersFragment extends Fragment {
         listView=(ListView)rootView.findViewById(R.id.CustomersListView);
         searchView=(SearchView)rootView.findViewById(R.id.CustomersSearchView);
         dbHandler=new DatabaseHandler(activity);
+
+        setHasOptionsMenu(true);
+
         SetCustomers();
         arrayAdapter=new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,customers);
         listView.setAdapter(arrayAdapter);
@@ -80,5 +86,28 @@ public class CustomersFragment extends Fragment {
 
     public void SetActivity(AppCompatActivity sactivity){
         activity=sactivity;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu,MenuInflater inflater) {
+        // Do something that differs the Activity's menu here
+        menu.findItem(R.id.action_save).setVisible(false);
+        menu.findItem(R.id.action_update).setVisible(false);
+        menu.findItem(R.id.action_delete).setVisible(false);
+        menu.findItem(R.id.action_cancel).setVisible(false);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                // Not implemented here
+                return false;
+            default:
+                break;
+        }
+
+        return false;
     }
 }
