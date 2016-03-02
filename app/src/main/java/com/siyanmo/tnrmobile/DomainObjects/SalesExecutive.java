@@ -38,7 +38,7 @@ public class SalesExecutive {
     }
 
     public void setImage(byte[] image) {
-        image =new byte[image.length];
+        Image =new byte[image.length];
         Image = image;
     }
 }

@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 import com.siyanmo.tnrmobile.DomainObjects.Customer;
 import com.siyanmo.tnrmobile.DomainObjects.FullOrder;
@@ -328,6 +330,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             db.execSQL("DROP TABLE IF EXISTS "+DbContent.SalesmenDetail);
             db.execSQL(CREATE_TABLE_SalesmenDetail);
             ContentValues contentValues=new ContentValues();
+
             contentValues.put(SalesmenDetail.SalesmenCode,salesExecutive.getSalesExecutiveCode());
             contentValues.put(SalesmenDetail.SalesmenName,salesExecutive.getSalesExecutiveName());
             contentValues.put(SalesmenDetail.SalesmenImage, salesExecutive.getImage());

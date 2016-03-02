@@ -28,6 +28,7 @@ import com.siyanmo.tnrmobile.Fragment.ItemsFragment;
 import com.siyanmo.tnrmobile.Fragment.NewOrderFragment;
 import com.siyanmo.tnrmobile.Fragment.OrdersFragment;
 import com.siyanmo.tnrmobile.Fragment.PopUpItemFragment;
+import com.siyanmo.tnrmobile.Fragment.UpdateOrderFragment;
 import com.siyanmo.tnrmobile.SqliteDataProvider.DatabaseHandler;
 
 public class MainActivity extends AppCompatActivity
@@ -93,7 +94,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-       if (navId == R.id.nav_new_order){
+        if (navId == R.id.nav_new_order){
             DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
 
                 @Override

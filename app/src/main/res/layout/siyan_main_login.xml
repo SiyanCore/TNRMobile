@@ -105,15 +105,14 @@
 
 
     <Button
-            android:layout_width="300dp"
-            android:layout_height="32dp"
+            android:layout_width="310dp"
+            android:layout_height="45dp"
             android:text="@string/sign"
             android:id="@+id/sign"
-            android:background="#0b6882"
             android:textColor="#fefefe"
             android:layout_weight="0.18"
             android:layout_gravity="bottom|center"
-            />
+        style="@style/Base.Widget.AppCompat.Button.Colored" />
 
 
     </FrameLayout>
