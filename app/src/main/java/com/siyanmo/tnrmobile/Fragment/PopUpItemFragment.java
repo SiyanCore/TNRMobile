@@ -2,6 +2,8 @@ package com.siyanmo.tnrmobile.Fragment;
 
 
 import android.app.DialogFragment;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -41,7 +43,7 @@ public class PopUpItemFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView=inflater.inflate(R.layout.fragment_pop_up_item,null);
+        View rootView=inflater.inflate(R.layout.fragment_pop_up_item, null);
         getDialog().setTitle("Item Prices");
         button=(Button)rootView.findViewById(R.id.PopUpItemCancellButlon);
         listView=(ListView)rootView.findViewById(R.id.PopUpItemListView);

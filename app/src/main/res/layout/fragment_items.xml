@@ -15,14 +15,14 @@
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:paddingBottom="16dp"
-        android:background="#b6bde3f9"/>
+        android:background="@color/colorBackground"/>
 
     <SearchView
         android:id="@+id/expandableItemListsearchView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:queryHint="Search"
-        android:background="#b6bde3f9"
+        android:background="@color/colorBackground"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"/>
 

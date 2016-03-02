@@ -2,7 +2,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#b6bde3f9"
     tools:context="com.siyanmo.tnrmobile.Fragment.PopUpItemFragment">
 
     <LinearLayout
@@ -26,7 +25,7 @@
         android:id="@+id/PopUpItemSearchView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#b6bde3f9"
+        android:background="@color/colorBackground"
         android:layout_gravity="top"/>
 
     <Button

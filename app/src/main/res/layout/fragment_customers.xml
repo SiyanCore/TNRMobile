@@ -10,7 +10,7 @@
         android:layout_height="match_parent"
         android:paddingTop="60dp"
         android:id="@+id/CustomersListView"
-        android:background="#b6bde3f9"
+        android:background="@color/colorBackground"
         android:paddingBottom="16dp"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
@@ -19,7 +19,7 @@
         android:id="@+id/CustomersSearchView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#b6bde3f9"
+        android:background="@color/colorBackground"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:layout_gravity="top"/>
