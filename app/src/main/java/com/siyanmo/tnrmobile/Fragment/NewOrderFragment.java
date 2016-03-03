@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,7 +20,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,16 +46,22 @@ import java.util.List;
  */
 public class NewOrderFragment extends Fragment {
 
+    private ImageButton AddButton;
     private AutoCompleteTextView autoCompleteItem;
     private AutoCompleteTextView autoCompleteCus;
+    private TextView OrderDate;
+    private GridView OrderGrid;
+    private EditText Quntity;
+    private AutoCompleteTextView ItemCode;
+
     private List<Customer> customerList;
     private List<Item> iemlist;
     private ArrayAdapter<String> Itemadapter;
     private ArrayAdapter<String> CusAdapter;
     private AppCompatActivity activity;
     private DatabaseHandler dbHandler;
-    private TextView OrderDate;
-    private GridView OrderGrid;
+    private NewOrderViweAdapter newOrderViweAdapter;
+
     public NewOrderFragment() {
         // Required empty public constructor
     }
@@ -70,7 +80,16 @@ public class NewOrderFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
 
         OrderGrid = (GridView)view.findViewById(R.id.gridView);
-        OrderGrid.setAdapter(new NewOrderViweAdapter(activity));
+        AddButton = (ImageButton) view.findViewById(R.id.add);
+        OrderDate = (TextView) view.findViewById(R.id.txtdate);
+        autoCompleteItem = (AutoCompleteTextView) view.findViewById(R.id.ItemName);
+        autoCompleteCus = (AutoCompleteTextView) view.findViewById(R.id.CusTomerName);
+        Quntity = (EditText) view.findViewById(R.id.txtquntity);
+        ItemCode = (AutoCompleteTextView)view.findViewById(R.id.Itemcode);
+
+
+        newOrderViweAdapter = new NewOrderViweAdapter(activity);
+        OrderGrid.setAdapter(newOrderViweAdapter);
 
         dbHandler=new DatabaseHandler(activity);
         iemlist = dbHandler.GetAllItems();
@@ -81,8 +100,7 @@ public class NewOrderFragment extends Fragment {
         Itemadapter = new ArrayAdapter<String>(view.getContext(),android.R.layout.simple_list_item_1,iemArry);
         CusAdapter = new ArrayAdapter<String>(view.getContext(),android.R.layout.simple_list_item_1,customerArry);
 
-        autoCompleteItem = (AutoCompleteTextView) view.findViewById(R.id.ItemName);
-        autoCompleteCus = (AutoCompleteTextView) view.findViewById(R.id.CusTomerName);
+
 
         // set adapter for the auto complete fields
         autoCompleteItem.setAdapter(Itemadapter);
@@ -103,12 +121,13 @@ public class NewOrderFragment extends Fragment {
             }
         });
 
-        OrderDate = (TextView) view.findViewById(R.id.txtdate);
+
         Date cal = (Date) Calendar.getInstance().getTime();
         String dt = cal.toLocaleString();
         java.text.DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(getContext());
         OrderDate.setText(dateFormat.format(cal));
         //onDateClick ();
+        OnButtonClick();
         super.onViewCreated(view, savedInstanceState);
     }
 
@@ -185,6 +204,27 @@ public class NewOrderFragment extends Fragment {
             }
         });
     }
+
+    private void OnButtonClick(){
+       AddButton.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               OnAddButtonClick();
+           }
+       });
+    }
+
+    private void OnAddButtonClick() {
+
+        OrderItems NewOrder = new OrderItems(ItemCode.getText().toString(),Float.parseFloat(Quntity.getText().toString()));
+        if(ValidationItemAdding(NewOrder))
+        newOrderViweAdapter.filterData(NewOrder);
+    }
+
+    private boolean ValidationItemAdding(OrderItems newOrder) {
+        boolean ok=false;
+        return ok;
+    }
 }
 
 class NewOrderViweAdapter extends BaseAdapter{
@@ -241,4 +281,13 @@ class NewOrderViweAdapter extends BaseAdapter{
         holder.Itme_Name.setText("not set yest");
         return row;
     }
+
+
+    public void filterData(OrderItems item){
+        Log.v("ItemAdapter", String.valueOf(orderItemses.size()));
+        orderItemses.add(item);
+        Log.v("ItemAdapter", String.valueOf(orderItemses.size()));
+        notifyDataSetChanged();
+    }
+
 }
