@@ -35,7 +35,9 @@ import com.siyanmo.tnrmobile.R;
 import com.siyanmo.tnrmobile.SelectDateFragment;
 import com.siyanmo.tnrmobile.SqliteDataProvider.DatabaseHandler;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -62,6 +64,10 @@ public class NewOrderFragment extends Fragment {
     private DatabaseHandler dbHandler;
     private NewOrderViweAdapter newOrderViweAdapter;
 
+
+    private List<String> ItemCodes;
+    private List<String> CustomerCodes;
+
     public NewOrderFragment() {
         // Required empty public constructor
     }
@@ -77,7 +83,7 @@ public class NewOrderFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(final View view, Bundle savedInstanceState) {
 
         OrderGrid = (GridView)view.findViewById(R.id.gridView);
         AddButton = (ImageButton) view.findViewById(R.id.add);
@@ -95,7 +101,9 @@ public class NewOrderFragment extends Fragment {
         iemlist = dbHandler.GetAllItems();
         customerList = dbHandler.GetAllCustomer();
         String[] iemArry = CommanMethode.GetItemNameArry(iemlist);
+        ItemCodes = Arrays.asList(iemArry);
         String[] customerArry = CommanMethode.GetCustomerNameArry(customerList);
+        CustomerCodes=Arrays.asList(customerArry);
         // Inflate the layout for this fragment
         Itemadapter = new ArrayAdapter<String>(view.getContext(),android.R.layout.simple_list_item_1,iemArry);
         CusAdapter = new ArrayAdapter<String>(view.getContext(),android.R.layout.simple_list_item_1,customerArry);
@@ -112,11 +120,20 @@ public class NewOrderFragment extends Fragment {
         autoCompleteItem.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    int p = position;
+
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        autoCompleteItem.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View arg1, int pos,
+                                    long id) {
+                Toast.makeText(activity, " selected", Toast.LENGTH_LONG).show();
 
             }
         });
@@ -235,6 +252,15 @@ public class NewOrderFragment extends Fragment {
             ok = false;
             Toast.makeText(activity, "Order quantity error", Toast.LENGTH_SHORT).show();
 
+            }
+
+            if(ItemCode.getText().equals("")){
+                ok = false;
+                Toast.makeText(activity, "Item Code Empty", Toast.LENGTH_SHORT).show();
+            }
+            if(ItemCodes.contains(ItemCode.getText())){
+                ok = false;
+                Toast.makeText(activity, "Item Code Not exist", Toast.LENGTH_SHORT).show();
             }
         }catch(NumberFormatException ex){
             ok =false;
