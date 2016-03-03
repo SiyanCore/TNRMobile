@@ -29,4 +29,17 @@ public class OrderItems {
     public void setOrderQuntity(Float orderQuntity) {
         OrderQuntity = orderQuntity;
     }
+
+    @Override
+    public boolean equals(Object object)
+    {
+        boolean sameSame = false;
+
+        if (object != null && object instanceof OrderItems)
+        {
+            sameSame = this.ItemCode.equals (((OrderItems) object).ItemCode) /*&& this.OrderQuntity == ((OrderItems) object).OrderQuntity*/;
+        }
+
+        return sameSame;
+    }
 }

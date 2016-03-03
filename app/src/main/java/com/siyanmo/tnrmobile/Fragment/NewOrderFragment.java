@@ -215,14 +215,33 @@ public class NewOrderFragment extends Fragment {
     }
 
     private void OnAddButtonClick() {
-
-        OrderItems NewOrder = new OrderItems(ItemCode.getText().toString(),Float.parseFloat(Quntity.getText().toString()));
-        if(ValidationItemAdding(NewOrder))
-        newOrderViweAdapter.filterData(NewOrder);
+        if(ValidationItemAdding()) {
+            OrderItems NewOrder = new OrderItems(ItemCode.getText().toString(), Float.parseFloat(Quntity.getText().toString()));
+            newOrderViweAdapter.filterData(NewOrder);
+            ClearItemFieds();
+        }
     }
 
-    private boolean ValidationItemAdding(OrderItems newOrder) {
-        boolean ok=false;
+    private void ClearItemFieds() {
+        Quntity.setText("");
+        ItemCode.setText("");
+    }
+
+    private boolean ValidationItemAdding() {
+        boolean ok=true;
+        try {
+
+            if(Float.parseFloat(Quntity.getText().toString()) < 0) {
+            ok = false;
+            Toast.makeText(activity, "Order quantity error", Toast.LENGTH_SHORT).show();
+
+            }
+        }catch(NumberFormatException ex){
+            ok =false;
+            Toast.makeText(activity, "Order quantity error", Toast.LENGTH_SHORT).show();
+        }catch(Exception ex){
+
+        }
         return ok;
     }
 }
@@ -285,7 +304,14 @@ class NewOrderViweAdapter extends BaseAdapter{
 
     public void filterData(OrderItems item){
         Log.v("ItemAdapter", String.valueOf(orderItemses.size()));
-        orderItemses.add(item);
+        if(orderItemses.contains(item)){
+            Toast.makeText(context,"Data Up Dated",Toast.LENGTH_SHORT).show();
+            int index = orderItemses.indexOf(item);
+            orderItemses.set(index,item);
+        }else {
+            Toast.makeText(context,"Data Added",Toast.LENGTH_SHORT).show();
+            orderItemses.add(item);
+        }
         Log.v("ItemAdapter", String.valueOf(orderItemses.size()));
         notifyDataSetChanged();
     }
