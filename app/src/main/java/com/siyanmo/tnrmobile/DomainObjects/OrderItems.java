@@ -7,6 +7,13 @@ public class OrderItems {
     private String ItemCode;
     private Float OrderQuntity;
 
+    public OrderItems(){
+
+    }
+    public OrderItems(String ItemCode,Float OrderQuntity){
+        this.ItemCode = ItemCode;
+        this.OrderQuntity = OrderQuntity;
+    }
     public String getItemCode() {
         return ItemCode;
     }

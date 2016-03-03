@@ -1,6 +1,8 @@
 package com.siyanmo.tnrmobile.Fragment;
 
 
+import android.app.DialogFragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,15 +18,20 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.BaseAdapter;
+import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.siyanmo.tnrmobile.CommanMethode;
 import com.siyanmo.tnrmobile.DomainObjects.Customer;
 import com.siyanmo.tnrmobile.DomainObjects.Item;
+import com.siyanmo.tnrmobile.DomainObjects.OrderItems;
 import com.siyanmo.tnrmobile.R;
+import com.siyanmo.tnrmobile.SelectDateFragment;
 import com.siyanmo.tnrmobile.SqliteDataProvider.DatabaseHandler;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -44,6 +51,7 @@ public class NewOrderFragment extends Fragment {
     private AppCompatActivity activity;
     private DatabaseHandler dbHandler;
     private TextView OrderDate;
+    private GridView OrderGrid;
     public NewOrderFragment() {
         // Required empty public constructor
     }
@@ -60,6 +68,10 @@ public class NewOrderFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+
+        OrderGrid = (GridView)view.findViewById(R.id.gridView);
+        OrderGrid.setAdapter(new NewOrderViweAdapter(activity));
+
         dbHandler=new DatabaseHandler(activity);
         iemlist = dbHandler.GetAllItems();
         customerList = dbHandler.GetAllCustomer();
@@ -96,6 +108,7 @@ public class NewOrderFragment extends Fragment {
         String dt = cal.toLocaleString();
         java.text.DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(getContext());
         OrderDate.setText(dateFormat.format(cal));
+        //onDateClick ();
         super.onViewCreated(view, savedInstanceState);
     }
 
@@ -161,5 +174,71 @@ public class NewOrderFragment extends Fragment {
         }
 
         return false;
+    }
+
+    private void onDateClick (){
+        OrderDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogFragment newFragment = new SelectDateFragment();
+                newFragment.show(activity.getFragmentManager(), "DatePicker");
+            }
+        });
+    }
+}
+
+class NewOrderViweAdapter extends BaseAdapter{
+
+    ArrayList<OrderItems> orderItemses;
+    Context context;
+    public NewOrderViweAdapter(Context context){
+        this.context = context;
+        orderItemses = new ArrayList<OrderItems>();
+        OrderItems order = new OrderItems("1000", (float) 10);
+        OrderItems order2 = new OrderItems("101010", (float) 10);
+        orderItemses.add(order);
+        orderItemses.add(order2);
+    }
+    @Override
+    public int getCount() {
+        return orderItemses.size();
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return orderItemses.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+    class OrderHolder{
+        TextView Itme_Name;
+        TextView Item_Code;
+        TextView Order_Quntity;
+
+        public OrderHolder(View view){
+            Itme_Name = (TextView)view.findViewById(R.id.Itme_Name);
+            Item_Code = (TextView)view.findViewById(R.id.Item_Code);
+            Order_Quntity = (TextView)view.findViewById(R.id.Order_Quntity);
+        }
+    }
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        View row = convertView;
+        OrderHolder holder = null;
+        if(convertView==null) {
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            row = inflater.inflate(R.layout.order_grid_item, parent, false);
+            holder = new OrderHolder(row);
+            row.setTag(holder);
+        }else{
+            holder = (OrderHolder) row.getTag();
+        }
+        holder.Item_Code.setText(orderItemses.get(position).getItemCode());
+        holder.Order_Quntity.setText(orderItemses.get(position).getOrderQuntity().toString());
+        holder.Itme_Name.setText("not set yest");
+        return row;
     }
 }

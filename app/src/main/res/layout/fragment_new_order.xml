@@ -65,6 +65,7 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="#b6bde3f9"
             android:paddingTop="8dp"
             android:paddingBottom="8dp">
 
@@ -160,6 +161,27 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp">
         </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#b6bde3f9"
+            android:paddingTop="8dp"
+            android:paddingBottom="16dp">
+
+            <GridView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/gridView"
+                android:layout_gravity="left|top"
+                android:numColumns="1"
+                android:horizontalSpacing="10dp"
+                android:verticalSpacing="10dp"
+                android:stretchMode="columnWidth">
+
+            </GridView>
+        </FrameLayout>
+
 
     </LinearLayout>
 
