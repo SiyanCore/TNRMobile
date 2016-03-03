@@ -1,13 +1,16 @@
 package com.siyanmo.tnrmobile.Fragment;
 
 
+import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -34,6 +37,7 @@ public class PopUpItemFragment extends DialogFragment {
     String[] items;
     DatabaseHandler dbHandler;
     AppCompatActivity activity ;
+    Dialog dialog;
 
     public PopUpItemFragment() {
         // Required empty public constructor
@@ -44,13 +48,14 @@ public class PopUpItemFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView=inflater.inflate(R.layout.fragment_pop_up_item, null);
-        getDialog().setTitle("Item Prices");
+        dialog=getDialog();
+        dialog.setTitle("Item Prices");
         button=(Button)rootView.findViewById(R.id.PopUpItemCancellButlon);
         listView=(ListView)rootView.findViewById(R.id.PopUpItemListView);
         searchView=(SearchView)rootView.findViewById(R.id.PopUpItemSearchView);
         dbHandler=new DatabaseHandler(activity);
         SetItems();
-        arrayAdapter=new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,items);
+        arrayAdapter=new ArrayAdapter<>(getActivity(),android.R.layout.simple_list_item_1,items);
         listView.setAdapter(arrayAdapter);
 
         searchView.setQueryHint("Search...");
@@ -71,9 +76,11 @@ public class PopUpItemFragment extends DialogFragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                searchView.setQuery("", false);
                 dismiss();
             }
         });
+        dialog.setCanceledOnTouchOutside(false);
         // Inflate the layout for this fragment
         return rootView;
     }
