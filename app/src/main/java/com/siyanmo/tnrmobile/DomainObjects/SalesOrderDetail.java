@@ -7,14 +7,17 @@ public class SalesOrderDetail {
     private Integer OrderId;
     private String ItemCode ;
     private String ItemName;
-    private String SoldQuantityinUnits;
-    private String Value;
+    private Float SoldQuantityinUnits;
+    private Float Value;
+    private Float UnitePrize;
 
     public SalesOrderDetail (){}
-    public SalesOrderDetail (String ItemCode,String ItemName,String SoldQuantityinUnits){
+    public SalesOrderDetail (String ItemCode,String ItemName,Float SoldQuantityinUnits,Float Value,Float UnitePrize){
         this.ItemCode = ItemCode;
         this.ItemName = ItemName;
         this.SoldQuantityinUnits = SoldQuantityinUnits;
+        this.Value = Value;
+        this.UnitePrize = UnitePrize;
     }
     public Integer getOrderId() {
         return OrderId;
@@ -32,19 +35,19 @@ public class SalesOrderDetail {
         ItemCode = itemCode;
     }
 
-    public String getSoldQuantityinUnits() {
+    public Float getSoldQuantityinUnits() {
         return SoldQuantityinUnits;
     }
 
-    public void setSoldQuantityinUnits(String soldQuantityinUnits) {
+    public void setSoldQuantityinUnits(Float soldQuantityinUnits) {
         SoldQuantityinUnits = soldQuantityinUnits;
     }
 
-    public String getValue() {
+    public Float getValue() {
         return Value;
     }
 
-    public void setValue(String value) {
+    public void setValue(Float value) {
         Value = value;
     }
 
@@ -67,5 +70,13 @@ public class SalesOrderDetail {
         }
 
         return sameSame;
+    }
+
+    public Float getUnitePrize() {
+        return UnitePrize;
+    }
+
+    public void setUnitePrize(Float unitePrize) {
+        UnitePrize = unitePrize;
     }
 }

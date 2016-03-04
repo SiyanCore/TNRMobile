@@ -51,6 +51,7 @@ public class NewOrderFragment extends Fragment {
     private AutoCompleteTextView autoCompleteItem;
     private AutoCompleteTextView autoCompleteCus;
     private TextView OrderDate;
+    private TextView TotalAmount;
     private GridView OrderGrid;
     private EditText Quntity;
     private AutoCompleteTextView ItemCode;
@@ -65,9 +66,11 @@ public class NewOrderFragment extends Fragment {
     private DatabaseHandler dbHandler;
     private NewOrderViweAdapter newOrderViweAdapter;
 
-    String[] itemArry;
+
     private List<String> ItemCodes;
     private List<String> CustomerCodes;
+    private List<String> ItemNames;
+    private Item SelectedItem;
 
     public NewOrderFragment() {
         // Required empty public constructor
@@ -94,14 +97,15 @@ public class NewOrderFragment extends Fragment {
         Quntity = (EditText) view.findViewById(R.id.txtquntity);
         ItemCode = (AutoCompleteTextView)view.findViewById(R.id.Itemcode);
         ItemName = (TextView)view.findViewById(R.id.ItemName);
-
+        TotalAmount = (TextView)view.findViewById(R.id.textTotal);
         newOrderViweAdapter = new NewOrderViweAdapter(activity);
         OrderGrid.setAdapter(newOrderViweAdapter);
 
         dbHandler=new DatabaseHandler(activity);
         iemlist = dbHandler.GetAllItems();
         customerList = dbHandler.GetAllCustomer();
-        itemArry = CommanMethode.GetItemNameArry(iemlist);
+        String[] itemArry = CommanMethode.GetItemNameArry(iemlist);
+        ItemNames =  Arrays.asList(itemArry);
         String[] itemCodeArry = CommanMethode.GetItemCodeArry(iemlist);
         ItemCodes = Arrays.asList(itemCodeArry);
         String[] customerArry = CommanMethode.GetCustomerNameArry(customerList);
@@ -132,22 +136,7 @@ public class NewOrderFragment extends Fragment {
                 Toast.makeText(activity, " selected shaaa", Toast.LENGTH_LONG).show();
             }
         });
-        autoCompleteItem.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-            @Override
-            public void onItemClick(AdapterView<?> parent, View arg1, int pos,
-                                    long id) {
-                Toast.makeText(activity, " selected", Toast.LENGTH_LONG).show();
-
-            }
-        });
-        autoCompleteItem.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                Toast.makeText(activity, " selected"+actionId, Toast.LENGTH_LONG).show();
-                return false;
-            }
-        });
 
         Date cal = (Date) Calendar.getInstance().getTime();
         java.text.DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(getContext());
@@ -155,7 +144,36 @@ public class NewOrderFragment extends Fragment {
         //onDateClick ();
         OnButtonClick();
         OnGridItemLongClick();
+        OnItemNameClicked();
+        OnItemCodeClicked();
         super.onViewCreated(view, savedInstanceState);
+    }
+
+    private void OnItemCodeClicked() {
+        ItemCode.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View arg1, int pos,
+                                    long id) {
+                //Toast.makeText(activity, " selected" + ItemCodes.get(pos)+"/"+pos, Toast.LENGTH_LONG).show();
+                SelectedItem = dbHandler.GetItemByItemCode(ItemCodes.get(pos));
+                autoCompleteItem.setText(SelectedItem.getItemNameShown());
+
+            }
+        });
+    }
+
+    private void OnItemNameClicked() {
+        autoCompleteItem.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View arg1, int pos,
+                                    long id) {
+                //Toast.makeText(activity, " selected" + ItemNames.get(pos)+"/"+pos, Toast.LENGTH_LONG).show();
+                SelectedItem = dbHandler.GetItemByItemCode(ItemCodes.get(pos));
+                ItemCode.setText(SelectedItem.getItemCode());
+            }
+        });
     }
 
     private void OnGridItemLongClick() {
@@ -274,9 +292,19 @@ public class NewOrderFragment extends Fragment {
 
     private void OnAddButtonClick() {
         if(ValidationItemAdding()) {
-            SalesOrderDetail NewOrder = new SalesOrderDetail(ItemCode.getText().toString(), ItemName.getText().toString(),Quntity.getText().toString());
+            Float quantity = Float.parseFloat(Quntity.getText().toString());
+            Float amount = quantity*SelectedItem.getSellingPrice();
+            SalesOrderDetail NewOrder = new SalesOrderDetail(ItemCode.getText().toString(), ItemName.getText().toString(),quantity,amount,SelectedItem.getSellingPrice());
             newOrderViweAdapter.filterData(NewOrder);
             ClearItemFieds();
+            List<SalesOrderDetail> orders = newOrderViweAdapter.GetOrderItemses();
+            float sum = 0;
+            for (SalesOrderDetail order:
+                    orders) {
+                sum = sum+ order.getValue();
+            }
+            String total = String.format("%.2f", sum);
+            TotalAmount.setText( total);
         }
     }
 
@@ -340,11 +368,15 @@ class NewOrderViweAdapter extends BaseAdapter{
         TextView Itme_Name;
         TextView Item_Code;
         TextView Order_Quntity;
+        TextView Amount;
+        TextView Unit_Price;
 
         public OrderHolder(View view){
             Itme_Name = (TextView)view.findViewById(R.id.Itme_Name);
             Item_Code = (TextView)view.findViewById(R.id.Item_Code);
             Order_Quntity = (TextView)view.findViewById(R.id.Order_Quntity);
+            Amount = (TextView)view.findViewById(R.id.Amount);
+            Unit_Price = (TextView)view.findViewById(R.id.Unit_Price);
         }
     }
     @Override
@@ -362,6 +394,9 @@ class NewOrderViweAdapter extends BaseAdapter{
         holder.Item_Code.setText(orderItemses.get(position).getItemCode());
         holder.Order_Quntity.setText(orderItemses.get(position).getSoldQuantityinUnits().toString());
         holder.Itme_Name.setText(orderItemses.get(position).getItemName().toString());
+        holder.Unit_Price.setText(String.format("%.2f", orderItemses.get(position).getUnitePrize()));
+        //holder.Amount.setText(orderItemses.get(position).getValue().toString());
+        holder.Amount.setText(String.format("%.2f", orderItemses.get(position).getValue()));
         return row;
     }
 
