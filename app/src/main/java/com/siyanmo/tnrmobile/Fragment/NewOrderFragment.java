@@ -27,10 +27,12 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.siyanmo.tnrmobile.Comman;
 import com.siyanmo.tnrmobile.CommanMethode;
 import com.siyanmo.tnrmobile.DomainObjects.Customer;
 import com.siyanmo.tnrmobile.DomainObjects.Item;
 import com.siyanmo.tnrmobile.DomainObjects.SalesOrderDetail;
+import com.siyanmo.tnrmobile.DomainObjects.SalesOrderHeader;
 import com.siyanmo.tnrmobile.R;
 import com.siyanmo.tnrmobile.SelectDateFragment;
 import com.siyanmo.tnrmobile.SqliteDataProvider.DatabaseHandler;
@@ -187,6 +189,7 @@ public class NewOrderFragment extends Fragment {
                             switch (which) {
                                 case DialogInterface.BUTTON_POSITIVE:
                                     newOrderViweAdapter.DeleteData(position);
+                                    SetTotalAmount();
                                     break;
                                 case DialogInterface.BUTTON_NEGATIVE:
                                     //No button clicked
@@ -199,7 +202,7 @@ public class NewOrderFragment extends Fragment {
                             .setNegativeButton("No", dialogClickListener)
                             .setPositiveButton("Yes", dialogClickListener).show();
                     return true;
-                }catch (Exception ex){
+                } catch (Exception ex) {
                     return false;
                 }
             }
@@ -219,6 +222,8 @@ public class NewOrderFragment extends Fragment {
                     case DialogInterface.BUTTON_POSITIVE:
                         boolean result = true;//call quary to Save
                         List<SalesOrderDetail> orders = newOrderViweAdapter.GetOrderItemses();
+                        SalesOrderHeader salesOrderHeader = MakeSalesOrderHearde();
+                        //dbHandler.
                         if (result) {
                             NewOrderFragment fragment=new NewOrderFragment();
                             fragment.SetActivity(activity);
@@ -239,6 +244,14 @@ public class NewOrderFragment extends Fragment {
         builder.setMessage("Do you want Save this Order?")
                 .setNegativeButton("No", dialogClickListener)
                 .setPositiveButton("Yes", dialogClickListener).show();
+    }
+
+    private SalesOrderHeader MakeSalesOrderHearde(){
+        SalesOrderHeader salesHeader = new SalesOrderHeader();
+        salesHeader.setSalesmanCode(Comman.getSalesExecutive().getSalesExecutiveCode());
+        salesHeader.setOrderAmount(Float.parseFloat(TotalAmount.getText().toString()));
+        //salesHeader.setCustomerCode();
+        return salesHeader;
     }
 
     @Override
@@ -294,20 +307,23 @@ public class NewOrderFragment extends Fragment {
         if(ValidationItemAdding()) {
             Float quantity = Float.parseFloat(Quntity.getText().toString());
             Float amount = quantity*SelectedItem.getSellingPrice();
-            SalesOrderDetail NewOrder = new SalesOrderDetail(ItemCode.getText().toString(), ItemName.getText().toString(),quantity,amount,SelectedItem.getSellingPrice());
+            String itemName =(dbHandler.GetItemByItemCode(ItemCode.getText().toString())).getItemNameShown();
+            SalesOrderDetail NewOrder = new SalesOrderDetail(ItemCode.getText().toString(), itemName,quantity,amount,SelectedItem.getSellingPrice());
             newOrderViweAdapter.filterData(NewOrder);
             ClearItemFieds();
-            List<SalesOrderDetail> orders = newOrderViweAdapter.GetOrderItemses();
-            float sum = 0;
-            for (SalesOrderDetail order:
-                    orders) {
-                sum = sum+ order.getValue();
-            }
-            String total = String.format("%.2f", sum);
-            TotalAmount.setText( total);
+            SetTotalAmount();
         }
     }
-
+    private void SetTotalAmount (){
+        List<SalesOrderDetail> orders = newOrderViweAdapter.GetOrderItemses();
+        float sum = 0;
+        for (SalesOrderDetail order:
+                orders) {
+            sum = sum+ order.getValue();
+        }
+        String total = String.format("%.2f", sum);
+        TotalAmount.setText( total);
+    }
     private void ClearItemFieds() {
         Quntity.setText("");
         ItemCode.setText("");
