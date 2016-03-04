@@ -403,4 +403,42 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
     }
 
+    public Item GetItemByItemCode(String itemCode){
+        Item item=new Item();
+        try {
+            SQLiteDatabase db=this.getWritableDatabase();
+            Cursor cursor = db.rawQuery("SELECT * FROM "+DbContent.Item+" WHERE "+Item.Code+"='"+itemCode+"'",null);
+            if (cursor.moveToNext()){
+                item.setItemCode(cursor.getString(cursor.getColumnIndex(Item.Code)));
+                item.setItemNameShown(cursor.getString(cursor.getColumnIndex(Item.Name)));
+                item.setSellingPrice(cursor.getFloat(cursor.getColumnIndex(Item.Price)));
+            }
+            return item;
+        } catch (IndexOutOfBoundsException e) {
+            System.err.println("IndexOutOfBoundsException: " + e.getMessage());
+        } catch (SQLException e) {
+            System.err.println("Caught IOException: " + e.getMessage());
+        }
+        return item;
+    }
+
+    public Item GetItemByItemName(String itemName){
+        Item item=new Item();
+        try {
+            SQLiteDatabase db=this.getWritableDatabase();
+            Cursor cursor = db.rawQuery("SELECT * FROM "+DbContent.Item+" WHERE "+Item.Name+"='"+itemName+"'",null);
+            if (cursor.moveToNext()){
+                item.setItemCode(cursor.getString(cursor.getColumnIndex(Item.Code)));
+                item.setItemNameShown(cursor.getString(cursor.getColumnIndex(Item.Name)));
+                item.setSellingPrice(cursor.getFloat(cursor.getColumnIndex(Item.Price)));
+            }
+            return item;
+        } catch (IndexOutOfBoundsException e) {
+            System.err.println("IndexOutOfBoundsException: " + e.getMessage());
+        } catch (SQLException e) {
+            System.err.println("Caught IOException: " + e.getMessage());
+        }
+        return item;
+    }
+
 }

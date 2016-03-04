@@ -14,6 +14,7 @@
         <ListView
             android:paddingTop="16dp"
             android:id="@+id/PopUpItemListView"
+            android:scrollbarFadeDuration="0"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             >

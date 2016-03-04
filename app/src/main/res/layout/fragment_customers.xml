@@ -11,6 +11,7 @@
         android:paddingTop="60dp"
         android:id="@+id/CustomersListView"
         android:background="@color/colorBackground"
+        android:scrollbarFadeDuration="0"
         android:paddingBottom="16dp"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
