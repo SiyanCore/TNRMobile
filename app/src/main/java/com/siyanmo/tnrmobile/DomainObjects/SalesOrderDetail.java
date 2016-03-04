@@ -6,9 +6,16 @@ package com.siyanmo.tnrmobile.DomainObjects;
 public class SalesOrderDetail {
     private Integer OrderId;
     private String ItemCode ;
+    private String ItemName;
     private String SoldQuantityinUnits;
     private String Value;
 
+    public SalesOrderDetail (){}
+    public SalesOrderDetail (String ItemCode,String ItemName,String SoldQuantityinUnits){
+        this.ItemCode = ItemCode;
+        this.ItemName = ItemName;
+        this.SoldQuantityinUnits = SoldQuantityinUnits;
+    }
     public Integer getOrderId() {
         return OrderId;
     }
@@ -39,5 +46,26 @@ public class SalesOrderDetail {
 
     public void setValue(String value) {
         Value = value;
+    }
+
+    public String getItemName() {
+        return ItemName;
+    }
+
+    public void setItemName(String itemName) {
+        ItemName = itemName;
+    }
+
+    @Override
+    public boolean equals(Object object)
+    {
+        boolean sameSame = false;
+
+        if (object != null && object instanceof SalesOrderDetail)
+        {
+            sameSame = this.ItemCode.equals (((SalesOrderDetail) object).ItemCode) /*&& this.OrderQuntity == ((OrderItems) object).OrderQuntity*/;
+        }
+
+        return sameSame;
     }
 }
