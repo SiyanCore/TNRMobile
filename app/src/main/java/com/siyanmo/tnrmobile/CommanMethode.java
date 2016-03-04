@@ -105,6 +105,16 @@ public final class CommanMethode {
         }
         return array;
     }
+
+    public static String[] GetItemCodeArry(List<Item> itemlist) {
+        String[] array = new String[itemlist.size()];
+        int index = 0;
+        for (Item item : itemlist) {
+            array[index] = item.getItemCode();
+            index++;
+        }
+        return array;
+    }
     //Lakmal//
     //Save User Name And Password
     //class  SaveUserNamePassword extends AppCompatActivity {

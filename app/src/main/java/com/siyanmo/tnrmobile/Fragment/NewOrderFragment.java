@@ -21,7 +21,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
@@ -31,13 +30,11 @@ import android.widget.Toast;
 import com.siyanmo.tnrmobile.CommanMethode;
 import com.siyanmo.tnrmobile.DomainObjects.Customer;
 import com.siyanmo.tnrmobile.DomainObjects.Item;
-import com.siyanmo.tnrmobile.DomainObjects.OrderItems;
 import com.siyanmo.tnrmobile.DomainObjects.SalesOrderDetail;
 import com.siyanmo.tnrmobile.R;
 import com.siyanmo.tnrmobile.SelectDateFragment;
 import com.siyanmo.tnrmobile.SqliteDataProvider.DatabaseHandler;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -68,7 +65,7 @@ public class NewOrderFragment extends Fragment {
     private DatabaseHandler dbHandler;
     private NewOrderViweAdapter newOrderViweAdapter;
 
-
+    String[] itemArry;
     private List<String> ItemCodes;
     private List<String> CustomerCodes;
 
@@ -104,14 +101,15 @@ public class NewOrderFragment extends Fragment {
         dbHandler=new DatabaseHandler(activity);
         iemlist = dbHandler.GetAllItems();
         customerList = dbHandler.GetAllCustomer();
-        String[] iemArry = CommanMethode.GetItemNameArry(iemlist);
-        ItemCodes = Arrays.asList(iemArry);
+        itemArry = CommanMethode.GetItemNameArry(iemlist);
+        String[] itemCodeArry = CommanMethode.GetItemCodeArry(iemlist);
+        ItemCodes = Arrays.asList(itemCodeArry);
         String[] customerArry = CommanMethode.GetCustomerNameArry(customerList);
         CustomerCodes=Arrays.asList(customerArry);
         // Inflate the layout for this fragment
-        Itemadapter = new ArrayAdapter<String>(view.getContext(),android.R.layout.simple_list_item_1,iemArry);
+        Itemadapter = new ArrayAdapter<String>(view.getContext(),android.R.layout.simple_list_item_1, itemArry);
         CusAdapter = new ArrayAdapter<String>(view.getContext(),android.R.layout.simple_list_item_1,customerArry);
-        ItemCodeadapter = new ArrayAdapter<String>(view.getContext(),android.R.layout.simple_list_item_1,iemArry);
+        ItemCodeadapter = new ArrayAdapter<String>(view.getContext(),android.R.layout.simple_list_item_1, itemCodeArry);
 
 
         // set adapter for the auto complete fields
@@ -120,6 +118,7 @@ public class NewOrderFragment extends Fragment {
         ItemCode.setAdapter(ItemCodeadapter);
         // specify the minimum type of characters before drop-down list is shown
         autoCompleteItem.setThreshold(1);
+        ItemCode.setThreshold(1);
         autoCompleteCus.setThreshold(1);
 
         autoCompleteItem.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -155,7 +154,38 @@ public class NewOrderFragment extends Fragment {
         OrderDate.setText(dateFormat.format(cal));
         //onDateClick ();
         OnButtonClick();
+        OnGridItemLongClick();
         super.onViewCreated(view, savedInstanceState);
+    }
+
+    private void OnGridItemLongClick() {
+        OrderGrid.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+                try {
+                    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            switch (which) {
+                                case DialogInterface.BUTTON_POSITIVE:
+                                    newOrderViweAdapter.DeleteData(position);
+                                    break;
+                                case DialogInterface.BUTTON_NEGATIVE:
+                                    //No button clicked
+                                    break;
+                            }
+                        }
+                    };
+                    AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                    builder.setMessage("Do you want Delete this Order?")
+                            .setNegativeButton("No", dialogClickListener)
+                            .setPositiveButton("Yes", dialogClickListener).show();
+                    return true;
+                }catch (Exception ex){
+                    return false;
+                }
+            }
+        });
     }
 
 
@@ -265,12 +295,12 @@ public class NewOrderFragment extends Fragment {
             Toast.makeText(activity, "Order quantity error", Toast.LENGTH_SHORT).show();
 
             }
-
-            if(ItemCode.getText().equals("")){
+            String itemCod = ItemCode.getText().toString();
+            if(itemCod.equals("")){
                 ok = false;
                 Toast.makeText(activity, "Item Code Empty", Toast.LENGTH_SHORT).show();
             }
-            if(ItemCodes.contains(ItemCode.getText())){
+            if(!ItemCodes.contains(itemCod)){
                 ok = false;
                 Toast.makeText(activity, "Item Code Not exist", Toast.LENGTH_SHORT).show();
             }
@@ -349,7 +379,12 @@ class NewOrderViweAdapter extends BaseAdapter{
         Log.v("ItemAdapter", String.valueOf(orderItemses.size()));
         notifyDataSetChanged();
     }
-
+    public void DeleteData (int position){
+        Log.v("ItemAdapter", String.valueOf(orderItemses.size()));
+        orderItemses.remove(position);
+        Log.v("ItemAdapter", String.valueOf(orderItemses.size()));
+        notifyDataSetChanged();
+    }
     public ArrayList<SalesOrderDetail>  GetOrderItemses (){
         return this.orderItemses;
     }
