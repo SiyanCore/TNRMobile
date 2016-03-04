@@ -7,14 +7,18 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:orientation="vertical" android:background="@color/colorBackground">
+        android:orientation="vertical"
+        android:background="@color/colorBackground"
+        android:layout_marginBottom="50dp"
+        android:paddingBottom="8dp">
 
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:layout_gravity="center|top"
             android:gravity="right">
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            <LinearLayout
                 android:orientation="vertical" android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
@@ -40,7 +44,6 @@
 
                     <AutoCompleteTextView
                         android:id="@+id/CusTomerName"
-                        android:layout_below="@+id/textCus"
                         android:ems="0"
                         android:layout_gravity="left|bottom"
                         android:layout_width="match_parent"
@@ -141,82 +144,111 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_gravity="center|center"
+            android:gravity="top">
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/colorPrimary"
                 android:layout_marginBottom="8dp"
                 android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp">
+                android:layout_marginRight="16dp"
+                android:layout_gravity="center|top">
             </FrameLayout>
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="35dp"
                 android:background="@color/colorBackground"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:paddingTop="8dp"
-                android:paddingBottom="8dp">
+                android:paddingBottom="8dp"
+                android:layout_gravity="center|center">
                 <RelativeLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Itme Name"
-                    android:id="@+id/Itme_Name"
-                    android:layout_alignTop="@+id/Item_Code"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="10dp"
-                    android:textStyle="bold"
-                    android:textSize="17sp"
-                    android:layout_toLeftOf="@+id/Item_Code"
-                    android:layout_toStartOf="@+id/Item_Code" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Itme Name"
+                        android:id="@+id/Itme_Name"
+                        android:layout_alignTop="@+id/Item_Code"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="10dp"
+                        android:textStyle="bold"
+                        android:textSize="17sp"
+                        android:layout_toLeftOf="@+id/Item_Code"
+                        android:layout_toStartOf="@+id/Item_Code" />
 
-                <TextView
-                    android:layout_width="140dp"
-                    android:layout_height="wrap_content"
-                    android:text="Item Code"
-                    android:id="@+id/Item_Code"
-                    android:gravity="right"
-                    android:layout_centerVertical="true"
-                    android:textStyle="bold"
-                    android:textSize="17sp"
-                    android:layout_toLeftOf="@+id/Order_Quntity"
-                    android:layout_toStartOf="@+id/Order_Quntity"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"/>
+                    <TextView
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:text="Item Code"
+                        android:id="@+id/Item_Code"
+                        android:gravity="right"
+                        android:layout_centerVertical="true"
+                        android:textStyle="bold"
+                        android:textSize="17sp"
+                        android:layout_toLeftOf="@+id/Unit_Price"
+                        android:layout_toStartOf="@+id/Unit_Price"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"/>
 
-                <TextView
-                    android:layout_width="140dp"
-                    android:layout_height="wrap_content"
-                    android:text="Order Quntity"
-                    android:id="@+id/Order_Quntity"
-                    android:textSize="17sp"
-                    android:gravity="right"
-                    android:textStyle="bold"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="16dp" />
+                    <TextView
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:text="Unit Price"
+                        android:id="@+id/Unit_Price"
+                        android:textSize="17sp"
+                        android:gravity="right"
+                        android:textStyle="bold"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@+id/Order_Quntity"
+                        android:layout_toStartOf="@+id/Order_Quntity"
+                        android:paddingRight="10dp" />
+                    <TextView
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:text="Quntity"
+                        android:id="@+id/Order_Quntity"
+                        android:textSize="17sp"
+                        android:gravity="right"
+                        android:textStyle="bold"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@+id/Amount"
+                        android:layout_toStartOf="@+id/Amount"
+                        android:paddingRight="10dp" />
+                    <TextView
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:text="Amount"
+                        android:id="@+id/Amount"
+                        android:textSize="17sp"
+                        android:gravity="right"
+                        android:textStyle="bold"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
+                        android:paddingRight="16dp" />
                 </RelativeLayout>
             </FrameLayout>
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:background="@color/colorBackground"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:paddingBottom="16dp">
+                android:layout_gravity="center|bottom"
+                android:paddingBottom="8dp">
 
                 <GridView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/gridView"
-                    android:layout_gravity="left|top"
+                    android:layout_gravity="center|top"
                     android:numColumns="1"
                     android:horizontalSpacing="1dp"
                     android:stretchMode="columnWidth"
@@ -226,6 +258,69 @@
             </FrameLayout>
         </LinearLayout>
 
+        </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="center|bottom"
+        android:background="@color/colorBackground">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginRight="80dp">
+            <TextView
+                android:id="@+id/textTotal"
+                android:text="00.00"
+                android:inputType="numberDecimal"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:textColor="@color/colorAccent"
+                android:textStyle="bold"
+                android:layout_marginRight="16dp"/>
+            <TextView
+                android:id="@+id/textTotal_Amount"
+                android:text="Total Amount : "
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_gravity="right|center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/textTotal"
+                android:layout_toStartOf="@+id/textTotal"
+                android:paddingLeft="10dp"/>
+            <AutoCompleteTextView
+                android:id="@+id/Remark"
+                android:ems="0"
+                android:layout_gravity="left|bottom"
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:hint="Type Remarks"
+                android:layout_centerVertical="true"
+                android:background="#fefdfd"
+                android:layout_marginLeft="100dp"
+                android:layout_toLeftOf="@+id/textTotal_Amount"
+                android:layout_toStartOf="@+id/textTotal_Amount"/>
+
+            <TextView
+                android:id="@+id/textRemarks"
+                android:text="Remarks : "
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_gravity="left|center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="16dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"/>
+
+
+        </RelativeLayout>
     </LinearLayout>
 
 </FrameLayout>

@@ -21,10 +21,24 @@
         android:background="@color/colorBackground"/>
 
     <TextView
-        android:layout_width="140dp"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:text="New Text"
         android:id="@+id/Item_Code"
+        android:layout_centerVertical="true"
+        android:gravity="right"
+        android:layout_toLeftOf="@+id/Unit_Price"
+        android:layout_toStartOf="@+id/Unit_Price"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:textSize="17sp"
+        android:paddingRight="10dp"
+        android:background="@color/colorBackground"/>
+    <TextView
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/Unit_Price"
         android:layout_centerVertical="true"
         android:gravity="right"
         android:layout_toLeftOf="@+id/Order_Quntity"
@@ -32,12 +46,11 @@
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
         android:textSize="17sp"
-        android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:background="@color/colorBackground"/>
 
     <TextView
-        android:layout_width="140dp"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:text="New Text"
         android:id="@+id/Order_Quntity"
@@ -46,9 +59,23 @@
         android:paddingBottom="8dp"
         android:textSize="17sp"
         android:layout_alignTop="@+id/Item_Code"
+        android:layout_toLeftOf="@+id/Amount"
+        android:layout_toStartOf="@+id/Amount"
+        android:paddingRight="10dp"
+        android:background="@color/colorBackground"/>
+    <TextView
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/Amount"
+        android:gravity="right"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:textSize="17sp"
+        android:layout_alignTop="@+id/Item_Code"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:paddingLeft="10dp"
         android:paddingRight="16dp"
         android:background="@color/colorBackground"/>
+
 </RelativeLayout>
