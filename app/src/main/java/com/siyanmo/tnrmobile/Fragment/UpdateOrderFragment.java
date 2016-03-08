@@ -1,6 +1,7 @@
 package com.siyanmo.tnrmobile.Fragment;
 
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -11,22 +12,69 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.app.Fragment;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
+import android.widget.GridView;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.siyanmo.tnrmobile.Adapter.NewOrderViweAdapter;
+import com.siyanmo.tnrmobile.Comman;
+import com.siyanmo.tnrmobile.CommanMethode;
+import com.siyanmo.tnrmobile.DomainObjects.Customer;
+import com.siyanmo.tnrmobile.DomainObjects.Item;
+import com.siyanmo.tnrmobile.DomainObjects.SalesOrderDetail;
+import com.siyanmo.tnrmobile.DomainObjects.SalesOrderHeader;
 import com.siyanmo.tnrmobile.R;
 import com.siyanmo.tnrmobile.SqliteDataProvider.DatabaseHandler;
+
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class UpdateOrderFragment extends Fragment {
-    AppCompatActivity activity ;
-    String orderId;
-    DatabaseHandler dbHandler;
-    View rootView;
+
+    private ImageButton AddButton;
+    private AutoCompleteTextView autoCompleteItem;
+    private AutoCompleteTextView autoCompleteCus;
+    private TextView OrderDate;
+    private TextView TotalAmount;
+    private GridView OrderGrid;
+    private EditText Quntity;
+    private AutoCompleteTextView ItemCode;
+    private TextView ItemName;
+    private TextView Remark;
+
+    private List<Customer> customerList;
+    private List<Item> iemlist;
+    private ArrayAdapter<String> Itemadapter;
+    private ArrayAdapter<String> CusAdapter;
+    private ArrayAdapter<String> ItemCodeadapter;
+    private AppCompatActivity activity;
+    private DatabaseHandler dbHandler;
+    private NewOrderViweAdapter newOrderViweAdapter;
+    private String orderId;
+
+
+    private List<String> ItemCodes;
+    private List<String> CustomerCodes;
+    private List<String> ItemNames;
+    private Item SelectedItem;
+    private String  CustomerCode;
+
     public UpdateOrderFragment() {
         // Required empty public constructor
     }
@@ -36,29 +84,245 @@ public class UpdateOrderFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         setHasOptionsMenu(true);
-        rootView=inflater.inflate(R.layout.fragment_update_order,null);
-        dbHandler=new DatabaseHandler(activity);
 
-        rootView.setOnKeyListener(new View.OnKeyListener()
-        {
-            @Override
-            public boolean onKey( View v, int keyCode, KeyEvent event )
-            {
-                if( keyCode == KeyEvent.KEYCODE_BACK )
-                {
-                    OrdersFragment fragment=new OrdersFragment();
-                    fragment.SetActivity(activity);
-                    FragmentTransaction fragmentTransaction=activity.getSupportFragmentManager().beginTransaction();
-                    fragmentTransaction.replace(R.id.fragment_container,fragment).commit();
-                    return true;
-                }
-                return false;
-            }
-        } );
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_update_order, container, false);
+        return inflater.inflate(R.layout.fragment_new_order, container, false);
     }
 
+    @Override
+    public void onViewCreated(final View view, Bundle savedInstanceState) {
+
+        OrderGrid = (GridView)view.findViewById(R.id.gridView);
+        AddButton = (ImageButton) view.findViewById(R.id.add);
+        OrderDate = (TextView) view.findViewById(R.id.txtdate);
+        autoCompleteItem = (AutoCompleteTextView) view.findViewById(R.id.ItemName);
+        autoCompleteCus = (AutoCompleteTextView) view.findViewById(R.id.CusTomerName);
+        Quntity = (EditText) view.findViewById(R.id.txtquntity);
+        ItemCode = (AutoCompleteTextView)view.findViewById(R.id.Itemcode);
+        ItemName = (TextView)view.findViewById(R.id.ItemName);
+        TotalAmount = (TextView)view.findViewById(R.id.textTotal);
+        Remark=(EditText)view.findViewById(R.id.Remark);
+        newOrderViweAdapter = new NewOrderViweAdapter(activity);
+        OrderGrid.setAdapter(newOrderViweAdapter);
+
+        dbHandler=new DatabaseHandler(activity);
+        iemlist = dbHandler.GetAllItems();
+        customerList = dbHandler.GetAllCustomer();
+        String[] itemArry = CommanMethode.GetItemNameArry(iemlist);
+        ItemNames =  Arrays.asList(itemArry);
+        String[] itemCodeArry = CommanMethode.GetItemCodeArry(iemlist);
+        ItemCodes = Arrays.asList(itemCodeArry);
+        String[] customerArry = CommanMethode.GetCustomerNameArry(customerList);
+        CustomerCodes=Arrays.asList(customerArry);
+        // Inflate the layout for this fragment
+        Itemadapter = new ArrayAdapter<String>(view.getContext(),android.R.layout.simple_list_item_1, itemArry);
+        CusAdapter = new ArrayAdapter<String>(view.getContext(),android.R.layout.simple_list_item_1,customerArry);
+        ItemCodeadapter = new ArrayAdapter<String>(view.getContext(),android.R.layout.simple_list_item_1, itemCodeArry);
+
+
+        // set adapter for the auto complete fields
+        autoCompleteItem.setAdapter(Itemadapter);
+        autoCompleteCus.setAdapter(CusAdapter);
+        ItemCode.setAdapter(ItemCodeadapter);
+        // specify the minimum type of characters before drop-down list is shown
+        autoCompleteItem.setThreshold(1);
+        ItemCode.setThreshold(1);
+        autoCompleteCus.setThreshold(1);
+
+
+        //onDateClick ();
+        OnButtonClick();
+        OnGridItemLongClick();
+        OnItemNameClicked();
+        OnItemCodeClicked();
+        SetInitialOrder();
+        view.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    hideSoftKeyboard();
+                }
+
+                return false;
+            }
+        });
+        super.onViewCreated(view, savedInstanceState);
+    }
+
+    private void SetInitialOrder() {
+        SalesOrderHeader salesOrderHeader=dbHandler.GetSalesOrderHeaderByOrderId(orderId);
+        autoCompleteCus.setText(dbHandler.GetCustomerNameByCustomerCode(salesOrderHeader.getCustomerCode()));
+        Remark.setText(salesOrderHeader.getRemark());
+        TotalAmount.setText(String.format("%.2f", salesOrderHeader.getOrderAmount()));
+        Date cal = salesOrderHeader.getOrderDate();
+        OrderDate.setText(new SimpleDateFormat("dd/MM/yyyy").format(cal));
+
+        List<SalesOrderDetail>detailList=dbHandler.GetAllSalesOrderDetailByOrderId(orderId);
+
+        newOrderViweAdapter.InsertInitialData(detailList);
+    }
+
+    private void OnItemCodeClicked() {
+        ItemCode.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View arg1, int pos,
+                                    long id) {
+                //Toast.makeText(activity, " selected" + ItemCodes.get(pos)+"/"+pos, Toast.LENGTH_LONG).show();
+                SelectedItem = dbHandler.GetItemByItemCode(ItemCodes.get(pos));
+                autoCompleteItem.setText(SelectedItem.getItemNameShown());
+
+            }
+        });
+    }
+
+    private void OnItemNameClicked() {
+        autoCompleteItem.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View arg1, int pos,
+                                    long id) {
+                //Toast.makeText(activity, " selected" + ItemNames.get(pos)+"/"+pos, Toast.LENGTH_LONG).show();
+                SelectedItem = dbHandler.GetItemByItemName(autoCompleteItem.getText().toString());
+                ItemCode.setText(SelectedItem.getItemCode());
+            }
+        });
+    }
+
+    private void OnGridItemLongClick() {
+        OrderGrid.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+                try {
+                    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            switch (which) {
+                                case DialogInterface.BUTTON_POSITIVE:
+                                    newOrderViweAdapter.DeleteData(position);
+                                    SetTotalAmount();
+                                    break;
+                                case DialogInterface.BUTTON_NEGATIVE:
+                                    //No button clicked
+                                    break;
+                            }
+                        }
+                    };
+                    AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                    builder.setMessage("Do you want Delete this Order?")
+                            .setNegativeButton("No", dialogClickListener)
+                            .setPositiveButton("Yes", dialogClickListener).show();
+                    return true;
+                } catch (Exception ex) {
+                    return false;
+                }
+            }
+        });
+    }
+
+    private SalesOrderHeader MakeSalesOrderHearde(){
+        SalesOrderHeader salesHeader = new SalesOrderHeader();
+        if(ValidateHeader()) {
+
+            salesHeader.setSalesmanCode(Comman.getSalesExecutive().getSalesExecutiveCode());
+            salesHeader.setOrderAmount(Float.parseFloat(TotalAmount.getText().toString()));
+            salesHeader.setCustomerCode(CustomerCode);
+            salesHeader.setRemark(Remark.getText().toString());
+            salesHeader.setOrderId(Integer.parseInt(orderId));
+        }
+        return salesHeader;
+    }
+
+    private boolean ValidateHeader() {
+        boolean ok =true;
+        if(autoCompleteCus.getText().toString().equals("")){
+            ok=false;
+            Toast.makeText(activity, "Customer Name Empty", Toast.LENGTH_SHORT).show();
+        }else {
+            CustomerCode = dbHandler.GetCustomerCodeByCustomerName(autoCompleteCus.getText().toString());
+            if(CustomerCode.equals("")||CustomerCode.isEmpty()){
+                ok =false;
+                Toast.makeText(activity, "Customer Name Error", Toast.LENGTH_SHORT).show();
+            }
+
+        }
+        return ok;
+    }
+
+    private void OnButtonClick(){
+        AddButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hideSoftKeyboard();
+                OnAddButtonClick();
+            }
+        });
+    }
+
+    public void hideSoftKeyboard() {
+        if(getActivity().getCurrentFocus()!=null) {
+            InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+        }
+    }
+
+    private void OnAddButtonClick() {
+        if(ValidationItemAdding()) {
+            Float quantity = Float.parseFloat(Quntity.getText().toString());
+            Float amount = quantity*SelectedItem.getSellingPrice();
+            String itemName =(dbHandler.GetItemByItemCode(ItemCode.getText().toString())).getItemNameShown();
+            SalesOrderDetail NewOrder = new SalesOrderDetail(ItemCode.getText().toString(), itemName,quantity,amount,SelectedItem.getSellingPrice());
+            newOrderViweAdapter.filterData(NewOrder);
+            ClearItemFieds();
+            SetTotalAmount();
+            int index = OrderGrid.getLastVisiblePosition();
+            OrderGrid.smoothScrollToPosition(index);
+        }
+    }
+    private void SetTotalAmount (){
+        List<SalesOrderDetail> orders = newOrderViweAdapter.GetOrderItemses();
+        float sum = 0;
+        for (SalesOrderDetail order:
+                orders) {
+            sum = sum+ order.getValue();
+        }
+        String total = String.format("%.2f", sum);
+        TotalAmount.setText(total);
+    }
+    private void ClearItemFieds() {
+        Quntity.setText("");
+        ItemCode.setText("");
+        ItemName.setText("");
+    }
+
+    private boolean ValidationItemAdding() {
+        boolean ok=true;
+        try {
+
+            if(Float.parseFloat(Quntity.getText().toString()) < 0) {
+                ok = false;
+                Toast.makeText(activity, "Item Quantity Error", Toast.LENGTH_SHORT).show();
+
+            }
+            String itemCod = ItemCode.getText().toString();
+            if(itemCod.equals("")){
+                ok = false;
+                Toast.makeText(activity, "Item Code Empty", Toast.LENGTH_SHORT).show();
+            }
+            if(!ItemCodes.contains(itemCod)){
+                ok = false;
+                Toast.makeText(activity, "Item Code Not Exist", Toast.LENGTH_SHORT).show();
+            }
+        }catch(NumberFormatException ex){
+            ok =false;
+            Toast.makeText(activity, "Item Quantity Error", Toast.LENGTH_SHORT).show();
+        }catch(Exception ex){
+
+        }
+        return ok;
+    }
     public void SetActivity(AppCompatActivity sactivity,String ID){
         activity=sactivity;
         orderId=ID;
@@ -99,7 +363,9 @@ public class UpdateOrderFragment extends Fragment {
             public void onClick(DialogInterface dialog, int which) {
                 switch (which) {
                     case DialogInterface.BUTTON_POSITIVE:
-                        boolean result = true;//call quary to update
+                        List<SalesOrderDetail> orders = newOrderViweAdapter.GetOrderItemses();
+                        SalesOrderHeader salesOrderHeader = MakeSalesOrderHearde();
+                        boolean result = dbHandler.UpdateOrders(salesOrderHeader, orders);
                         if (result) {
                             OrdersFragment fragment=new OrdersFragment();
                             fragment.SetActivity(activity);

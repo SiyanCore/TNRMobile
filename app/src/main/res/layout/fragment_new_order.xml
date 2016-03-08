@@ -52,7 +52,10 @@
                         android:singleLine="true"
                         android:background="#fefdfd"
                         android:layout_marginLeft="166dp"
-                        android:layout_marginRight="120dp"/>
+                        android:layout_marginRight="120dp"
+                        android:dropDownHeight="200dp"
+                        android:dropDownAnchor="@+id/salesmanName"
+                        android:dropDownWidth="600dp"/>
 
                     <TextView
                         android:id="@+id/textCus"
@@ -80,19 +83,18 @@
 
                     <AutoCompleteTextView
                         android:id="@+id/Itemcode"
-                        android:layout_below="@+id/text1"
                         android:layout_gravity="left|bottom"
                         android:ems="0"
-                        android:layout_width="95dp"
+                        android:layout_width="110dp"
                         android:layout_height="32dp"
                         android:singleLine="true"
                         android:hint="Type code"
                         android:background="#fefdfd"
-                        android:layout_marginLeft="70dp" />
+                        android:layout_marginLeft="70dp"
+                        android:dropDownHeight="260dp"/>
 
                     <AutoCompleteTextView
                         android:id="@+id/ItemName"
-                        android:layout_below="@+id/text1"
                         android:layout_gravity="left|bottom"
                         android:ems="0"
                         android:layout_width="match_parent"
@@ -100,8 +102,9 @@
                         android:layout_height="32dp"
                         android:hint="Type Item Name"
                         android:background="#fefdfd"
-                        android:layout_marginLeft="170dp"
-                        android:layout_marginRight="190dp"/>
+                        android:layout_marginLeft="185dp"
+                        android:layout_marginRight="190dp"
+                        android:dropDownHeight="260dp"/>
 
                     <EditText
                         android:layout_width="79dp"
@@ -299,7 +302,7 @@
                 android:layout_toLeftOf="@+id/textTotal"
                 android:layout_toStartOf="@+id/textTotal"
                 android:paddingLeft="10dp"/>
-            <AutoCompleteTextView
+            <EditText
                 android:id="@+id/Remark"
                 android:ems="0"
                 android:layout_gravity="left|bottom"

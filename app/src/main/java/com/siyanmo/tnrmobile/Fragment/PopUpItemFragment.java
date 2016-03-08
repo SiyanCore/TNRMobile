@@ -3,6 +3,7 @@ package com.siyanmo.tnrmobile.Fragment;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -13,10 +14,14 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.siyanmo.tnrmobile.DomainObjects.Item;
 import com.siyanmo.tnrmobile.R;
@@ -82,9 +87,31 @@ public class PopUpItemFragment extends DialogFragment {
         });
         dialog.setCanceledOnTouchOutside(false);
         // Inflate the layout for this fragment
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                hideSoftKeyboard(view);
+            }
+        });
+        rootView.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    hideSoftKeyboard(v);
+                }
+
+                return false;
+            }
+        });
         return rootView;
     }
+    public void hideSoftKeyboard(View view) {
 
+        InputMethodManager inputMethodManager = (InputMethodManager) view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
+    }
     public void SetItems(){
         List<Item> itemList=new ArrayList<>();
         itemList=dbHandler.GetAllItems();

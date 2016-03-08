@@ -14,7 +14,11 @@ import com.siyanmo.tnrmobile.DomainObjects.Item;
 import com.siyanmo.tnrmobile.DomainObjects.OrderItems;
 import com.siyanmo.tnrmobile.R;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,14 +32,25 @@ public class OrdersAdapter extends BaseExpandableListAdapter {
     private List<String> i_header_titles = new ArrayList<>();
     private HashMap<String,List<String>> child_titles=new HashMap<>();
     private HashMap<String,List<String>> i_child_titles=new HashMap<>();
+    private List<Integer> orderId=new ArrayList<>();
+    private List<Integer> i_orderId=new ArrayList<>();
     private Context context;
 
     public OrdersAdapter(Context cnt, List<FullOrder> fullOrderList,String[] customerNames,List<Item> itemList){
         context=cnt;
         int i=0;
         for (FullOrder fullOrder : fullOrderList){
-            String header=fullOrder.getOrderId()+"."+customerNames[i]+" / "+fullOrder.getOrderDate().toString();
+            String date=fullOrder.getOrderDate().toString();
+            DateFormat iso8601Format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date cal= null;
+            try {
+                cal = iso8601Format.parse(date);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            String header=customerNames[i]+"   "+new SimpleDateFormat("dd/MM/yyyy h:mm a").format(cal);
             header_titles.add(header);
+            orderId.add(fullOrder.getOrderId());
             List<String>itemDetails=new ArrayList<>();
             for (OrderItems orderItems:fullOrder.getItems()){
                 for (Item item:itemList){
@@ -50,6 +65,7 @@ public class OrdersAdapter extends BaseExpandableListAdapter {
         }
         i_header_titles.addAll(header_titles);
         i_child_titles.putAll(child_titles);
+        i_orderId.addAll(orderId);
 
     }
     @Override
@@ -122,11 +138,14 @@ public class OrdersAdapter extends BaseExpandableListAdapter {
         Log.v("OrdersAdapter", String.valueOf(header_titles.size()));
         header_titles.clear();
         child_titles.clear();
+        orderId.clear();
         if(query.equals("")){
             header_titles.addAll(i_header_titles);
             child_titles.putAll(i_child_titles);
+            orderId.addAll(i_orderId);
         }
         else {
+            int i=0;
             for (String h_title:i_header_titles){
                 if(h_title.toLowerCase().contains(query)) {
                     for (Map.Entry<String, List<String>> c_title : i_child_titles.entrySet()) {
@@ -135,12 +154,19 @@ public class OrdersAdapter extends BaseExpandableListAdapter {
                             header_titles.add(h_title);
                             List<String> value=c_title.getValue();
                             child_titles.put(h_title,value);
+                            orderId.add(i_orderId.get(i));
                         }
                     }
                 }
+                i++;
             }
         }
         Log.v("ItemAdapter", String.valueOf(header_titles.size()));
         notifyDataSetChanged();
+    }
+
+    public String GetOrderId(int position) {
+        String Id=orderId.get(position).toString();
+        return Id;
     }
 }

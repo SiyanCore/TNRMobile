@@ -17,8 +17,13 @@ import com.siyanmo.tnrmobile.DomainObjects.SalesExecutive;
 import com.siyanmo.tnrmobile.DomainObjects.SalesOrderDetail;
 import com.siyanmo.tnrmobile.DomainObjects.SalesOrderHeader;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by Hiran on 2/3/2016.
@@ -43,7 +48,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     private static final String CREATE_TABLE_InvoiceHeader="CREATE TABLE IF NOT EXISTS "+ DbContent.SalesOrderHeader +
                                                                                     "("+SalesOrderHeader.OrderId+" INTEGER PRIMARY KEY AUTOINCREMENT,"
-                                                                                    +SalesOrderHeader.Date+" DATETIME DEFAULT CURRENT_TIMESTAMP,"
+                                                                                    +SalesOrderHeader.Date+" DATETIME DEFAULT (DATETIME(CURRENT_TIMESTAMP, 'LOCALTIME')),"
                                                                                     +SalesOrderHeader.CustomerCode+" TEXT NOT NULL,"
                                                                                     +SalesOrderHeader.Amount+" REAL NOT NULL,"
                                                                                     +SalesOrderHeader.SalesmanCode+" INTEGER NOT NULL,"
@@ -190,12 +195,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return -1;
     }
 
-    public long InsertSalesOrderDetail(SalesOrderDetail SalesOrderDetailObject){
+    public long InsertSalesOrderDetail(SalesOrderDetail SalesOrderDetailObject,int OrderId){
         try {
             SQLiteDatabase db=this.getWritableDatabase();
             ContentValues contentValues=new ContentValues();
             contentValues.put(SalesOrderDetail.ItemCode,SalesOrderDetailObject.getItemCode());
-            contentValues.put(SalesOrderDetail.OrderId,SalesOrderDetailObject.getOrderId());
+            contentValues.put(SalesOrderDetail.OrderId,OrderId);
             contentValues.put(SalesOrderDetail.Quantity,SalesOrderDetailObject.getSoldQuantityinUnits());
             contentValues.put(SalesOrderDetail.Value,SalesOrderDetailObject.getValue());
             long result = db.insert(DbContent.SalesOrderDetail,null,contentValues);
@@ -344,6 +349,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             return false;
         }
     }
+
     public SalesExecutive GetSalesmenDetail(){
         SalesExecutive salesExecutive=new SalesExecutive();
         try {
@@ -379,6 +385,23 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             System.err.println("Caught IOException: " + e.getMessage());
         }
         return CustomerName;
+    }
+
+    public String GetCustomerCodeByCustomerName(String customerName ){
+        String CustomerCode="";
+        try {
+            SQLiteDatabase db=this.getWritableDatabase();
+            Cursor cursor = db.rawQuery("SELECT "+Customer.Code+" FROM "+DbContent.Customer+" WHERE "+Customer.Name+"='"+customerName+"'",null);
+            if (cursor.moveToNext()){
+                CustomerCode=cursor.getString(0);
+            }
+            return CustomerCode;
+        } catch (IndexOutOfBoundsException e) {
+            System.err.println("IndexOutOfBoundsException: " + e.getMessage());
+        } catch (SQLException e) {
+            System.err.println("Caught IOException: " + e.getMessage());
+        }
+        return CustomerCode;
     }
 
     public boolean DeleteOrderById(String orderId){
@@ -441,4 +464,106 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return item;
     }
 
+    public boolean InsertOrder(SalesOrderHeader salesOrderHeader, List<SalesOrderDetail> orders) {
+        int ordeId=(int)InsertSalesOrderHeader(salesOrderHeader);
+        long id;
+        if (ordeId>0){
+            for (SalesOrderDetail detail:orders){
+                id=InsertSalesOrderDetail(detail,ordeId);
+                if (id<0){
+                    DeleteOrderById(Integer.toString(ordeId));
+                    return false;
+                }
+            }
+            return true;
+        }
+        else {
+            return false;
+        }
+
+    }
+
+    public SalesOrderHeader GetSalesOrderHeaderByOrderId(String orderId){
+        SalesOrderHeader header=new SalesOrderHeader();
+        try {
+            SQLiteDatabase db=this.getWritableDatabase();
+            Cursor cursor = db.rawQuery("SELECT * FROM "+DbContent.SalesOrderHeader+" WHERE "+SalesOrderHeader.OrderId+"='"+orderId+"'",null);
+            if (cursor.moveToNext()){
+                header.setCustomerCode(cursor.getString(cursor.getColumnIndex(SalesOrderHeader.CustomerCode)));
+                String date=cursor.getString(cursor.getColumnIndex(SalesOrderHeader.Date));
+                DateFormat iso8601Format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                header.setOrderDate(iso8601Format.parse(date));
+                header.setRemark(cursor.getString(cursor.getColumnIndex(SalesOrderHeader.Remark)));
+                header.setOrderAmount(cursor.getFloat(cursor.getColumnIndex(SalesOrderHeader.Amount)));
+            }
+            return header;
+        } catch (IndexOutOfBoundsException e) {
+            System.err.println("IndexOutOfBoundsException: " + e.getMessage());
+        } catch (SQLException e) {
+            System.err.println("Caught IOException: " + e.getMessage());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return header;
+    }
+
+    public List<SalesOrderDetail> GetAllSalesOrderDetailByOrderId(String orderId) {
+        List<SalesOrderDetail> detailList=new ArrayList<>();
+        try {
+            SQLiteDatabase db=this.getWritableDatabase();
+            Cursor cursor = db.rawQuery("SELECT * FROM "+DbContent.SalesOrderDetail+" WHERE "+ SalesOrderDetail.OrderId+"='"+orderId+"'",null);
+            while (cursor.moveToNext()){
+                SalesOrderDetail detail=new SalesOrderDetail();
+                String itemCode=cursor.getString(cursor.getColumnIndex(SalesOrderDetail.ItemCode));
+                float quantity=cursor.getFloat(cursor.getColumnIndex(SalesOrderDetail.Quantity));
+                float value=cursor.getFloat(cursor.getColumnIndex(SalesOrderDetail.Value));
+                detail.setItemCode(itemCode);
+                detail.setItemName(GetItemByItemCode(itemCode).getItemNameShown());
+                detail.setSoldQuantityinUnits(quantity);
+                detail.setValue(value);
+                detail.setUnitePrize(value/quantity);
+                detailList.add(detail);
+            }
+            return detailList;
+        } catch (IndexOutOfBoundsException e) {
+            System.err.println("IndexOutOfBoundsException: " + e.getMessage());
+        } catch (SQLException e) {
+            System.err.println("Caught IOException: " + e.getMessage());
+        }
+        return detailList;
+    }
+
+    public boolean UpdateOrders(SalesOrderHeader salesOrderHeader, List<SalesOrderDetail> orders) {
+        SQLiteDatabase db=this.getWritableDatabase();
+        boolean result=false;
+        long id;
+        try {
+            db.beginTransaction();
+            int orderId=salesOrderHeader.getOrderId();
+            ContentValues values = new ContentValues();
+            values.put(SalesOrderHeader.CustomerCode, salesOrderHeader.getCustomerCode());
+            values.put(SalesOrderHeader.Amount, salesOrderHeader.getOrderAmount());
+            values.put(SalesOrderHeader.Remark, salesOrderHeader.getRemark());
+            int val=db.update(DatabaseContent.SalesOrderHeader, values, SalesOrderHeader.OrderId+"="+orderId, null);
+            if(val>0){
+                db.delete(DbContent.SalesOrderDetail, SalesOrderDetail.OrderId + "=?", new String[]{String.valueOf(orderId)});
+                for (SalesOrderDetail orderDetail:orders) {
+                    id=InsertSalesOrderDetail(orderDetail, orderId);
+                    if (id<0){
+                        return false;
+                    }
+                }
+            }
+            db.setTransactionSuccessful();
+            result=true;
+        } catch (IndexOutOfBoundsException e) {
+            System.err.println("IndexOutOfBoundsException: " + e.getMessage());
+        } catch (SQLException e) {
+            System.err.println("Caught IOException: " + e.getMessage());
+        }finally {
+            db.endTransaction();
+            return result;
+        }
+
+    }
 }

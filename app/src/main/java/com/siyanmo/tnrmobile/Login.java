@@ -10,7 +10,10 @@ import android.graphics.AvoidXfermode;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -52,7 +55,20 @@ public class Login extends AppCompatActivity {
 
         dbHandler=new DatabaseHandler(this);
         // find View-elements
-        btnSgn = (Button) findViewById(R.id.sign);
+        UserName = (EditText)findViewById(R.id.Uname);
+        PassWord = (EditText) findViewById(R.id.Pword);
+        btnSgn=(Button)findViewById(R.id.sign);
+
+        PassWord.setOnKeyListener(new View.OnKeyListener() {
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    btnSgn.performClick();
+                    return true;
+                }
+                return false;
+            }
+        });
+
         login();
 
         login = new logIn(this);
@@ -73,14 +89,25 @@ public class Login extends AppCompatActivity {
         {
             findViewById(R.id.Pword).requestFocus();
         }
+        View view=findViewById(R.id.login_layout);
+        view.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    hideSoftKeyboard();
+                }
+
+                return false;
+            }
+        });
     }
 
     //Login Button Acctivity
     public void login()
     {
-        UserName = (EditText)findViewById(R.id.Uname);
-        PassWord = (EditText) findViewById(R.id.Pword);
-        btnSgn=(Button)findViewById(R.id.sign);
+
         btnSgn.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -174,7 +201,12 @@ public class Login extends AppCompatActivity {
         // Showing Alert Message
         alertDialog.show();
     }
-
+    public void hideSoftKeyboard() {
+        if(getCurrentFocus()!=null) {
+            InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        }
+    }
 
 }
 

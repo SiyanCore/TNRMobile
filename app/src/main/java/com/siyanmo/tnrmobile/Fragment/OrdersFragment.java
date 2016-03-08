@@ -1,6 +1,7 @@
 package com.siyanmo.tnrmobile.Fragment;
 
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,8 +12,10 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 import android.widget.SearchView;
@@ -88,11 +91,7 @@ public class OrdersFragment extends Fragment {
                 int itemType = ExpandableListView.getPackedPositionType(id);
 
                 if (itemType == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
-                    String header = (String) expandableListView.getItemAtPosition(position);
-                    Id = "";
-                    for (int i = 0; header.charAt(i) != '.'; i++) {
-                        Id += header.charAt(i);
-                    }
+                    Id = ordersAdapter.GetOrderId(position);
                     DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -101,18 +100,14 @@ public class OrdersFragment extends Fragment {
                                     EditOrder();
                                     break;
                                 case DialogInterface.BUTTON_NEGATIVE:
-                                    DeleteOrder();
-                                    break;
-                                case DialogInterface.BUTTON_NEUTRAL:
-
                                     break;
                             }
                         }
                     };
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-                    builder.setMessage("Do you want change this Order ?").setPositiveButton("Edit", dialogClickListener)
-                            .setNegativeButton("Delete", dialogClickListener).setNeutralButton("Cancel", dialogClickListener).show();
+                    builder.setMessage("Do you want Edit this Order ?").setPositiveButton("Yes", dialogClickListener)
+                            .setNegativeButton("No", dialogClickListener).show();
                 }
 
                 return false;
@@ -123,7 +118,19 @@ public class OrdersFragment extends Fragment {
         ordersAdapter=new OrdersAdapter(activity,fullOrderList,customerNames,itemList);
         expandableListView.setAdapter(ordersAdapter);
         expandableListView.setGroupIndicator(null);
+        expandableListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                hideSoftKeyboard(view);
+            }
+        });
     }
+    public void hideSoftKeyboard(View view) {
+        Toast.makeText(activity, " selected", Toast.LENGTH_LONG).show();
+            InputMethodManager inputMethodManager = (InputMethodManager) view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
     public void SetActivity(AppCompatActivity sactivity){
         activity=sactivity;
     }
@@ -150,33 +157,6 @@ public class OrdersFragment extends Fragment {
         fragment.SetActivity(activity, Id);
         FragmentTransaction fragmentTransaction=activity.getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container,fragment).commit();
-    }
-    private void DeleteOrder(){
-        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                switch (which){
-                    case DialogInterface.BUTTON_POSITIVE:
-                        boolean result=dbHandler.DeleteOrderById(Id);
-                        if(result){
-                            DisplyList();
-                            Toast.makeText(activity, "Delete Success", Toast.LENGTH_LONG).show();
-                        }else {
-                            Toast.makeText(activity, "Delete Failed", Toast.LENGTH_LONG).show();
-                        }
-                        break;
-                    case DialogInterface.BUTTON_NEGATIVE:
-                        //No button clicked
-                        break;
-                }
-            }
-        };
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        builder.setMessage("Do you want Delete this Order?")
-                .setNegativeButton("No", dialogClickListener)
-                .setPositiveButton("Yes", dialogClickListener).show();
-
     }
 
     @Override
