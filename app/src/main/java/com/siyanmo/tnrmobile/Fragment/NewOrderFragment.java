@@ -16,7 +16,6 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -35,9 +34,7 @@ import com.siyanmo.tnrmobile.DomainObjects.Item;
 import com.siyanmo.tnrmobile.DomainObjects.SalesOrderDetail;
 import com.siyanmo.tnrmobile.DomainObjects.SalesOrderHeader;
 import com.siyanmo.tnrmobile.R;
-import com.siyanmo.tnrmobile.SelectDateFragment;
 import com.siyanmo.tnrmobile.SqliteDataProvider.DatabaseHandler;
-import com.siyanmo.tnrmobile.Adapter.NewOrderViweAdapter;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -56,6 +53,7 @@ public class NewOrderFragment extends Fragment {
     private AutoCompleteTextView autoCompleteCus;
     private TextView OrderDate;
     private TextView TotalAmount;
+    private TextView Outstanding;
     private GridView OrderGrid;
     private EditText Quntity;
     private AutoCompleteTextView ItemCode;
@@ -96,6 +94,7 @@ public class NewOrderFragment extends Fragment {
         OrderGrid = (GridView)view.findViewById(R.id.gridView);
         AddButton = (ImageButton) view.findViewById(R.id.add);
         OrderDate = (TextView) view.findViewById(R.id.txtdate);
+        Outstanding=(TextView) view.findViewById(R.id.textOutstanding);
         autoCompleteItem = (AutoCompleteTextView) view.findViewById(R.id.ItemName);
         autoCompleteCus = (AutoCompleteTextView) view.findViewById(R.id.CusTomerName);
         Quntity = (EditText) view.findViewById(R.id.txtquntity);
@@ -137,6 +136,7 @@ public class NewOrderFragment extends Fragment {
         OnGridItemLongClick();
         OnItemNameClicked();
         OnItemCodeClicked();
+        OnCustomerClicked();
         view.setOnTouchListener(new View.OnTouchListener() {
 
             @Override
@@ -150,6 +150,17 @@ public class NewOrderFragment extends Fragment {
             }
         });
         super.onViewCreated(view, savedInstanceState);
+    }
+
+    private void OnCustomerClicked() {
+        autoCompleteCus.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View arg1, int pos,
+                                    long id) {
+                Outstanding.setText(dbHandler.GetOutstandingByCustomerName(autoCompleteCus.getText().toString()));
+            }
+        });
     }
 
     private void OnItemCodeClicked() {
@@ -230,9 +241,17 @@ public class NewOrderFragment extends Fragment {
                             fragment.SetActivity(activity);
                             FragmentTransaction fragmentTransaction=activity.getSupportFragmentManager().beginTransaction();
                             fragmentTransaction.replace(R.id.fragment_container,fragment).commit();
-                            Toast.makeText(activity, "Save Success", Toast.LENGTH_LONG).show();
+                            Toast tost =Toast.makeText(activity, "Save Success", Toast.LENGTH_LONG);
+                            ViewGroup group = (ViewGroup) tost.getView();
+                            TextView messageTextView = (TextView) group.getChildAt(0);
+                            messageTextView.setTextSize(20);
+                            tost.show();
                         } else {
-                            Toast.makeText(activity, "Save Failed", Toast.LENGTH_LONG).show();
+                            Toast tost =Toast.makeText(activity, "Save Failed", Toast.LENGTH_LONG);
+                            ViewGroup group = (ViewGroup) tost.getView();
+                            TextView messageTextView = (TextView) group.getChildAt(0);
+                            messageTextView.setTextSize(20);
+                            tost.show();
                         }
                         break;
                     case DialogInterface.BUTTON_NEGATIVE:
@@ -263,12 +282,20 @@ public class NewOrderFragment extends Fragment {
         boolean ok =true;
         if(autoCompleteCus.getText().toString().equals("")){
             ok=false;
-            Toast.makeText(activity, "Customer Name Empty", Toast.LENGTH_SHORT).show();
+            Toast tost =Toast.makeText(activity, "Customer Name Empty", Toast.LENGTH_SHORT);
+            ViewGroup group = (ViewGroup) tost.getView();
+            TextView messageTextView = (TextView) group.getChildAt(0);
+            messageTextView.setTextSize(20);
+            tost.show();
         }else {
             CustomerCode = dbHandler.GetCustomerCodeByCustomerName(autoCompleteCus.getText().toString());
             if(CustomerCode.equals("")||CustomerCode.isEmpty()){
                 ok =false;
-                Toast.makeText(activity, "Customer Name Error", Toast.LENGTH_SHORT).show();
+                Toast tost =Toast.makeText(activity, "Customer Name Error", Toast.LENGTH_SHORT);
+                ViewGroup group = (ViewGroup) tost.getView();
+                TextView messageTextView = (TextView) group.getChildAt(0);
+                messageTextView.setTextSize(20);
+                tost.show();
             }
 
         }
@@ -365,23 +392,39 @@ public class NewOrderFragment extends Fragment {
         boolean ok=true;
         try {
 
-            if(Float.parseFloat(Quntity.getText().toString()) <= 0) {
-            ok = false;
-            Toast.makeText(activity, "Item Quantity Error", Toast.LENGTH_SHORT).show();
+            if(Float.parseFloat(Quntity.getText().toString()) < 0) {
+                ok = false;
+                Toast tost =Toast.makeText(activity, "Item Quantity Error", Toast.LENGTH_SHORT);
+                ViewGroup group = (ViewGroup) tost.getView();
+                TextView messageTextView = (TextView) group.getChildAt(0);
+                messageTextView.setTextSize(20);
+                tost.show();
 
             }
             String itemCod = ItemCode.getText().toString();
             if(itemCod.equals("")){
                 ok = false;
-                Toast.makeText(activity, "Item Code Empty", Toast.LENGTH_SHORT).show();
+                Toast tost =Toast.makeText(activity, "Item Code Empty", Toast.LENGTH_SHORT);
+                ViewGroup group = (ViewGroup) tost.getView();
+                TextView messageTextView = (TextView) group.getChildAt(0);
+                messageTextView.setTextSize(20);
+                tost.show();
             }
             if(!ItemCodes.contains(itemCod)){
                 ok = false;
-                Toast.makeText(activity, "Item Code Not Exist", Toast.LENGTH_SHORT).show();
+                Toast tost =Toast.makeText(activity, "Item Code Not Exist", Toast.LENGTH_SHORT);
+                ViewGroup group = (ViewGroup) tost.getView();
+                TextView messageTextView = (TextView) group.getChildAt(0);
+                messageTextView.setTextSize(20);
+                tost.show();
             }
         }catch(NumberFormatException ex){
             ok =false;
-            Toast.makeText(activity, "Item Quantity Error", Toast.LENGTH_SHORT).show();
+            Toast tost =Toast.makeText(activity, "Item Quantity Error", Toast.LENGTH_SHORT);
+            ViewGroup group = (ViewGroup) tost.getView();
+            TextView messageTextView = (TextView) group.getChildAt(0);
+            messageTextView.setTextSize(20);
+            tost.show();
         }catch(Exception ex){
 
         }

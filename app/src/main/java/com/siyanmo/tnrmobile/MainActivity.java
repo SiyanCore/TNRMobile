@@ -18,6 +18,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -177,8 +178,13 @@ public class MainActivity extends AppCompatActivity
             if(connectionDetector.isConnectingToInternet()) {
                 SyncEvent syncEvent = new SyncEvent(this);
                 syncEvent.SYncAll();
-            }else
-                Toast.makeText(this, "No Internet Connection", Toast.LENGTH_LONG).show();
+            }else {
+                Toast tost =Toast.makeText(this, "No Internet Connection", Toast.LENGTH_LONG);
+                ViewGroup group = (ViewGroup) tost.getView();
+                TextView messageTextView = (TextView) group.getChildAt(0);
+                messageTextView.setTextSize(20);
+                tost.show();
+            }
         } else if (id == R.id.nav_log_out) {
             DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
                 @Override

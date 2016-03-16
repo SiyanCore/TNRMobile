@@ -115,6 +115,13 @@ public final class CommanMethode {
         }
         return array;
     }
+
+    public static User GetLogedUsear( SharedPreferences sharedPreferences) {
+        String lname = sharedPreferences.getString("Uname","");
+        String lpassword = sharedPreferences.getString("Password", "");
+        User user = new User(lname,lpassword);
+        return  user;
+    }
     //Lakmal//
     //Save User Name And Password
     //class  SaveUserNamePassword extends AppCompatActivity {

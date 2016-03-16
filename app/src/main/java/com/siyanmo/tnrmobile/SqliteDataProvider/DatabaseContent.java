@@ -19,6 +19,7 @@ public final class DatabaseContent {
     public final class Customer {
         public static final String Code="CustomerCode";
         public static final String Name="CustomerName";
+        public static final String Outstanding="Outstanding";
     }
     public final class SalesOrderHeader {
         public static final String OrderId="OrderId";

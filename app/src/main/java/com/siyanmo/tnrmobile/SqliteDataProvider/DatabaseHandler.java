@@ -40,11 +40,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                                                                                     "("+Item.Code+" TEXT PRIMARY KEY NOT NULL,"
                                                                                         +Item.Name+" TEXT NOT NULL,"
                                                                                         +Item.Price+" REAL NOT NULL,"
-                                                                                        +Item.Stock+" REAL NOT NULL"+")";
+                                                                                        +Item.Stock+" REAL DEFAULT 0"+")";
 
     private static final String CREATE_TABLE_Customer="CREATE TABLE IF NOT EXISTS "+ DbContent.Customer +
                                                                                     "("+Customer.Code+" TEXT PRIMARY KEY NOT NULL,"
-                                                                                    +Customer.Name+" TEXT NOT NULL"+")";
+                                                                                    +Customer.Name+" TEXT NOT NULL,"
+                                                                                    +Customer.Outstanding+" REAL NOT NULL"+")";
 
     private static final String CREATE_TABLE_InvoiceHeader="CREATE TABLE IF NOT EXISTS "+ DbContent.SalesOrderHeader +
                                                                                     "("+SalesOrderHeader.OrderId+" INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -146,6 +147,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             ContentValues contentValues=new ContentValues();
             contentValues.put(Customer.Code, CustomerObject.getCustomerCode());
             contentValues.put(Customer.Name, CustomerObject.getCustomerName());
+            contentValues.put(Customer.Outstanding, CustomerObject.getOutstanding());
             long result = db.insert(DbContent.Customer,null,contentValues);
             return result;
         } catch (IndexOutOfBoundsException e) {
@@ -161,7 +163,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         boolean result=false;
         try {
             db.beginTransaction();
-            db.execSQL("DROP TABLE IF EXISTS "+DbContent.Customer);
+            db.execSQL("DROP TABLE IF EXISTS " + DbContent.Customer);
             db.execSQL(CREATE_TABLE_Customer);
             for (Customer CustomerObject:CustomerList) {
                 InsertCustomer(CustomerObject,db);
@@ -248,6 +250,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                     Customer customer=new Customer();
                     customer.setCustomerCode(cursor.getString(cursor.getColumnIndex(Customer.Code)));
                     customer.setCustomerName(cursor.getString(cursor.getColumnIndex(Customer.Name)));
+                    customer.setOutstanding(cursor.getFloat(cursor.getColumnIndex(Customer.Outstanding)));
                     customerList.add(customer);
                 }
             }
@@ -394,6 +397,23 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             Cursor cursor = db.rawQuery("SELECT "+Customer.Code+" FROM "+DbContent.Customer+" WHERE "+Customer.Name+"='"+customerName+"'",null);
             if (cursor.moveToNext()){
                 CustomerCode=cursor.getString(0);
+            }
+            return CustomerCode;
+        } catch (IndexOutOfBoundsException e) {
+            System.err.println("IndexOutOfBoundsException: " + e.getMessage());
+        } catch (SQLException e) {
+            System.err.println("Caught IOException: " + e.getMessage());
+        }
+        return CustomerCode;
+    }
+
+    public String GetOutstandingByCustomerName(String customerName ){
+        String CustomerCode="";
+        try {
+            SQLiteDatabase db=this.getWritableDatabase();
+            Cursor cursor = db.rawQuery("SELECT "+Customer.Outstanding+" FROM "+DbContent.Customer+" WHERE "+Customer.Name+"='"+customerName+"'",null);
+            if (cursor.moveToNext()){
+                CustomerCode=String.format("%.2f", cursor.getFloat(0));
             }
             return CustomerCode;
         } catch (IndexOutOfBoundsException e) {

@@ -80,11 +80,19 @@ public class NewOrderViweAdapter extends BaseAdapter {
     public void filterData(SalesOrderDetail item) {
         Log.v("ItemAdapter", String.valueOf(orderItemses.size()));
         if(orderItemses.contains(item)){
-            Toast.makeText(context, "Item Updated", Toast.LENGTH_SHORT).show();
+            Toast tost =Toast.makeText(context, "Item Updated", Toast.LENGTH_SHORT);
+            ViewGroup group = (ViewGroup) tost.getView();
+            TextView messageTextView = (TextView) group.getChildAt(0);
+            messageTextView.setTextSize(20);
+            tost.show();
             int index = orderItemses.indexOf(item);
             orderItemses.set(index,item);
         }else {
-            Toast.makeText(context, "Item Added", Toast.LENGTH_SHORT).show();
+            Toast tost =Toast.makeText(context, "Item Added", Toast.LENGTH_SHORT);
+            ViewGroup group = (ViewGroup) tost.getView();
+            TextView messageTextView = (TextView) group.getChildAt(0);
+            messageTextView.setTextSize(20);
+            tost.show();
             orderItemses.add(item);
         }
         Log.v("ItemAdapter", String.valueOf(orderItemses.size()));

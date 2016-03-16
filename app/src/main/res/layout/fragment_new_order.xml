@@ -29,42 +29,77 @@
                     android:layout_height="wrap_content"
                     android:paddingBottom="8dp"
                     android:paddingTop="16dp">
-
-                    <TextView
-                        android:layout_width="115dp"
-                        android:layout_height="wrap_content"
-                        android:inputType="date"
-                        android:text="03/05/2015"
-                        android:ems="0"
-                        android:id="@+id/txtdate"
-                        android:gravity="right"
-                        android:layout_gravity="right|top"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:layout_marginRight="10dp" />
-
-                    <AutoCompleteTextView
-                        android:id="@+id/CusTomerName"
-                        android:ems="0"
-                        android:layout_gravity="left|bottom"
+                    <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="32dp"
-                        android:hint="Type Customer Name "
-                        android:singleLine="true"
-                        android:background="#fefdfd"
-                        android:layout_marginLeft="166dp"
-                        android:layout_marginRight="120dp"
-                        android:dropDownHeight="200dp"
-                        android:dropDownAnchor="@+id/salesmanName"
-                        android:dropDownWidth="600dp"/>
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_width="115dp"
+                            android:layout_height="wrap_content"
+                            android:inputType="date"
+                            android:text="03/05/2015"
+                            android:ems="0"
+                            android:id="@+id/txtdate"
+                            android:gravity="right"
+                            android:layout_gravity="right|top"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentEnd="true"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:layout_marginRight="10dp" />
+                        <TextView
+                            android:id="@+id/textOutstanding"
+                            android:text="00.00"
+                            android:inputType="numberDecimal"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_toLeftOf="@+id/txtdate"
+                            android:layout_toStartOf="@+id/txtdate"
+                            android:textColor="@color/colorPrimary"
+                            android:textStyle="bold"/>
+                        <TextView
+                            android:id="@+id/Outstanding"
+                            android:text="Outstanding : "
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:layout_gravity="right|center"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_toLeftOf="@+id/textOutstanding"
+                            android:layout_toStartOf="@+id/textOutstanding"
+                            android:paddingLeft="10dp"/>
 
-                    <TextView
-                        android:id="@+id/textCus"
-                        android:text="Customer Name : "
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:layout_gravity="left|center"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"/>
+                        <AutoCompleteTextView
+                            android:id="@+id/CusTomerName"
+                            android:ems="0"
+                            android:layout_gravity="left|bottom"
+                            android:layout_width="match_parent"
+                            android:layout_height="32dp"
+                            android:hint="Type Customer Name "
+                            android:layout_centerVertical="true"
+                            android:singleLine="true"
+                            android:background="#fefdfd"
+                            android:layout_marginLeft="166dp"
+                            android:dropDownHeight="200dp"
+                            android:layout_toLeftOf="@+id/Outstanding"
+                            android:layout_toStartOf="@+id/Outstanding"
+                            android:dropDownAnchor="@+id/salesmanName"
+                            android:dropDownWidth="600dp"/>
+
+                        <TextView
+                            android:id="@+id/textCus"
+                            android:text="Customer Name : "
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:layout_gravity="left|center"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginLeft="16dp"/>
+                    </RelativeLayout>
+
+
 
                 </FrameLayout>
 

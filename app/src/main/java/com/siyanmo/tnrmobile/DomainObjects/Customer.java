@@ -6,6 +6,7 @@ package com.siyanmo.tnrmobile.DomainObjects;
 public class Customer {
     private String CustomerCode ;
     private String CustomerName ;
+    private float Outstanding;
 
     public String getCustomerCode() {
         return CustomerCode;
@@ -20,5 +21,13 @@ public class Customer {
     }
     public void setCustomerName(String customerName) {
         CustomerName = customerName;
+    }
+
+    public float getOutstanding() {
+        return Outstanding;
+    }
+
+    public void setOutstanding(float outstanding) {
+        Outstanding = outstanding;
     }
 }

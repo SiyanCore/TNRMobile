@@ -13,10 +13,12 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.app.AlertDialog;
 
@@ -28,12 +30,13 @@ import com.siyanmo.tnrmobile.DomainObjects.User;
 import com.siyanmo.tnrmobile.SqliteDataProvider.DatabaseHandler;
 import com.siyanmo.tnrmobile.WebAPI.ItemAPI;
 import com.siyanmo.tnrmobile.WebAPI.logIn;
+import static com.siyanmo.tnrmobile.CommanMethode.GetLogedUsear;
 
 public class Login extends AppCompatActivity {
     private static EditText UserName;
     private static EditText PassWord;
     private static Button btnSgn;
-    public static final String Default ="";
+    //public static final String Default ="";
     String lname ="";
     String lpassword="";
     private logIn login;
@@ -58,7 +61,6 @@ public class Login extends AppCompatActivity {
         UserName = (EditText)findViewById(R.id.Uname);
         PassWord = (EditText) findViewById(R.id.Pword);
         btnSgn=(Button)findViewById(R.id.sign);
-
         PassWord.setOnKeyListener(new View.OnKeyListener() {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
@@ -78,8 +80,9 @@ public class Login extends AppCompatActivity {
 
         //deflt user save user name and password
         SharedPreferences  sharedPreferences=getSharedPreferences("TNRMobile_Login_User_Information", Context.MODE_PRIVATE);
-        lname = sharedPreferences.getString("Uname", Default);
-        lpassword=sharedPreferences.getString("Password",Default);
+        User user=GetLogedUsear(sharedPreferences);
+        lname =user.getLoginName();
+        lpassword=user.getPassword();
 
         UserName.setText(lname);
 
@@ -117,11 +120,23 @@ public class Login extends AppCompatActivity {
 
                         // TextBox Validation and Login
                         if (UserName.getText().toString().equals("") && PassWord.getText().toString().equals("")) {
-                            Toast.makeText(Login.this, "Please Enter  User Name and Password ", Toast.LENGTH_SHORT).show();
+                            Toast tost =Toast.makeText(Login.this, "Please Enter  User Name and Password ", Toast.LENGTH_SHORT);
+                            ViewGroup group = (ViewGroup) tost.getView();
+                            TextView messageTextView = (TextView) group.getChildAt(0);
+                            messageTextView.setTextSize(20);
+                            tost.show();
                         } else if (UserName.getText().toString().equals("")) {
-                            Toast.makeText(Login.this, "Please Enter  User Name ", Toast.LENGTH_SHORT).show();
+                            Toast tost =Toast.makeText(Login.this, "Please Enter  User Name ", Toast.LENGTH_SHORT);
+                            ViewGroup group = (ViewGroup) tost.getView();
+                            TextView messageTextView = (TextView) group.getChildAt(0);
+                            messageTextView.setTextSize(20);
+                            tost.show();
                         } else if (PassWord.getText().toString().equals("")) {
-                            Toast.makeText(Login.this, "Please Enter Password ", Toast.LENGTH_SHORT).show();
+                            Toast tost =Toast.makeText(Login.this, "Please Enter Password ", Toast.LENGTH_SHORT);
+                            ViewGroup group = (ViewGroup) tost.getView();
+                            TextView messageTextView = (TextView) group.getChildAt(0);
+                            messageTextView.setTextSize(20);
+                            tost.show();
                         } else {
 
                             //Check connectivity
@@ -134,15 +149,17 @@ public class Login extends AppCompatActivity {
                                 user.setPassword(PassWord.getText().toString());
                                 login.GetLog(user);
 
-                                Toast.makeText(Login.this, "Please wait", Toast.LENGTH_LONG).show();
-
+                                Toast tost =Toast.makeText(Login.this, "Please wait", Toast.LENGTH_LONG);
+                                ViewGroup group = (ViewGroup) tost.getView();
+                                TextView messageTextView = (TextView) group.getChildAt(0);
+                                messageTextView.setTextSize(20);
+                                tost.show();
                                 //save user name and Password
                                 //SharedPreferences  sharedPreferences=getSharedPreferences("TNRMobile_Login_User_Information",Context.MODE_PRIVATE);
                                 //SharedPreferences.Editor editor=sharedPreferences.edit();
                                // editor.putString("Uname",UserName.getText().toString());
                                // editor.putString("Password",PassWord.getText().toString());
                                 //editor.commit();
-                                PassWord.setText("");
                             }
 
                             //not connection// Local Login
@@ -151,7 +168,7 @@ public class Login extends AppCompatActivity {
                                 if (UserName.getText().toString().equals(lname) && PassWord.getText().toString().equals(lpassword))
                                 {
                                     Comman.setSalesExecutive(dbHandler.GetSalesmenDetail());
-                                    Toast.makeText(Login.this, "Well Come", Toast.LENGTH_SHORT).show();
+                                    //Toast.makeText(Login.this, "Well Come", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent("com.siyanmo.tnrmobile.MainActivity");
                                     startActivity(intent);
                                     //save user name and Password
@@ -161,12 +178,16 @@ public class Login extends AppCompatActivity {
 //                                    editor.putString("Uname",UserName.getText().toString());
 //                                    editor.putString("Password",(PassWord.getText().toString()));
 //                                    editor.commit();
-                                    PassWord.setText("");
+                                    //PassWord.setText("");
 
                                 } else
                                 {
                                     // Internet connection is not present
-                                    Toast.makeText(Login.this, "No Internet Connection", Toast.LENGTH_LONG).show();
+                                    Toast tost =Toast.makeText(Login.this, "No Internet Connection", Toast.LENGTH_LONG);
+                                    ViewGroup group = (ViewGroup) tost.getView();
+                                    TextView messageTextView = (TextView) group.getChildAt(0);
+                                    messageTextView.setTextSize(20);
+                                    tost.show();
                                 }
 
                             }

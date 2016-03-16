@@ -1,6 +1,8 @@
 package com.siyanmo.tnrmobile.WebAPI;
 
 import android.support.v7.app.AppCompatActivity;
+import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -41,12 +43,19 @@ public class CustomerApi {
                 public void onResponse(JSONArray jsonArray) {
                     ArrayList<Customer> customerArray = new Gson().fromJson(jsonArray.toString(), new TypeToken<List<Customer>>(){}.getType());
                     databaseHandler.InsertCustomerList(customerArray);
-                    Toast.makeText(activity, "Customer Data UpDated", Toast.LENGTH_LONG).show();
-                }
+                    Toast tost=Toast.makeText(activity, "Customer Data Updated", Toast.LENGTH_LONG);
+                    ViewGroup group = (ViewGroup) tost.getView();
+                    TextView messageTextView = (TextView) group.getChildAt(0);
+                    messageTextView.setTextSize(20);
+                    tost.show();                }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError volleyError) {
-                    Toast.makeText(activity, "Customer Data Not UpDated", Toast.LENGTH_LONG).show();
+                    Toast tost=Toast.makeText(activity, "Customer Data Not Updated", Toast.LENGTH_LONG);
+                    ViewGroup group = (ViewGroup) tost.getView();
+                    TextView messageTextView = (TextView) group.getChildAt(0);
+                    messageTextView.setTextSize(20);
+                    tost.show();
                 }
             });
             queue.add(jsonObjectRequest);

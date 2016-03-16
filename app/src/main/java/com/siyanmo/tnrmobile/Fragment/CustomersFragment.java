@@ -105,7 +105,7 @@ public class CustomersFragment extends Fragment {
         customerList=dbHandler.GetAllCustomer();
         List<String>customerDetails=new ArrayList<>();
         for (Customer customer : customerList){
-            customerDetails.add(customer.getCustomerName()+" / Customer Code-"+customer.getCustomerCode().toString());
+            customerDetails.add(customer.getCustomerName()+" / Outstanding - Rs "+String.format("%.2f", customer.getOutstanding()));
         }
         customers=new String[customerDetails.size()];
         customers=customerDetails.toArray(customers);

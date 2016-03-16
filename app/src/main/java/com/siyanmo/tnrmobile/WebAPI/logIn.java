@@ -4,6 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
+import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.NetworkResponse;
@@ -23,6 +26,7 @@ import com.siyanmo.tnrmobile.DomainObjects.SalesExecutive;
 import com.siyanmo.tnrmobile.DomainObjects.User;
 import com.siyanmo.tnrmobile.CommanMethode;
 import com.siyanmo.tnrmobile.Login;
+import com.siyanmo.tnrmobile.R;
 import com.siyanmo.tnrmobile.SqliteDataProvider.DatabaseHandler;
 
 import org.json.JSONArray;
@@ -40,11 +44,13 @@ public class logIn {
     AppCompatActivity activity;
     ItemAPI itemAPI;
     DatabaseHandler dbHandler;
+    private static EditText PassWord;
 
     public logIn(AppCompatActivity sactivity){
         activity =sactivity;
         itemAPI = new ItemAPI(sactivity);
         dbHandler=new DatabaseHandler(activity);
+        PassWord = (EditText) activity.findViewById(R.id.Pword);
     }
 
     public JsonObjectRequest LoginRequest (User user){
@@ -63,6 +69,7 @@ public class logIn {
                     dbHandler.InsertSalesmenDetail(salesExecutive);
                     SharedPreferences sharedPreferences=activity.getSharedPreferences("TNRMobile_Login_User_Information", Context.MODE_PRIVATE);
                     CommanMethode.LogUserDetails(sharedPreferences, users);
+                    PassWord.setText("");
                     Intent intent = new Intent("com.siyanmo.tnrmobile.MainActivity");
                     activity.startActivity(intent);
 
@@ -100,6 +107,7 @@ public class logIn {
                   dbHandler.InsertSalesmenDetail(salesExecutive);
                   SharedPreferences sharedPreferences=activity.getSharedPreferences("TNRMobile_Login_User_Information", Context.MODE_PRIVATE);
                   CommanMethode.LogUserDetails(sharedPreferences, users);
+                  PassWord.setText("");
                   Intent intent = new Intent("com.siyanmo.tnrmobile.MainActivity");
                   activity.startActivity(intent);
 
@@ -111,17 +119,41 @@ public class logIn {
                    NetworkResponse error = volleyError.networkResponse;
                    if(error!=null) {
                        if (error.statusCode == 404) {
-                           Toast.makeText(activity, "User Not Found Contact Admin", Toast.LENGTH_LONG).show();
+                           Toast tost =Toast.makeText(activity, "User Not Found Contact Admin", Toast.LENGTH_LONG);
+                           ViewGroup group = (ViewGroup) tost.getView();
+                           TextView messageTextView = (TextView) group.getChildAt(0);
+                           messageTextView.setTextSize(20);
+                           tost.show();
+                       }
+                       else {
+                           Comman.setSalesExecutive(dbHandler.GetSalesmenDetail());
+                           Toast tost = Toast.makeText(activity, "Sever Error Data Not Up Dated", Toast.LENGTH_LONG);
+                           ViewGroup group = (ViewGroup) tost.getView();
+                           TextView messageTextView = (TextView) group.getChildAt(0);
+                           messageTextView.setTextSize(20);
+                           tost.show();
+                           PassWord.setText("");
+                           Intent intent = new Intent("com.siyanmo.tnrmobile.MainActivity");
+                           activity.startActivity(intent);
                        }
                    }
                    else{
                        SharedPreferences  sharedPreferences=activity.getSharedPreferences("TNRMobile_Login_User_Information", Context.MODE_PRIVATE);
-                       if (!CommanMethode.LocalLogin(users, sharedPreferences))
-                           Toast.makeText(activity, "User Not Found Contact Admin", Toast.LENGTH_LONG).show();
+                       if (!CommanMethode.LocalLogin(users, sharedPreferences)) {
+                           Toast tost = Toast.makeText(activity, "User Not Found Contact Admin", Toast.LENGTH_LONG);
+                           ViewGroup group = (ViewGroup) tost.getView();
+                           TextView messageTextView = (TextView) group.getChildAt(0);
+                           messageTextView.setTextSize(20);
+                           tost.show();
+                       }
                        else {
                            Comman.setSalesExecutive(dbHandler.GetSalesmenDetail());
-                           Toast.makeText(activity, "Well Come", Toast.LENGTH_SHORT).show();
-                           Toast.makeText(activity, "Sever Error Data Not Up Dated", Toast.LENGTH_LONG).show();
+                           Toast tost = Toast.makeText(activity, "Sever Error Data Not Up Dated", Toast.LENGTH_LONG);
+                           ViewGroup group = (ViewGroup) tost.getView();
+                           TextView messageTextView = (TextView) group.getChildAt(0);
+                           messageTextView.setTextSize(20);
+                           tost.show();
+                           PassWord.setText("");
                            Intent intent = new Intent("com.siyanmo.tnrmobile.MainActivity");
                            activity.startActivity(intent);
                        }

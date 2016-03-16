@@ -1,4 +1,4 @@
-package com.siyanmo.tnrmobile;
+package com.siyanmo.tnrmobile.Fragment;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;

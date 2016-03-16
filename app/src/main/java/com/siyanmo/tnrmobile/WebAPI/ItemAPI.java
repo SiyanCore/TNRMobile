@@ -4,6 +4,8 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -64,12 +66,20 @@ public class ItemAPI
                     customerApi.GetCustomerBySalesExecutive(Comman.getSalesExecutive().getSalesExecutiveCode());
                     ArrayList<Item> itemArray = new Gson().fromJson(jsonArray.toString(), new TypeToken<List<Item>>(){}.getType());
                     databaseHandler.InsertItemList(itemArray);
-                    Toast.makeText(activity, "Item Data UpDated", Toast.LENGTH_LONG).show();
+                    Toast tost =  Toast.makeText(activity, "Item Data Updated", Toast.LENGTH_LONG);
+                    ViewGroup group = (ViewGroup) tost.getView();
+                    TextView messageTextView = (TextView) group.getChildAt(0);
+                    messageTextView.setTextSize(20);
+                    tost.show();
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError volleyError) {
-                    Toast.makeText(activity, "Item Data Not UpDated", Toast.LENGTH_LONG).show();
+                    Toast tost = Toast.makeText(activity, "Item Data Not Updated", Toast.LENGTH_LONG);
+                    ViewGroup group = (ViewGroup) tost.getView();
+                    TextView messageTextView = (TextView) group.getChildAt(0);
+                    messageTextView.setTextSize(20);
+                    tost.show();
                 }
             });
             queue.add(jsonObjectRequest);
@@ -91,12 +101,20 @@ public class ItemAPI
                 public void onResponse(JSONArray jsonArray) {
                     ArrayList<Item> itemArray = new Gson().fromJson(jsonArray.toString(), new TypeToken<List<Item>>(){}.getType());
                     databaseHandler.InsertItemList(itemArray);
-                    Toast.makeText(activity, "Item Data UpDated", Toast.LENGTH_LONG).show();
+                    Toast tost =  Toast.makeText(activity, "Item Data Updated", Toast.LENGTH_LONG);
+                    ViewGroup group = (ViewGroup) tost.getView();
+                    TextView messageTextView = (TextView) group.getChildAt(0);
+                    messageTextView.setTextSize(20);
+                    tost.show();
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError volleyError) {
-                    Toast.makeText(activity, "Item Data Not UpDated", Toast.LENGTH_LONG).show();
+                    Toast tost = Toast.makeText(activity, "Item Data Not Updated", Toast.LENGTH_LONG);
+                    ViewGroup group = (ViewGroup) tost.getView();
+                    TextView messageTextView = (TextView) group.getChildAt(0);
+                    messageTextView.setTextSize(20);
+                    tost.show();
                 }
             });
             queue.add(jsonObjectRequest);

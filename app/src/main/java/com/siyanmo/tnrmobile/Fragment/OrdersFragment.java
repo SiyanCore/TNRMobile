@@ -126,7 +126,6 @@ public class OrdersFragment extends Fragment {
         });
     }
     public void hideSoftKeyboard(View view) {
-        Toast.makeText(activity, " selected", Toast.LENGTH_LONG).show();
             InputMethodManager inputMethodManager = (InputMethodManager) view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
             inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
