@@ -226,46 +226,55 @@ public class NewOrderFragment extends Fragment {
         activity=sactivity;
     }
 
-    private void SaveOrder(){
-        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                switch (which) {
-                    case DialogInterface.BUTTON_POSITIVE:
-                        List<SalesOrderDetail> orders = newOrderViweAdapter.GetOrderItemses();
-                        SalesOrderHeader salesOrderHeader = MakeSalesOrderHearde();
-                        boolean result = dbHandler.InsertOrder(salesOrderHeader,orders);
-                        //dbHandler.
-                        if (result) {
-                            NewOrderFragment fragment=new NewOrderFragment();
-                            fragment.SetActivity(activity);
-                            FragmentTransaction fragmentTransaction=activity.getSupportFragmentManager().beginTransaction();
-                            fragmentTransaction.replace(R.id.fragment_container,fragment).commit();
-                            Toast tost =Toast.makeText(activity, "Save Success", Toast.LENGTH_LONG);
-                            ViewGroup group = (ViewGroup) tost.getView();
-                            TextView messageTextView = (TextView) group.getChildAt(0);
-                            messageTextView.setTextSize(20);
-                            tost.show();
-                        } else {
-                            Toast tost =Toast.makeText(activity, "Save Failed", Toast.LENGTH_LONG);
-                            ViewGroup group = (ViewGroup) tost.getView();
-                            TextView messageTextView = (TextView) group.getChildAt(0);
-                            messageTextView.setTextSize(20);
-                            tost.show();
-                        }
-                        break;
-                    case DialogInterface.BUTTON_NEGATIVE:
-                        //No button clicked
-                        break;
+    private void SaveOrder() {
+        if (newOrderViweAdapter.getCount()>0) {
+            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    switch (which) {
+                        case DialogInterface.BUTTON_POSITIVE:
+                            List<SalesOrderDetail> orders = newOrderViweAdapter.GetOrderItemses();
+                            SalesOrderHeader salesOrderHeader = MakeSalesOrderHearde();
+                            boolean result = dbHandler.InsertOrder(salesOrderHeader, orders);
+                            //dbHandler.
+                            if (result) {
+                                NewOrderFragment fragment = new NewOrderFragment();
+                                fragment.SetActivity(activity);
+                                FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
+                                fragmentTransaction.replace(R.id.fragment_container, fragment).commit();
+                                Toast tost = Toast.makeText(activity, "Save Success", Toast.LENGTH_LONG);
+                                ViewGroup group = (ViewGroup) tost.getView();
+                                TextView messageTextView = (TextView) group.getChildAt(0);
+                                messageTextView.setTextSize(20);
+                                tost.show();
+                            } else {
+                                Toast tost = Toast.makeText(activity, "Save Failed", Toast.LENGTH_LONG);
+                                ViewGroup group = (ViewGroup) tost.getView();
+                                TextView messageTextView = (TextView) group.getChildAt(0);
+                                messageTextView.setTextSize(20);
+                                tost.show();
+                            }
+                            break;
+                        case DialogInterface.BUTTON_NEGATIVE:
+                            //No button clicked
+                            break;
+                    }
                 }
-            }
-        };
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        builder.setMessage("Do you want Save this Order?")
-                .setNegativeButton("No", dialogClickListener)
-                .setPositiveButton("Yes", dialogClickListener).show();
-    }
+            };
+            AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+            builder.setMessage("Do you want Save this Order?")
+                    .setNegativeButton("No", dialogClickListener)
+                    .setPositiveButton("Yes", dialogClickListener).show();
 
+        }
+        else {
+            Toast tost = Toast.makeText(activity, "There are no Items to Save", Toast.LENGTH_LONG);
+            ViewGroup group = (ViewGroup) tost.getView();
+            TextView messageTextView = (TextView) group.getChildAt(0);
+            messageTextView.setTextSize(20);
+            tost.show();
+        }
+    }
     private SalesOrderHeader MakeSalesOrderHearde(){
         SalesOrderHeader salesHeader = new SalesOrderHeader();
         if(ValidateHeader()) {

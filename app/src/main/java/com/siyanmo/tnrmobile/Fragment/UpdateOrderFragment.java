@@ -395,45 +395,53 @@ public class UpdateOrderFragment extends Fragment {
                 .setPositiveButton("Yes", dialogClickListener).show();
     }
 
-    private void UpdateOrder(){
-        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                switch (which) {
-                    case DialogInterface.BUTTON_POSITIVE:
-                        List<SalesOrderDetail> orders = newOrderViweAdapter.GetOrderItemses();
-                        SalesOrderHeader salesOrderHeader = MakeSalesOrderHearde();
-                        boolean result = dbHandler.UpdateOrders(salesOrderHeader, orders);
-                        if (result) {
-                            OrdersFragment fragment=new OrdersFragment();
-                            fragment.SetActivity(activity);
-                            FragmentTransaction fragmentTransaction=activity.getSupportFragmentManager().beginTransaction();
-                            fragmentTransaction.replace(R.id.fragment_container,fragment).commit();
-                            Toast tost =Toast.makeText(activity, "Update Success", Toast.LENGTH_LONG);
-                            ViewGroup group = (ViewGroup) tost.getView();
-                            TextView messageTextView = (TextView) group.getChildAt(0);
-                            messageTextView.setTextSize(20);
-                            tost.show();
-                        } else {
-                            Toast tost =Toast.makeText(activity, "Update Failed", Toast.LENGTH_LONG);
-                            ViewGroup group = (ViewGroup) tost.getView();
-                            TextView messageTextView = (TextView) group.getChildAt(0);
-                            messageTextView.setTextSize(20);
-                            tost.show();
-                        }
-                        break;
-                    case DialogInterface.BUTTON_NEGATIVE:
-                        //No button clicked
-                        break;
+    private void UpdateOrder() {
+        if (newOrderViweAdapter.getCount()>0) {
+            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    switch (which) {
+                        case DialogInterface.BUTTON_POSITIVE:
+                            List<SalesOrderDetail> orders = newOrderViweAdapter.GetOrderItemses();
+                            SalesOrderHeader salesOrderHeader = MakeSalesOrderHearde();
+                            boolean result = dbHandler.UpdateOrders(salesOrderHeader, orders);
+                            if (result) {
+                                OrdersFragment fragment = new OrdersFragment();
+                                fragment.SetActivity(activity);
+                                FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
+                                fragmentTransaction.replace(R.id.fragment_container, fragment).commit();
+                                Toast tost = Toast.makeText(activity, "Update Success", Toast.LENGTH_LONG);
+                                ViewGroup group = (ViewGroup) tost.getView();
+                                TextView messageTextView = (TextView) group.getChildAt(0);
+                                messageTextView.setTextSize(20);
+                                tost.show();
+                            } else {
+                                Toast tost = Toast.makeText(activity, "Update Failed", Toast.LENGTH_LONG);
+                                ViewGroup group = (ViewGroup) tost.getView();
+                                TextView messageTextView = (TextView) group.getChildAt(0);
+                                messageTextView.setTextSize(20);
+                                tost.show();
+                            }
+                            break;
+                        case DialogInterface.BUTTON_NEGATIVE:
+                            //No button clicked
+                            break;
+                    }
                 }
-            }
-        };
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        builder.setMessage("Do you want Update this Order?")
-                .setNegativeButton("No", dialogClickListener)
-                .setPositiveButton("Yes", dialogClickListener).show();
+            };
+            AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+            builder.setMessage("Do you want Update this Order?")
+                    .setNegativeButton("No", dialogClickListener)
+                    .setPositiveButton("Yes", dialogClickListener).show();
+        }
+        else {
+            Toast tost = Toast.makeText(activity, "There are no Items to Update", Toast.LENGTH_LONG);
+            ViewGroup group = (ViewGroup) tost.getView();
+            TextView messageTextView = (TextView) group.getChildAt(0);
+            messageTextView.setTextSize(20);
+            tost.show();
+        }
     }
-
     @Override
     public void onCreateOptionsMenu(Menu menu,MenuInflater inflater) {
         menu.findItem(R.id.action_save).setVisible(false);
